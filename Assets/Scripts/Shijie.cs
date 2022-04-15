@@ -37,6 +37,9 @@ public class Shijie : MonoBehaviour
 
     public void InitFromHass(string str)
     {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        WebLog(str);
+#endif
         var ss = str.Split(' ');
         var a= areas.Find((x) => x.entity_id == ss[0]);
         if (a!=null)
@@ -60,6 +63,8 @@ public class Shijie : MonoBehaviour
     public static extern void UnityStart();
     [System.Runtime.InteropServices.DllImport("__Internal")]
     public static extern void LightMessage(string mes);
+    [System.Runtime.InteropServices.DllImport("__Internal")]
+    public static extern void WebLog(string mes);
 }
 
 public class HassMessage

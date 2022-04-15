@@ -14,7 +14,10 @@ mergeInto(LibraryManager.library,
   {
     window.alert(Pointer_stringify(str));
   },
- 
+ WebLog: function(str)
+ {
+     WebLog(Pointer_stringify(str));
+ },
    HelloFloat: function () 
    {
        return 1;

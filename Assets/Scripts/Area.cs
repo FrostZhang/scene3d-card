@@ -72,20 +72,29 @@ public class Area : MonoBehaviour
     public void ChangeFromHass(string str)
     {
         bool b;
-        if (bool.TryParse(str, out b))
+        if (str == "on")
         {
-            if (open != b)
+            b = true;
+        }
+        else if (str == "off")
+        {
+            b = false;
+        }
+        else
+        {
+            return;
+        }
+        if (open != b)
+        {
+            open = b;
+            StopAllCoroutines();
+            if (open)
             {
-                open = b;
-                StopAllCoroutines();
-                if (open)
-                {
-                    coroutine = StartCoroutine(To(max));
-                }
-                else
-                {
-                    coroutine = StartCoroutine(To(0));
-                }
+                coroutine = StartCoroutine(To(max));
+            }
+            else
+            {
+                coroutine = StartCoroutine(To(0));
             }
         }
     }
