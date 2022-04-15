@@ -1,0 +1,191 @@
+fileFormatVersion: 2
+guid: 0cc94d8a4db72c045a0b8801c38cd42f
+timeCreated: 1516180888
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: ModuleSci_Do_doorhandlep_00
+    100002: ModuleSci_Do_doorhandlep_01
+    100004: ModuleSci_Do_doorhandlep_02
+    100006: ModuleSci_Do_doorhandlep_03
+    100008: ModuleSci_Do_doorhandlep_04
+    100010: ModuleSci_Do_doorhandlep_05
+    100012: ModuleSci_Do_doorhandlep_06
+    100014: ModuleSci_Do_doorhandlep_07
+    100016: ModuleSci_Do_doorhandlep_08
+    100018: ModuleSci_Do_doorhandlep_09
+    100020: ModuleSci_Do_doorhandlep_10
+    100022: ModuleSci_Do_doorhandlep_11
+    100024: ModuleSci_Do_doorhinge_16
+    100026: ModuleSci_Do_doorhinge_17
+    100028: ModuleSci_Do_doorhinge_18
+    100030: ModuleSci_Do_doorL013
+    100032: ModuleSci_Do_doorL014
+    100034: ModuleSci_Do_doorL015
+    100036: //RootNode
+    100038: ModuleSci_Do_doorleaf_14
+    100040: ModuleSci_Do_doorleaf_15
+    100042: ModuleSci_Do_doorleaf_19
+    100044: ModuleSci_Do_win_door12
+    100046: ModuleSci_Do_win_door13
+    100048: ModuleSci_Do_win_door20
+    400000: ModuleSci_Do_doorhandlep_00
+    400002: ModuleSci_Do_doorhandlep_01
+    400004: ModuleSci_Do_doorhandlep_02
+    400006: ModuleSci_Do_doorhandlep_03
+    400008: ModuleSci_Do_doorhandlep_04
+    400010: ModuleSci_Do_doorhandlep_05
+    400012: ModuleSci_Do_doorhandlep_06
+    400014: ModuleSci_Do_doorhandlep_07
+    400016: ModuleSci_Do_doorhandlep_08
+    400018: ModuleSci_Do_doorhandlep_09
+    400020: ModuleSci_Do_doorhandlep_10
+    400022: ModuleSci_Do_doorhandlep_11
+    400024: ModuleSci_Do_doorhinge_16
+    400026: ModuleSci_Do_doorhinge_17
+    400028: ModuleSci_Do_doorhinge_18
+    400030: ModuleSci_Do_doorL013
+    400032: ModuleSci_Do_doorL014
+    400034: ModuleSci_Do_doorL015
+    400036: //RootNode
+    400038: ModuleSci_Do_doorleaf_14
+    400040: ModuleSci_Do_doorleaf_15
+    400042: ModuleSci_Do_doorleaf_19
+    400044: ModuleSci_Do_win_door12
+    400046: ModuleSci_Do_win_door13
+    400048: ModuleSci_Do_win_door20
+    2300000: ModuleSci_Do_doorhandlep_00
+    2300002: ModuleSci_Do_doorhandlep_01
+    2300004: ModuleSci_Do_doorhandlep_02
+    2300006: ModuleSci_Do_doorhandlep_03
+    2300008: ModuleSci_Do_doorhandlep_04
+    2300010: ModuleSci_Do_doorhandlep_05
+    2300012: ModuleSci_Do_doorhandlep_06
+    2300014: ModuleSci_Do_doorhandlep_07
+    2300016: ModuleSci_Do_doorhandlep_08
+    2300018: ModuleSci_Do_doorhandlep_09
+    2300020: ModuleSci_Do_doorhandlep_10
+    2300022: ModuleSci_Do_doorhandlep_11
+    2300024: ModuleSci_Do_doorhinge_16
+    2300026: ModuleSci_Do_doorhinge_17
+    2300028: ModuleSci_Do_doorhinge_18
+    2300030: ModuleSci_Do_doorleaf_14
+    2300032: ModuleSci_Do_doorleaf_15
+    2300034: ModuleSci_Do_doorleaf_19
+    2300036: ModuleSci_Do_win_door12
+    2300038: ModuleSci_Do_win_door13
+    2300040: ModuleSci_Do_win_door20
+    3300000: ModuleSci_Do_doorhandlep_00
+    3300002: ModuleSci_Do_doorhandlep_01
+    3300004: ModuleSci_Do_doorhandlep_02
+    3300006: ModuleSci_Do_doorhandlep_03
+    3300008: ModuleSci_Do_doorhandlep_04
+    3300010: ModuleSci_Do_doorhandlep_05
+    3300012: ModuleSci_Do_doorhandlep_06
+    3300014: ModuleSci_Do_doorhandlep_07
+    3300016: ModuleSci_Do_doorhandlep_08
+    3300018: ModuleSci_Do_doorhandlep_09
+    3300020: ModuleSci_Do_doorhandlep_10
+    3300022: ModuleSci_Do_doorhandlep_11
+    3300024: ModuleSci_Do_doorhinge_16
+    3300026: ModuleSci_Do_doorhinge_17
+    3300028: ModuleSci_Do_doorhinge_18
+    3300030: ModuleSci_Do_doorleaf_14
+    3300032: ModuleSci_Do_doorleaf_15
+    3300034: ModuleSci_Do_doorleaf_19
+    3300036: ModuleSci_Do_win_door12
+    3300038: ModuleSci_Do_win_door13
+    3300040: ModuleSci_Do_win_door20
+    4300000: ModuleSci_Do_doorhinge_18
+    4300002: ModuleSci_Do_doorhinge_17
+    4300004: ModuleSci_Do_doorhinge_16
+    4300006: ModuleSci_Do_doorleaf_15
+    4300008: ModuleSci_Do_doorhandlep_04
+    4300010: ModuleSci_Do_doorhandlep_05
+    4300012: ModuleSci_Do_doorhandlep_06
+    4300014: ModuleSci_Do_doorhandlep_07
+    4300016: ModuleSci_Do_win_door12
+    4300018: ModuleSci_Do_doorleaf_19
+    4300020: ModuleSci_Do_doorhandlep_00
+    4300022: ModuleSci_Do_doorhandlep_11
+    4300024: ModuleSci_Do_doorhandlep_09
+    4300026: ModuleSci_Do_doorhandlep_08
+    4300028: ModuleSci_Do_win_door13
+    4300030: ModuleSci_Do_doorleaf_14
+    4300032: ModuleSci_Do_doorhandlep_03
+    4300034: ModuleSci_Do_doorhandlep_02
+    4300036: ModuleSci_Do_doorhandlep_01
+    4300038: ModuleSci_Do_doorhandlep_10
+    4300040: ModuleSci_Do_win_door20
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

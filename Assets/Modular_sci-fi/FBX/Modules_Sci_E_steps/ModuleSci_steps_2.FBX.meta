@@ -1,0 +1,120 @@
+fileFormatVersion: 2
+guid: a83edf678d7a02243881aed0fdba8d37
+timeCreated: 1516202821
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Module_sci_stair_040
+    100002: Module_sci_stair_041
+    100004: Module_sci_stair_042
+    100006: Module_sci_stair_043
+    100008: Module_sci_stair_044
+    100010: Module_sci_stair_045
+    100012: Module_sci_stair_046
+    100014: Module_sci_stair_047
+    100016: //RootNode
+    400000: Module_sci_stair_040
+    400002: Module_sci_stair_041
+    400004: Module_sci_stair_042
+    400006: Module_sci_stair_043
+    400008: Module_sci_stair_044
+    400010: Module_sci_stair_045
+    400012: Module_sci_stair_046
+    400014: Module_sci_stair_047
+    400016: //RootNode
+    2300000: Module_sci_stair_040
+    2300002: Module_sci_stair_041
+    2300004: Module_sci_stair_042
+    2300006: Module_sci_stair_043
+    2300008: Module_sci_stair_044
+    2300010: Module_sci_stair_045
+    2300012: Module_sci_stair_046
+    2300014: Module_sci_stair_047
+    3300000: Module_sci_stair_040
+    3300002: Module_sci_stair_041
+    3300004: Module_sci_stair_042
+    3300006: Module_sci_stair_043
+    3300008: Module_sci_stair_044
+    3300010: Module_sci_stair_045
+    3300012: Module_sci_stair_046
+    3300014: Module_sci_stair_047
+    4300000: Module_sci_stair_046
+    4300002: Module_sci_stair_041
+    4300004: Module_sci_stair_045
+    4300006: Module_sci_stair_044
+    4300008: Module_sci_stair_043
+    4300010: Module_sci_stair_042
+    4300012: Module_sci_stair_047
+    4300014: Module_sci_stair_040
+    9500000: //RootNode
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 1
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    rootMotionBoneRotation: {x: 0, y: 0, z: 0, w: 1}
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
