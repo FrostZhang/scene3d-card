@@ -14,8 +14,8 @@ public class HassEntity : MonoBehaviour
     //const string person = "person"; //not_home
     //const string cover = "cover"; //´°Á± closed closing open opening
     //const string fan = "fan"; //on off
-    //const string on = "on";
-    //const string off = "off";
+    const string on = "on";
+    const string off = "off";
 
     string head;
     const string cmdon = "turn_on";
@@ -33,7 +33,7 @@ public class HassEntity : MonoBehaviour
         }
     }
 
-    public virtual void Click()
+    public void Click()
     {
         if (string.IsNullOrEmpty(entity_id))
             return;
@@ -63,6 +63,35 @@ public class HassEntity : MonoBehaviour
     protected virtual void TrunOff()
     {
         
+    }
+
+    protected virtual void Offline()
+    {
+        
+    }
+
+    public void HassMeassge(string state)
+    {
+        if (state == on)
+        {
+            if (!open)
+            {
+                open = true;
+                TrunOn();
+            }
+        }
+        else if (state == off)
+        {
+            if (open)
+            {
+                open = false;
+                TrunOff();
+            }
+        }
+        else
+        {
+            Offline();
+        }
     }
 
     public virtual void LongClick()
