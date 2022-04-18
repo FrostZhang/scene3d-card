@@ -9,6 +9,7 @@ using UnityEditor;
 
 public class CameraControllerForUnity : MonoBehaviour
 {
+    public static CameraControllerForUnity Instance;
     public Transform followtarget;
     [Header("接受unity输入")]
     public bool canUseMouseRight = true;
@@ -66,9 +67,9 @@ public class CameraControllerForUnity : MonoBehaviour
     protected Camera came;
     private Transform ca;
     private Vector3 triniPivot;
-
     protected virtual void Awake()
     {
+        Instance = this;
         triniPivot = transform.rotation.eulerAngles;
         yAngle = triniPivot.x;
         xAngle = triniPivot.y;
@@ -205,13 +206,13 @@ public class CameraControllerForUnity : MonoBehaviour
     {
         if (mode == 0)
         {
-            if (Input.GetMouseButton(2) && canUseMouseCenter)
+            if (Input.GetMouseButton(0) && Input.GetMouseButton(1) && canUseMouseCenter)
             {
                 if (mode == Mode.first)
                 {
+                }
                     mousex = -mousex;
                     mousey = -mousey;
-                }
                 Vector3 move = new Vector3(mousex, mousey, 0) * curdistance * 0.03f;
                 transform.Translate(move, Space.Self);
                 if (followtarget)
@@ -237,7 +238,7 @@ public class CameraControllerForUnity : MonoBehaviour
     private void CameraRotate()
     {
         //当不为moba视角可旋转
-        if ((Input.GetMouseButton(0)) && (mode == Mode.third || mode == Mode.first))
+        if (Input.GetMouseButton(0) && !Input.GetMouseButton(1) &&(mode == Mode.third || mode == Mode.first))
         {
             if (canUseMouseRight)
             {

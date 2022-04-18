@@ -34,10 +34,44 @@ public class House : MonoBehaviour
         CreatWall("0,2.5,5.25,0.5,0.25,0", null);
         CreatWall("-2.5,0,5,1,0.125,90", null);
         CreatWall("0,-2.5,5.25,0.5,0.25,0", null);
-        CreatFloor("8,6", null);
+        CreatGroud("8,6", null);
+        StartCoroutine(CreatWFloor("hongse,0,0.5,2,3"));
     }
 
-    public void CreatFloor(string floor, string color)
+    public void CreatWFloor()
+    {
+        Help.Instance.ABLoad("floor", "hesei");
+    }
+
+    IEnumerator CreatWFloor(string str)
+    {
+        var ss = str.Split(',');
+        if (ss.Length != 5)
+            yield break;
+        float x, y, w, h;
+        float va;
+        if (float.TryParse(ss[1], out va))
+            x = va;
+        else yield break;
+        if (float.TryParse(ss[2], out va))
+            y = va;
+        else yield break;
+        if (float.TryParse(ss[3], out va))
+            w = va * 0.1f;
+        else yield break;
+        if (float.TryParse(ss[4], out va))
+            h = va * 0.1f;
+        else yield break;
+
+        yield return Help.Instance.ABLoad("floor", ss[0]);
+        var ab = Help.Instance.GetBundle("floor", ss[0]);
+        var tr = ab.LoadAsset<GameObject>(ss[0]);
+        tr = Instantiate(tr);
+        tr.transform.position = new Vector3(x, 0.01f, y);
+        tr.transform.localScale = new Vector3(w, 1, h);
+    }
+
+    public void CreatGroud(string floor, string color)
     {
         var ss = floor.Split(',');
         float va;

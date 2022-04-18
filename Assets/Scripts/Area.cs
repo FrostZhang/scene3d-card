@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class Area : MonoBehaviour
 {
@@ -19,10 +20,21 @@ public class Area : MonoBehaviour
         clight.intensity = 0;
     }
 
+    public void SetHassEntity_id(string id)
+    {
+        this.entity_id = id;
+    }
+
     float lastdown;
     Vector3 lastv3;
     void OnMouseDown()
     {
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
+        if (EventSystem.current.IsPointerOverGameObject(0))
+            return;
+        if (EventSystem.current.IsPointerOverGameObject(1))
+            return;
         lastdown = Time.time;
         lastv3 = Input.mousePosition;
     }
@@ -30,14 +42,14 @@ public class Area : MonoBehaviour
     Coroutine coroutine;
     void OnMouseUp()
     {
-        if (Time.time - lastdown > 0.5f || Vector3.Magnitude(Input.mousePosition - lastv3) > 16f)
+        if (Vector3.Magnitude(Input.mousePosition - lastv3) > 10f)
             return;
         if (Time.time - lastdown < 0.5f)
         {
-            StopAllCoroutines();
-            HassMessage message = new HassMessage();
+            HassServerMessage message = new HassServerMessage();
             message.head = SWITCH;
             message.entity_id = entity_id;
+            StopAllCoroutines();
             if (!open)
             {
                 coroutine = StartCoroutine(To(max));
@@ -52,10 +64,18 @@ public class Area : MonoBehaviour
             }
             if (!string.IsNullOrEmpty(entity_id))
             {
-                Shijie.LightMessage(JsonUtility.ToJson(message));
+                Shijie.AsherLink3DClickMessage(JsonUtility.ToJson(message));
             }
         }
-
+        else
+        {
+            if (!string.IsNullOrEmpty(entity_id))
+            {
+                HassMoreInfo info = new HassMoreInfo();
+                info.entity_id = entity_id;
+                Shijie.AsherLink3DLongClickMessage(JsonUtility.ToJson(info));
+            }
+        }
     }
 
     IEnumerator To(float f)
@@ -66,6 +86,8 @@ public class Area : MonoBehaviour
         {
             clight.intensity = Mathf.Lerp(clight.intensity, f, l += t * Time.deltaTime);
             yield return new WaitForEndOfFrame();
+            if (l>1)
+                break;
         }
     }
 

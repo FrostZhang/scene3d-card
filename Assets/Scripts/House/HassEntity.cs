@@ -37,7 +37,7 @@ public class HassEntity : MonoBehaviour
     {
         if (string.IsNullOrEmpty(entity_id))
             return;
-        HassMessage message = new HassMessage();
+        HassServerMessage message = new HassServerMessage();
         message.head = head;
         message.entity_id = entity_id;
         if (open)
@@ -52,7 +52,7 @@ public class HassEntity : MonoBehaviour
             message.cmd = cmdon;
             TrunOn();
         }
-        Shijie.LightMessage(JsonUtility.ToJson(message));
+        Shijie.AsherLink3DClickMessage(JsonUtility.ToJson(message));
     }
 
     protected virtual void TrunOn()
@@ -68,6 +68,11 @@ public class HassEntity : MonoBehaviour
     protected virtual void Offline()
     {
         
+    }
+
+    protected virtual void AfterLongClick()
+    {
+
     }
 
     public void HassMeassge(string state)
@@ -98,5 +103,9 @@ public class HassEntity : MonoBehaviour
     {
         if (string.IsNullOrEmpty(entity_id))
             return;
+        HassMoreInfo info = new HassMoreInfo();
+        info.entity_id = entity_id;
+        Shijie.AsherLink3DLongClickMessage(JsonUtility.ToJson(info));
+        AfterLongClick();
     }
 }

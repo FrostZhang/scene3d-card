@@ -6,71 +6,108 @@ using UnityEngine.UI;
 
 public class Shijie : MonoBehaviour
 {
-    public Light light;
-    public Slider slider;
-    public Image im;
-    public Color32 cH = new Color32(255, 255, 218, 255);
-    public Color32 cL = new Color32(0, 0, 0, 255);
-    public Material sky;
-    public CameraControllerForUnity cameraController;
-    public Slider rainS, snowS, ro;
-    public ParticleSystem rain, snow;
-
     public Transform areaLights;
     List<Area> areas;
+    string lastWeather;
     void Awake()
     {
-        slider.onValueChanged.AddListener(ClickShijie);
-        ClickShijie(0.5f);
-        var rmain = rain.main;
-        rmain.maxParticles = (int)rainS.value;
-        var smain = snow.main;
-        smain.maxParticles = (int)snowS.value;
-        rainS.onValueChanged.AddListener((x) => rmain.maxParticles = (int)x);
-        snowS.onValueChanged.AddListener((x) => smain.maxParticles = (int)x);
         areas = new List<Area>(areaLights.GetComponentsInChildren<Area>());
+        QualitySettings.SetQualityLevel(2);
 #if UNITY_WEBGL && !UNITY_EDITOR
-        Shijie.UnityStart();
+        Shijie.AsherLink3DStart();
         WebGLInput.captureAllKeyboardInput = false;
 #endif
     }
 
-    public void InitFromHass(string str)
+    public void HassConfig(string configStr)
     {
-#if UNITY_WEBGL && !UNITY_EDITOR
-        WebLog(str);
-#endif
-        var ss = str.Split(' ');
-        var a= areas.Find((x) => x.entity_id == ss[0]);
-        if (a!=null)
+        var hc = JsonUtility.FromJson<HssConfig>(configStr);
+        var t = hc.GetType();
+        AsherLink3DWebLog("3D»ñµÃÅäÖÃ:" + configStr);
+        foreach (var item in areas)
         {
-            a.ChangeFromHass(ss[1]);
+            var a = t.GetField(item.name);
+            if (a != null)
+            {
+                var value = a.GetValue(hc);
+                if (value != null)
+                {
+                    item.SetHassEntity_id(a.GetValue(hc).ToString());
+                    AsherLink3DWebLog(item.name + " SetID:" + a.GetValue(hc).ToString());
+                }
+                else
+                {
+                    item.SetHassEntity_id(string.Empty);
+                }
+            }
         }
     }
 
-    private void ClickShijie(float v)
+    public void HassMessage(string str)
     {
-        im.color = light.color = Color.Lerp(cL, cH, v);
-        sky.SetFloat("_Exposure", v + 0.15f);
+        var ss = str.Split(' ');
+        if (ss[0] == "sun.sun")
+        {
+            float value;
+            if (float.TryParse(ss[1], out value))
+            {
+                if (value > 0)
+                {
+                    var v2 = Mathf.Max(0.1f, Mathf.Sin(value * Mathf.Deg2Rad));
+                    Weather.Instance.SetTianGuang(v2);
+                }
+                else
+                    Weather.Instance.SetTianGuang(0.1f);
+            }
+        }
+        else if (ss[0] == "weather.tian_qi")
+        {
+            Weather.Instance.SetWeather(ss[1]);
+        }
+        else
+        {
+            var a = areas.Find((x) => x.entity_id == ss[0]);
+            if (a != null)
+            {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        //WebLog(ss[0] +" " +ss[1]);
+#endif
+                a.ChangeFromHass(ss[1]);
+            }
+        }
     }
 
-    void Update()
-    {
-        cameraController.xAngle += Time.deltaTime * ro.value;
-    }
-
     [System.Runtime.InteropServices.DllImport("__Internal")]
-    public static extern void UnityStart();
+    public static extern void AsherLink3DStart();
     [System.Runtime.InteropServices.DllImport("__Internal")]
-    public static extern void LightMessage(string mes);
+    public static extern void AsherLink3DClickMessage(string mes);
     [System.Runtime.InteropServices.DllImport("__Internal")]
-    public static extern void WebLog(string mes);
+    public static extern void AsherLink3DLongClickMessage(string mes);
+    [System.Runtime.InteropServices.DllImport("__Internal")]
+    public static extern void AsherLink3DWebLog(string mes);
 }
 
-public class HassMessage
+public class HssConfig
+{
+    public string canting;
+    public string keting;
+    public string fuwo;
+    public string zhuwo;
+    public string xiaowoshi;
+    public string cufang;
+    public string guodao;
+    public string weishenjian;
+}
+
+public class HassServerMessage
 {
     public string head;
     public string cmd;
     public string entity_id;
     public string temp;
+}
+
+public class HassMoreInfo
+{
+    public string entity_id;
 }

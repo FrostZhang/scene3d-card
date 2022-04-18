@@ -1,22 +1,26 @@
 mergeInto(LibraryManager.library, 
 {
  
-  UnityStart: function ()
+  AsherLink3DStart: function ()
   {
-    UnityStart();
+    AsherLink3DStart();
   },
   
-  LightMessage: function(str)
+  AsherLink3DClickMessage: function(str)
   {
-	 LightMessage(Pointer_stringify(str));
+	 AsherLink3DClickMessage(Pointer_stringify(str));
+  },
+  AsherLink3DLongClickMessage: function(str)
+  {
+	 AsherLink3DLongClickMessage(Pointer_stringify(str));
   },
   HelloString: function (str) 
   {
     window.alert(Pointer_stringify(str));
   },
- WebLog: function(str)
+ AsherLink3DWebLog: function(str)
  {
-     WebLog(Pointer_stringify(str));
+     AsherLink3DWebLog(Pointer_stringify(str));
  },
    HelloFloat: function () 
    {
