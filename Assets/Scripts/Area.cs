@@ -64,7 +64,7 @@ public class Area : MonoBehaviour
             }
             if (!string.IsNullOrEmpty(entity_id))
             {
-                Shijie.AsherLink3DClickMessage(JsonUtility.ToJson(message));
+                Shijie.ClickMessage(JsonUtility.ToJson(message));
             }
         }
         else
@@ -73,7 +73,7 @@ public class Area : MonoBehaviour
             {
                 HassMoreInfo info = new HassMoreInfo();
                 info.entity_id = entity_id;
-                Shijie.AsherLink3DLongClickMessage(JsonUtility.ToJson(info));
+                Shijie.LongClickMessage(JsonUtility.ToJson(info));
             }
         }
     }

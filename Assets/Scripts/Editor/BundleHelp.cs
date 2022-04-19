@@ -14,9 +14,11 @@ public class BundleHelp : EditorWindow
         GetWindow<BundleHelp>();
     }
 
+    bool windowsTest;
     public void OnGUI()
     {
-        if (GUILayout.Button("建立"))
+        windowsTest = EditorGUILayout.Toggle("windwos下测试", windowsTest);
+        if (GUILayout.Button("建立WebGL"))
         {
             var path = System.Environment.CurrentDirectory + "/Assets/AssetsBundle";
             var ds = Directory.GetDirectories(path);
@@ -40,7 +42,10 @@ public class BundleHelp : EditorWindow
                     }
                 }
             }
-            BuildPipeline.BuildAssetBundles(cuspath, buildMap.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.WebGL);
+            if (windowsTest)
+                BuildPipeline.BuildAssetBundles(cuspath, buildMap.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneWindows64);
+            else
+                BuildPipeline.BuildAssetBundles(cuspath, buildMap.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.WebGL);
         }
     }
 

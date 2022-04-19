@@ -1,4 +1,5 @@
 using LitJson;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,6 +25,7 @@ public class House : MonoBehaviour
 
     void Start()
     {
+        mainCa = Camera.main;
         JsonWriter w = new JsonWriter();
         w.WriteObjectStart();
         w.WritePropertyName("ceshi");
@@ -36,11 +38,77 @@ public class House : MonoBehaviour
         CreatWall("0,-2.5,5.25,0.5,0.25,0", null);
         CreatGroud("8,6", null);
         StartCoroutine(CreatWFloor("hongse,0,0.5,2,3"));
+        StartCoroutine(CreatAreaLight("light.xxxx,0,1.25,1.5,2,3"));
+        StartCoroutine(CreatDoor("switch.xxxx,0,1.25,1,115,0"));
+        StartCoroutine(CreatDoor("switch.xxxx,1,1.25,1,0,90"));
+        StartCoroutine(CreatDoor("switch.xxxx,2,1.25,1,0,90"));
+        StartCoroutine(CreatFlowLine("switch.xxxx,2,1.25,1,0,90"));
     }
 
-    public void CreatWFloor()
+    IEnumerator CreatFlowLine(string str)
     {
-        Help.Instance.ABLoad("floor", "hesei");
+        
+    }
+
+    IEnumerator CreatDoor(string str)
+    {
+        var ss = str.Split(',');
+        if (ss.Length == 6)
+        {
+            string id = ss[0];
+            float x, y, w, o, c;
+            float va;
+            if (float.TryParse(ss[1], out va)) x = va; else yield break;
+            if (float.TryParse(ss[2], out va)) y = va; else yield break;
+            if (float.TryParse(ss[3], out va)) w = va; else yield break;
+            if (float.TryParse(ss[4], out va)) o = va; else yield break;
+            if (float.TryParse(ss[5], out va)) c = va; else yield break;
+
+            yield return Help.Instance.ABLoad("door", "door1");
+            var ab = Help.Instance.GetBundle("door", "door1");
+            var tr = ab.LoadAsset<GameObject>("door1");
+            tr = Instantiate(tr);
+            var p = tr.transform.position;
+            p.x = x;
+            p.z = y;
+            tr.transform.position = p;
+            var s= tr.transform.localScale;
+            s.x = w;
+            tr.transform.localScale = s;
+            var le = tr.GetComponent<DoorEntity>();
+            le.SetEntity(id);
+            le.angleopen = o;
+            le.angleclose = c;
+        }
+    }
+
+    IEnumerator CreatAreaLight(string str)
+    {
+        var ss = str.Split(',');
+        if (ss.Length == 6)
+        {
+            string id = ss[0];
+            float x, y, w, h, li;
+            float va;
+            if (float.TryParse(ss[1], out va)) x = va; else yield break;
+            if (float.TryParse(ss[2], out va)) y = va; else yield break;
+            if (float.TryParse(ss[3], out va)) w = va; else yield break;
+            if (float.TryParse(ss[4], out va)) h = va; else yield break;
+            if (float.TryParse(ss[5], out va)) li = va; else yield break;
+
+            yield return Help.Instance.ABLoad("entity", "arealight");
+            var ab = Help.Instance.GetBundle("entity", "arealight");
+            var tr = ab.LoadAsset<GameObject>("arealight");
+            tr = Instantiate(tr);
+            tr.transform.position = new Vector3(x, 0.01f, y);
+            var le = tr.GetComponent<LightEntity>();
+            le.SetEntity(id);
+            le.clight.intensity = li;
+        }
+        else
+        {
+
+        }
     }
 
     IEnumerator CreatWFloor(string str)
@@ -186,6 +254,60 @@ public class House : MonoBehaviour
     end:
         color = Color.magenta;
         return false;
+    }
+
+    Camera mainCa;
+    private RaycastHit hit;
+    private float maxDistance = 20;
+    Transform lasthit;
+    HassEntity entity;
+    Vector3 lastDownpos;
+    float lastDownT;
+    void Update()
+    {
+        if (Physics.Raycast(mainCa.ScreenPointToRay(Input.mousePosition), out hit, maxDistance))
+        {
+            if (hit.transform != lasthit)
+            {
+                lasthit = hit.transform;
+                if (entity)
+                    entity.MouseExit();
+                entity = hit.transform.GetComponent<HassEntity>();
+                if (entity)
+                    entity.MouseOn();
+            }
+            else if (entity)
+            {
+                if (Input.GetMouseButtonDown(0))
+                {
+                    lastDownpos = Input.mousePosition;
+                    lastDownT = Time.time;
+                }
+                else if (Input.GetMouseButtonUp(0))
+                {
+                    if (Vector3.Magnitude(Input.mousePosition - lastDownpos) < 9)
+                    {
+                        if (Time.time - lastDownT > 0.5f)
+                        {
+                            entity.LongClick();
+                        }
+                        else
+                        {
+                            entity.Click();
+                        }
+                    }
+                }
+            }
+        }
+        else
+        {
+            lasthit = null;
+            if (entity)
+            {
+                entity.MouseExit();
+                entity = null;
+            }
+        }
     }
 }
 

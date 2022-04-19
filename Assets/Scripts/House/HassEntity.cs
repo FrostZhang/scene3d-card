@@ -33,6 +33,11 @@ public class HassEntity : MonoBehaviour
         }
     }
 
+    public virtual void HassConfig(LitJson.JsonData jd)
+    {
+        
+    }
+
     public void Click()
     {
         if (string.IsNullOrEmpty(entity_id))
@@ -52,7 +57,12 @@ public class HassEntity : MonoBehaviour
             message.cmd = cmdon;
             TrunOn();
         }
-        Shijie.AsherLink3DClickMessage(JsonUtility.ToJson(message));
+        Shijie.ClickMessage(JsonUtility.ToJson(message));
+    }
+
+    public virtual void MouseOn()
+    {
+        
     }
 
     protected virtual void TrunOn()
@@ -105,7 +115,12 @@ public class HassEntity : MonoBehaviour
             return;
         HassMoreInfo info = new HassMoreInfo();
         info.entity_id = entity_id;
-        Shijie.AsherLink3DLongClickMessage(JsonUtility.ToJson(info));
+        Shijie.LongClickMessage(JsonUtility.ToJson(info));
         AfterLongClick();
+    }
+
+    public virtual void MouseExit()
+    {
+        
     }
 }
