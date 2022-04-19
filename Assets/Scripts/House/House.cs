@@ -26,7 +26,7 @@ public class House : MonoBehaviour
         CreatWall("-2.5,0,5,1,0.125,90", null);
         CreatWall("0,-2.5,5.25,0.5,0.25,0", null);
         CreatGroud("8,6", null);
-        StartCoroutine(CreatWFloor("hongse,0,0.5,2,3"));
+        StartCoroutine(CreatWFloor("hesei,0,0.5,2,3"));
         StartCoroutine(CreatAreaLight("light.xxxx,0,1.25,1.5,2,3"));
         StartCoroutine(CreatDoor("switch.xxxx,0,1.25,1,115,0"));
         StartCoroutine(CreatDoor("switch.xxxx,1,1.25,1,0,90"));
