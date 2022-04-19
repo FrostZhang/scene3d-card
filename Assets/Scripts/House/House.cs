@@ -26,17 +26,17 @@ public class House : MonoBehaviour
         CreatWall("-2.5,0,5,1,0.125,90", null);
         CreatWall("0,-2.5,5.25,0.5,0.25,0", null);
         CreatGroud("8,6", null);
-        StartCoroutine(CreatWFloor("hesei,0,0.5,2,3"));
+        StartCoroutine(CreatFloor("wood,0,0.5,2,3"));
         StartCoroutine(CreatAreaLight("light.xxxx,0,1.25,1.5,2,3"));
         StartCoroutine(CreatDoor("switch.xxxx,0,1.25,1,115,0"));
         StartCoroutine(CreatDoor("switch.xxxx,1,1.25,1,0,90"));
         StartCoroutine(CreatDoor("switch.xxxx,2,1.25,1,0,90"));
         StartCoroutine(CreatFlowLine("0,0,0,0,1,0,0,1,5", "yellow", "red", "switch.xxxx"));
-        StartCoroutine(CreatDecorate("time1,0,1,1.5,0"));
-        StartCoroutine(Creatsky("space"));
+        StartCoroutine(CreatAppliances("clock1,0,1,1.5,0"));
+        StartCoroutine(CreatSky("space"));
     }
 
-    IEnumerator Creatsky(string str)
+    IEnumerator CreatSky(string str)
     {
         if (string.IsNullOrWhiteSpace(str))
             yield break;
@@ -50,7 +50,7 @@ public class House : MonoBehaviour
         }
     }
 
-    IEnumerator CreatDecorate(string str)
+    IEnumerator CreatAppliances(string str)
     {
         var ss = str.Split(',');
         if (ss.Length == 5)
@@ -62,8 +62,8 @@ public class House : MonoBehaviour
             if (float.TryParse(ss[3], out va)) z = va; else yield break;
             if (float.TryParse(ss[4], out va)) r = va; else yield break;
 
-            yield return Help.Instance.ABLoad("decorate", name);
-            var ab = Help.Instance.GetBundle("decorate", name);
+            yield return Help.Instance.ABLoad("appliances", name);
+            var ab = Help.Instance.GetBundle("appliances", name);
             var tr = ab.LoadAsset<GameObject>(name);
             tr = Instantiate(tr);
             tr.transform.position = new Vector3(x, z, y);
@@ -158,8 +158,8 @@ public class House : MonoBehaviour
             if (float.TryParse(ss[4], out va)) h = va; else yield break;
             if (float.TryParse(ss[5], out va)) li = va; else yield break;
 
-            yield return Help.Instance.ABLoad("entity", "arealight");
-            var ab = Help.Instance.GetBundle("entity", "arealight");
+            yield return Help.Instance.ABLoad("light", "arealight");
+            var ab = Help.Instance.GetBundle("light", "arealight");
             var tr = ab.LoadAsset<GameObject>("arealight");
             tr = Instantiate(tr);
             tr.transform.position = new Vector3(x, 0.01f, y);
@@ -173,7 +173,7 @@ public class House : MonoBehaviour
         }
     }
 
-    IEnumerator CreatWFloor(string str)
+    IEnumerator CreatFloor(string str)
     {
         var ss = str.Split(',');
         if (ss.Length != 5)

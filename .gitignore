@@ -60,3 +60,8 @@ crashlytics-build.properties
 
 /Assets/StreamingAssets
 /Assets/StreamingAssets.meta
+/buildweb
+/prize
+/referencemap.xml
+/referenceType2File.xml
+/BackupUnusedAssets

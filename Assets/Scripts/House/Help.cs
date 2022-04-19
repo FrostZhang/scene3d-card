@@ -67,7 +67,7 @@ public class Help : MonoBehaviour
             if (request.result != UnityWebRequest.Result.Success)
             {
                 bundles.Add(dk, null);
-                Debug.LogError("找不到ab");
+                Debug.LogError("找不到ab:"+dk);
             }
             else
             {
