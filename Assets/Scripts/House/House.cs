@@ -6,21 +6,10 @@ using UnityEngine;
 
 public class House : MonoBehaviour
 {
-    Dictionary<string, Color> colors;
 
     void Awake()
     {
-        colors = new Dictionary<string, Color>(10);
-        colors.Add("red", Color.red);
-        colors.Add("grey", Color.grey);
-        colors.Add("gray", Color.gray);
-        colors.Add("yellow", Color.yellow);
-        colors.Add("magenta", Color.magenta);
-        colors.Add("cyan", Color.cyan);
-        colors.Add("black", Color.black);
-        colors.Add("white", Color.white);
-        colors.Add("blue", Color.blue);
-        colors.Add("green", Color.green);
+
     }
 
     void Start()
@@ -42,12 +31,50 @@ public class House : MonoBehaviour
         StartCoroutine(CreatDoor("switch.xxxx,0,1.25,1,115,0"));
         StartCoroutine(CreatDoor("switch.xxxx,1,1.25,1,0,90"));
         StartCoroutine(CreatDoor("switch.xxxx,2,1.25,1,0,90"));
-        StartCoroutine(CreatFlowLine("switch.xxxx,2,1.25,1,0,90"));
+        StartCoroutine(CreatFlowLine("0,0,0,0,1,0,0,1,5", "yellow", "red"));
     }
 
-    IEnumerator CreatFlowLine(string str)
+    IEnumerator CreatFlowLine(string pos, string con, string coff)
     {
-        
+        var vs = GetPoss(pos);
+        if (vs == null)
+            yield break;
+
+        yield return Help.Instance.ABLoad("effect", "flowline");
+        var ab = Help.Instance.GetBundle("effect", "flowline");
+        var tr = ab.LoadAsset<GameObject>("flowline");
+        var lineE = Instantiate(tr).GetComponent<LineEntity>();
+        lineE.line.positionCount = vs.Length;
+        lineE.line.SetPositions(vs);
+        Color c;
+        if (Help.Instance.TryColor(con, out c))
+        {
+            lineE.oncolor = c;
+        }
+        if (Help.Instance.TryColor(coff, out c))
+        {
+            lineE.offcolor = c;
+        }
+    }
+
+    Vector3[] GetPoss(string str)
+    {
+        var ss = str.Split(',');
+        if (ss.Length % 3 == 0)
+        {
+            Vector3[] vs = new Vector3[ss.Length / 3];
+            var n = 0;
+            float va, x, y, z;
+            for (int i = 0; i < ss.Length; i += 3)
+            {
+                if (float.TryParse(ss[i], out va)) x = va; else return null;
+                if (float.TryParse(ss[i + 1], out va)) y = va; else return null;
+                if (float.TryParse(ss[i + 2], out va)) z = va; else return null;
+                vs[n] = new Vector3(x, y, z);
+            }
+            return vs;
+        }
+        return null;
     }
 
     IEnumerator CreatDoor(string str)
@@ -72,7 +99,7 @@ public class House : MonoBehaviour
             p.x = x;
             p.z = y;
             tr.transform.position = p;
-            var s= tr.transform.localScale;
+            var s = tr.transform.localScale;
             s.x = w;
             tr.transform.localScale = s;
             var le = tr.GetComponent<DoorEntity>();
@@ -158,7 +185,7 @@ public class House : MonoBehaviour
             var r = plane.GetComponent<Renderer>();
             var ma = r.material = new Material(r.material);
             Color wcolor;
-            if (TryColor(color, out wcolor))
+            if (Help.Instance.TryColor(color, out wcolor))
             {
                 ma.color = wcolor;
             }
@@ -198,62 +225,11 @@ public class House : MonoBehaviour
             var r = cube.GetComponent<Renderer>();
             var ma = r.material = new Material(r.material);
             Color wcolor;
-            if (TryColor(color, out wcolor))
+            if (Help.Instance.TryColor(color, out wcolor))
             {
                 ma.color = wcolor;
             }
         }
-    }
-
-    protected bool TryColor(string cstr, out Color va)
-    {
-        if (string.IsNullOrWhiteSpace(cstr))
-        {
-
-        }
-        else if (cstr.StartsWith("#"))
-        {
-            return ColorUtility.TryParseHtmlString(cstr, out va);
-        }
-        else if (colors.ContainsKey(cstr))
-        {
-            va = colors[cstr];
-            return true;
-        }
-        else
-        {
-            return RGBAStr2Color(cstr, out va);
-        }
-        va = Color.magenta;
-        return false;
-
-    }
-
-    bool RGBAStr2Color(string str, out Color color)
-    {
-        var css = str.Split(',');
-        byte va;
-        if (css.Length == 4)
-        {
-            byte r, g, b, a;
-            if (byte.TryParse(css[0], out va))
-                r = va;
-            else goto end;
-            if (byte.TryParse(css[1], out va))
-                g = va;
-            else goto end;
-            if (byte.TryParse(css[2], out va))
-                b = va;
-            else goto end;
-            if (byte.TryParse(css[3], out va))
-                a = va;
-            else goto end;
-            color = new Color32(r, g, b, a);
-            return true;
-        }
-    end:
-        color = Color.magenta;
-        return false;
     }
 
     Camera mainCa;

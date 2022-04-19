@@ -4,12 +4,16 @@ using UnityEngine;
 
 public class LineEntity : HassEntity
 {
-    Color oncolor;
-    Color offcolor;
-    LineRenderer line;
+    public LineRenderer line;
+    public Color oncolor;
+    public Color offcolor;
     void Start()
     {
-        line = GetComponent<LineRenderer>();
+        if (oncolor != Color.clear)
+        {
+            line.startColor = oncolor;
+            line.endColor = oncolor;
+        }
     }
 
     protected override void TrunOn()
