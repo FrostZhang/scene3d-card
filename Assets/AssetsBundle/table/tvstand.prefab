@@ -93,7 +93,7 @@ GameObject:
   - component: {fileID: 1994429495830850934}
   - component: {fileID: 1994429495830850935}
   m_Layer: 0
-  m_Name: table1
+  m_Name: tvstand
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

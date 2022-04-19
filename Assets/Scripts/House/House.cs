@@ -31,15 +31,53 @@ public class House : MonoBehaviour
         StartCoroutine(CreatDoor("switch.xxxx,0,1.25,1,115,0"));
         StartCoroutine(CreatDoor("switch.xxxx,1,1.25,1,0,90"));
         StartCoroutine(CreatDoor("switch.xxxx,2,1.25,1,0,90"));
-        StartCoroutine(CreatFlowLine("0,0,0,0,1,0,0,1,5", "yellow", "red"));
+        StartCoroutine(CreatFlowLine("0,0,0,0,1,0,0,1,5", "yellow", "red", "switch.xxxx"));
+        StartCoroutine(CreatDecorate("time1,0,1,1.5,0"));
+        StartCoroutine(Creatsky("space"));
     }
 
-    IEnumerator CreatFlowLine(string pos, string con, string coff)
+    IEnumerator Creatsky(string str)
+    {
+        if (string.IsNullOrWhiteSpace(str))
+            yield break;
+        yield return Help.Instance.ABLoad("sky", str);
+        var ab = Help.Instance.GetBundle("sky", str);
+        if (ab)
+        {
+            var ma = ab.LoadAsset<Material>(str);
+            if (ma)
+                RenderSettings.skybox = ma;
+        }
+    }
+
+    IEnumerator CreatDecorate(string str)
+    {
+        var ss = str.Split(',');
+        if (ss.Length == 5)
+        {
+            string name = ss[0];
+            float va, x, y, z, r;
+            if (float.TryParse(ss[1], out va)) x = va; else yield break;
+            if (float.TryParse(ss[2], out va)) y = va; else yield break;
+            if (float.TryParse(ss[3], out va)) z = va; else yield break;
+            if (float.TryParse(ss[4], out va)) r = va; else yield break;
+
+            yield return Help.Instance.ABLoad("decorate", name);
+            var ab = Help.Instance.GetBundle("decorate", name);
+            var tr = ab.LoadAsset<GameObject>(name);
+            tr = Instantiate(tr);
+            tr.transform.position = new Vector3(x, z, y);
+            var e = tr.transform.localEulerAngles;
+            e.y = r;
+            tr.transform.localEulerAngles = e;
+        }
+    }
+
+    IEnumerator CreatFlowLine(string pos, string con, string coff, string entity)
     {
         var vs = GetPoss(pos);
         if (vs == null)
             yield break;
-
         yield return Help.Instance.ABLoad("effect", "flowline");
         var ab = Help.Instance.GetBundle("effect", "flowline");
         var tr = ab.LoadAsset<GameObject>("flowline");
@@ -48,13 +86,10 @@ public class House : MonoBehaviour
         lineE.line.SetPositions(vs);
         Color c;
         if (Help.Instance.TryColor(con, out c))
-        {
             lineE.oncolor = c;
-        }
         if (Help.Instance.TryColor(coff, out c))
-        {
             lineE.offcolor = c;
-        }
+        lineE.SetEntity(entity);
     }
 
     Vector3[] GetPoss(string str)
