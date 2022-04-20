@@ -36,7 +36,7 @@ public class BundleHelp : EditorWindow
                         n = n.Remove(0, n.IndexOf("Assets"));
                         var pwithe = (file.Remove(0, file.IndexOf("AssetsBundle") + "AssetsBundle".Length + 1));
                         var p = pwithe.Remove(pwithe.LastIndexOf("."));
-                        uibuild.assetBundleName = p + "_" + dirname;
+                        uibuild.assetBundleName = p + "_" + dirname + ".asherlinkdata";
                         uibuild.assetNames = new string[] { n };
                         buildMap.Add(uibuild);
                     }
@@ -99,7 +99,7 @@ public class BundleHelp : EditorWindow
                         var p = lr.GetPosition(i);
                         w += p.x + "," + p.z + "," + (p.y - posy) + ",";
                     }
-                    w = w.Substring(0,w.Length - 1);
+                    w = w.Substring(0, w.Length - 1);
                     Color32 c = lr.startColor;
                     Debug.Log(c.r + "," + c.g + "," + c.b + "," + c.a);
                     Debug.Log(w);

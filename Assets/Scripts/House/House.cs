@@ -2,16 +2,19 @@ using LitJson;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class House : MonoBehaviour
 {
     Transform parent;
+    List<HassEntity> lis;
     void Awake()
     {
         parent = new GameObject().transform;
         mainCa = Camera.main;
         QualitySettings.SetQualityLevel(2);
+        lis = new List<HassEntity>(100);
 #if UNITY_WEBGL && !UNITY_EDITOR
         Shijie.Link3DStart();
         WebGLInput.captureAllKeyboardInput = false;
@@ -19,6 +22,46 @@ public class House : MonoBehaviour
     }
 
     void Start()
+    {
+        Shijie.OnGetConfig += OnGetConfig;
+        Shijie.OnHassFlush += OnHassFlush;
+        TestRoom();
+    }
+
+    private void OnHassFlush(string message)
+    {
+        var ss = message.Split(' ');
+        var id = ss[0];
+        var va = ss[1];
+        if (id == "sun.sun")
+        {
+            float value;
+            if (float.TryParse(va, out value))
+            {
+                if (value > 0)
+                {
+                    var v2 = Mathf.Max(0.1f, Mathf.Sin(value * Mathf.Deg2Rad));
+                    HouseWeather.Instance.SetTianGuang(v2);
+                }
+                else
+                    Weather.Instance.SetTianGuang(0.1f);
+            }
+        }
+        else if (id == "weather.tian_qi")
+        {
+            Weather.Instance.SetWeather(va);
+        }
+        else
+        {
+            foreach (var item in lis)
+            {
+                if (item.Entity_id == id)
+                    item.StateMeassge(va);
+            }
+        }
+    }
+
+    private void TestRoom()
     {
         string wallColor = "195,216,235,255";
         CreatWall("3.7506,-0.2897,2.433167,1,0.125,0", wallColor);
@@ -81,6 +124,7 @@ public class House : MonoBehaviour
         StartCoroutine(CreatStand("sofa2", "-4.225,-1.25,0,0,-90,0,1.3,1.3,1.3", null));
         StartCoroutine(CreatStand("sofa2", "-4.225,-0.387,0,0,-90,0,1.3,1.3,1.3", null));
         StartCoroutine(CreatStand("wc2", "1.648,2.413,0,0,90,0,1,1,1", null));
+        StartCoroutine(CreatStand("mirror", "2.11,1.318,0.613,0,-90,0,0.6,0.57,1", null));
 
         StartCoroutine(CreatFloor("wood", "0.1962,-2.06,2.77,3.418,0.5,0.5"));
         StartCoroutine(CreatFloor("wood", "3.304,-2.02,3.04,3.5,0.5,0.5"));
@@ -153,7 +197,11 @@ public class House : MonoBehaviour
             var e = tr.GetComponent<HassEntity>();
             if (e)
             {
-                e.SetEntity(id);
+                if (!string.IsNullOrWhiteSpace(id))
+                {
+                    e.SetEntity(id);
+                    lis.Add(e);
+                }
             }
         }
     }
@@ -187,7 +235,7 @@ public class House : MonoBehaviour
         }
     }
 
-    IEnumerator CreatFlowLine(string pos, int speed, string con, string coff, string entity)
+    IEnumerator CreatFlowLine(string pos, int speed, string con, string coff, string id)
     {
         var vs = GetPoss(pos);
         if (vs == null)
@@ -196,6 +244,7 @@ public class House : MonoBehaviour
         var ab = Help.Instance.GetBundle("line", "flowline");
         var tr = ab.LoadAsset<GameObject>("flowline");
         var lineE = Instantiate(tr, parent).GetComponent<LineEntity>();
+
         lineE.line.positionCount = vs.Length;
         lineE.line.SetPositions(vs);
         Color c;
@@ -203,7 +252,11 @@ public class House : MonoBehaviour
             lineE.oncolor = c;
         if (Help.Instance.TryColor(coff, out c))
             lineE.offcolor = c;
-        lineE.SetEntity(entity);
+        if (!string.IsNullOrWhiteSpace(id))
+        {
+            lineE.SetEntity(id);
+            lis.Add(lineE);
+        }
         var ma = lineE.line.material;
         ma = new Material(ma);
         ma.SetFloat("_Speed", speed);
@@ -259,7 +312,11 @@ public class House : MonoBehaviour
             s.x = w;
             tr.transform.localScale = s;
             var le = tr.GetComponent<DoorEntity>();
-            le.SetEntity(id);
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                le.SetEntity(id);
+                lis.Add(le);
+            }
             le.angleopen = o;
             le.angleclose = c;
         }
@@ -286,7 +343,11 @@ public class House : MonoBehaviour
             tr.transform.position = new Vector3(x, 0.01f, y);
             tr.transform.localScale = new Vector3(w, 0.1f, h);
             var le = tr.GetComponent<LightEntity>();
-            le.SetEntity(id);
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                le.SetEntity(id);
+                lis.Add(le);
+            }
             le.clight.intensity = li;
             Color c;
             if (Help.Instance.TryColor(color, out c))
@@ -432,6 +493,133 @@ public class House : MonoBehaviour
                 entity = null;
             }
         }
+    }
+
+    float lastFlushTime;
+    private void OnGetConfig(string config)
+    {
+        if (Time.time - lastFlushTime < 4)
+            return;
+        lastFlushTime = Time.time;
+        Destroy(parent.gameObject);
+        parent = new GameObject().transform;
+        var jd = JsonMapper.ToObject(config);
+        if (jd == null)
+            return;
+        if (jd.IsObject)
+        {
+            var dic = jd as IDictionary;
+            if (dic.Contains("wall"))
+                AnsWall(jd);
+            if (dic.Contains("groud"))
+                AnsGroud(jd);
+            if (dic.Contains("door"))
+                AnsDoor(jd);
+            if (dic.Contains("stand"))
+                AnsStand(jd);
+            if (dic.Contains("sky"))
+                AnsSky(jd);
+            if (dic.Contains("appliances"))
+                AnsAppliances(jd);
+            if (dic.Contains("flowLine"))
+                AnsFlowLine(jd);
+        }
+    }
+
+    private void AnsFlowLine(JsonData jd)
+    {
+        var doors = jd["flowLine"];
+        doors.Foreach((cusname, door) =>
+        {
+            var dic = door as IDictionary;
+            string pos = null, entity = null, con = null, coff = null;
+            int speed = 1;
+            if (dic.Contains("pos"))
+                pos = dic["pos"].ToString();
+            if (dic.Contains("entity"))
+                entity = dic["entity"].ToString();
+            if (dic.Contains("con"))
+                con = dic["con"].ToString();
+            if (dic.Contains("coff"))
+                coff = dic["coff"].ToString();
+            if (dic.Contains("speed"))
+                int.TryParse(dic["speed"].ToString(), out speed);
+            StartCoroutine(CreatFlowLine(pos, speed, con, coff, entity));
+        });
+    }
+
+    private void AnsAppliances(JsonData jd)
+    {
+        var doors = jd["appliances"];
+        doors.Foreach((cusname, door) =>
+        {
+            var dic = door as IDictionary;
+            string pos = null, entity = null;
+            if (dic.Contains("pos"))
+                pos = dic["pos"].ToString();
+            if (dic.Contains("entity"))
+                entity = dic["entity"].ToString();
+            StartCoroutine(CreatAppliances(cusname, pos, entity));
+        });
+    }
+    private void AnsSky(JsonData jd)
+    {
+        var sky = jd["sky"].ToString();
+        StartCoroutine(HouseWeather.Instance.CreatSky(sky));
+    }
+
+    private void AnsStand(JsonData jd)
+    {
+        var doors = jd["stand"];
+        doors.Foreach((cusname, door) =>
+        {
+            var dic = door as IDictionary;
+            string pos = null, color = null;
+            if (dic.Contains("pos"))
+                pos = dic["pos"].ToString();
+            if (dic.Contains("color"))
+                color = dic["color"].ToString();
+            StartCoroutine(CreatStand(cusname, pos, color));
+        });
+    }
+
+    private void AnsDoor(JsonData jd)
+    {
+        var doors = jd["door"];
+        doors.Foreach((cusname, door) =>
+        {
+            var dic = door as IDictionary;
+            string pos = null, color = null, entity = null;
+            if (dic.Contains("pos"))
+                pos = dic["pos"].ToString();
+            if (dic.Contains("color"))
+                color = dic["color"].ToString();
+            if (dic.Contains("entity"))
+                entity = dic["entity"].ToString();
+            StartCoroutine(CreatDoor(cusname, pos, entity, color));
+        });
+    }
+
+
+    private void AnsGroud(JsonData jd)
+    {
+        var g = jd["groud"];
+        string p = g.Prop_Name;
+        if (p != null)
+        {
+            CreatGroud(p, g[p].ToString());
+        }
+    }
+
+    private void AnsWall(JsonData jd)
+    {
+        var walls = jd["wall"];
+        walls.Foreach((cusname, wall) =>
+        {
+            string p = wall.Prop_Name;
+            if (p != null)
+                CreatWall(p, wall[p].ToString());
+        });
     }
 }
 

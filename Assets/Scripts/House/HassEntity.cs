@@ -87,7 +87,7 @@ public class HassEntity : MonoBehaviour
 
     }
 
-    public void HassMeassge(string state)
+    public void StateMeassge(string state)
     {
         if (state == on)
         {

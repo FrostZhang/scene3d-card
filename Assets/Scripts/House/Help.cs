@@ -30,7 +30,7 @@ public class Help : MonoBehaviour
 
     public IEnumerator ABLoad(string root, string key)
     {
-        string dk = key + "_" + root;
+        string dk = key + "_" + root + ".asherlinkdata";
         if (bundles.ContainsKey(dk))
         {
             yield break;
@@ -50,7 +50,7 @@ public class Help : MonoBehaviour
     /// </summary>
     public AssetBundle GetBundle(string root, string key)
     {
-        string dk = key + "_" + root;
+        string dk = key + "_" + root + ".asherlinkdata";
         if (bundles.ContainsKey(dk))
         {
             return bundles[dk];
@@ -67,7 +67,7 @@ public class Help : MonoBehaviour
             if (request.result != UnityWebRequest.Result.Success)
             {
                 bundles.Add(dk, null);
-                Debug.LogError("找不到ab:"+dk);
+                Debug.LogError("找不到ab:" + dk);
             }
             else
             {

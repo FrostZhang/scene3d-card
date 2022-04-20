@@ -14,7 +14,7 @@ public class HouseWeather : MonoBehaviour
     public Color32 cH = new Color32(255, 255, 218, 255);
     public Color32 cL = new Color32(0, 0, 0, 255);
     private string lastWeather;
-
+    string skyname;
     readonly string[] weather = new string[] {
     "晴", "多云", "少云" , "晴间多云", "阴" ,//4
     "有风", "微风", "和风", "清风","强风", "疾风", "大风", "烈风",//12
@@ -166,8 +166,9 @@ public class HouseWeather : MonoBehaviour
 
     public IEnumerator CreatSky(string str)
     {
-        if (string.IsNullOrWhiteSpace(str))
+        if (string.IsNullOrWhiteSpace(str) || skyname == str)
             yield break;
+        skyname = str;
         yield return Help.Instance.ABLoad("sky", str);
         var ab = Help.Instance.GetBundle("sky", str);
         if (ab)
