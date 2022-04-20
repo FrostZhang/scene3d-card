@@ -17,7 +17,7 @@ public class BundleHelp : EditorWindow
     bool windowsTest;
     public void OnGUI()
     {
-        windowsTest = EditorGUILayout.Toggle("windwos下测试", windowsTest);
+        windowsTest = EditorGUILayout.Toggle("windows下测试", windowsTest);
         if (GUILayout.Button("建立WebGL"))
         {
             var path = System.Environment.CurrentDirectory + "/Assets/AssetsBundle";
@@ -42,11 +42,14 @@ public class BundleHelp : EditorWindow
                     }
                 }
             }
+            Delete();
             if (windowsTest)
                 BuildPipeline.BuildAssetBundles(cuspath, buildMap.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.StandaloneWindows64);
             else
                 BuildPipeline.BuildAssetBundles(cuspath, buildMap.ToArray(), BuildAssetBundleOptions.ChunkBasedCompression, BuildTarget.WebGL);
         }
+
+        ReadWall();
     }
 
     private void Delete()
@@ -55,6 +58,23 @@ public class BundleHelp : EditorWindow
         foreach (var item in ds)
         {
             Directory.Delete(item, true);
+        }
+    }
+
+    Transform node;
+    void ReadWall()
+    {
+        node = EditorGUILayout.ObjectField(node, typeof(Transform), true) as Transform;
+        if (GUILayout.Button("读取墙壁"))
+        {
+            if (!node)
+                return;
+            string w = string.Empty;
+            foreach (Transform item in node)
+            {
+                w = item.position.x + "," + item.position.z + "," + item.localScale.x + "," + item.localScale.y + "," + item.localScale.z + "," + item.eulerAngles.y;
+                Debug.Log(w);
+            }
         }
     }
 }
