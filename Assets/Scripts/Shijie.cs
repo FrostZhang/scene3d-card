@@ -86,6 +86,15 @@ public class Shijie : MonoBehaviour
     [System.Runtime.InteropServices.DllImport("__Internal")]
     static extern void AsherLink3DWebLog(string mes);
 
+    public static void Link3DStart()
+    {
+#if UNITY_EDITOR
+        Debug.Log("Link3DStart");
+#else
+        AsherLink3DStart();
+#endif
+    }
+
     public static void ClickMessage(string mes)
     {
 #if UNITY_EDITOR

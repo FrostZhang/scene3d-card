@@ -5,7 +5,8 @@ using UnityEngine;
 
 public class HassEntity : MonoBehaviour
 {
-    public string entity_id;
+    public string Entity_id { get => entity_id; }
+    protected string entity_id;
     //const string switchkey = "switch";//on off
     //const string lightkey = "light";  //on off
     //const string climate = "climate"; // on off
@@ -21,6 +22,7 @@ public class HassEntity : MonoBehaviour
     const string cmdon = "turn_on";
     const string cmdoff = "turn_off";
     protected bool open = false;
+
     public void SetEntity(string id)
     {
         if (string.IsNullOrEmpty(id))

@@ -13,7 +13,7 @@ public class House : MonoBehaviour
         mainCa = Camera.main;
         QualitySettings.SetQualityLevel(2);
 #if UNITY_WEBGL && !UNITY_EDITOR
-        Shijie.AsherLink3DStart();
+        Shijie.Link3DStart();
         WebGLInput.captureAllKeyboardInput = false;
 #endif
     }
@@ -119,11 +119,46 @@ public class House : MonoBehaviour
         StartCoroutine(CreatFlowLine("-3.035549,2.620526,0.1,0.1451162,2.608722,0.1,0.1221144,2.625938,1.1,1.986478,2.625938,1.1,2.006577,1.321079,1.1,1.997306,1.308576,0.9",
             -1, "255,0,252,255", "red", "switch.xxxx"));
         StartCoroutine(CreatStand("electricball", "-3.986,3.766,1.085,0,0,0,0.4,0.4,0.4", null));
-
         StartCoroutine(HouseWeather.Instance.CreatSky("space"));
+        StartCoroutine(CreatAppliances("tv", "-1.56,-1.565,0.41,0,-90,0,0.7,0.7,0.7", "switch.xxx"));
+        StartCoroutine(CreatAppliances("washer", "-1.68,-4.166,0,0,-90,0,1,1,1", "switch.xxx"));
     }
 
-    /// <summary>x z y anglexyz scalexyz </summary>
+    /// <summary>posxzy anglexyz scalexyz </summary>
+    IEnumerator CreatAppliances(string cusname, string str, string id)
+    {
+        var ss = str.Split(',');
+        if (ss.Length == 9)
+        {
+            float va, x, y, z, rx, ry, rz, sx, sy, sz;
+            if (float.TryParse(ss[0], out va)) x = va; else yield break;
+            if (float.TryParse(ss[1], out va)) y = va; else yield break;
+            if (float.TryParse(ss[2], out va)) z = va; else yield break;
+            if (float.TryParse(ss[3], out va)) rx = va; else yield break;
+            if (float.TryParse(ss[4], out va)) ry = va; else yield break;
+            if (float.TryParse(ss[5], out va)) rz = va; else yield break;
+            if (float.TryParse(ss[6], out va)) sx = va; else yield break;
+            if (float.TryParse(ss[7], out va)) sy = va; else yield break;
+            if (float.TryParse(ss[8], out va)) sz = va; else yield break;
+
+            yield return Help.Instance.ABLoad("appliances", cusname);
+            var ab = Help.Instance.GetBundle("appliances", cusname);
+            if (ab == null)
+                yield break;
+            var tr = ab.LoadAsset<GameObject>(cusname);
+            tr = Instantiate(tr, parent);
+            tr.transform.position = new Vector3(x, z, y);
+            tr.transform.eulerAngles = new Vector3(rx, ry, rz);
+            tr.transform.localScale = new Vector3(sx, sy, sz);
+            var e = tr.GetComponent<HassEntity>();
+            if (e)
+            {
+                e.SetEntity(id);
+            }
+        }
+    }
+
+    /// <summary>posxzy anglexyz scalexyz </summary>
     IEnumerator CreatStand(string cusname, string str, string color)
     {
         var ss = str.Split(',');

@@ -13,7 +13,10 @@ public class HouseClock : MonoBehaviour
         {
             var n = DateTime.Now;
             lastminute = n.Minute;
-            time.text = n.Hour + " : " + n.Minute;
+            if (n.Minute < 10)
+                time.text = n.Hour + " : 0" + n.Minute;
+            else
+                time.text = n.Hour + " : " + n.Minute;
         }
     }
 }
