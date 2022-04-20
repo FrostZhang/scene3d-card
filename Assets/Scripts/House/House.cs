@@ -10,11 +10,16 @@ public class House : MonoBehaviour
     void Awake()
     {
         parent = new GameObject().transform;
+        mainCa = Camera.main;
+        QualitySettings.SetQualityLevel(2);
+#if UNITY_WEBGL && !UNITY_EDITOR
+        Shijie.AsherLink3DStart();
+        WebGLInput.captureAllKeyboardInput = false;
+#endif
     }
 
     void Start()
     {
-        mainCa = Camera.main;
         string wallColor = "195,216,235,255";
         CreatWall("3.7506,-0.2897,2.433167,1,0.125,0", wallColor);
         CreatWall("1.1117,2.926,2.645943,1,0.125,0", wallColor);
@@ -50,7 +55,6 @@ public class House : MonoBehaviour
         StartCoroutine(CreatDoor("door1", "1.568,-0.274,-1,-90,0", "switch.xxxx", null));
         StartCoroutine(CreatDoor("door1", "1.769,-0.274,1,90,0", "switch.xxxx", null));
         StartCoroutine(CreatDoor("door1", "2.848,0.008,1,0,-90", "switch.xxxx", null));
-        StartCoroutine(CreatFlowLine("0,0,0,0,1,0,0,1,5", "yellow", "red", "switch.xxxx"));
         StartCoroutine(CreatStand("clock1", "0,-0.365,0.772,0,0,0,1,1,1", null));
         StartCoroutine(CreatStand("window1", "-0.3,-4.55,0,0,0,0,1,1,1", null));
         StartCoroutine(CreatStand("window1", "3.182,-4.55,0,0,0,0,1,1,1", null));
@@ -76,6 +80,7 @@ public class House : MonoBehaviour
         StartCoroutine(CreatStand("sofa2", "-4.225,-2.11,0,0,-90,0,1.3,1.3,1.3", null));
         StartCoroutine(CreatStand("sofa2", "-4.225,-1.25,0,0,-90,0,1.3,1.3,1.3", null));
         StartCoroutine(CreatStand("sofa2", "-4.225,-0.387,0,0,-90,0,1.3,1.3,1.3", null));
+        StartCoroutine(CreatStand("wc2", "1.648,2.413,0,0,90,0,1,1,1", null));
 
         StartCoroutine(CreatFloor("wood", "0.1962,-2.06,2.77,3.418,0.5,0.5"));
         StartCoroutine(CreatFloor("wood", "3.304,-2.02,3.04,3.5,0.5,0.5"));
@@ -83,7 +88,7 @@ public class House : MonoBehaviour
         StartCoroutine(CreatFloor("wood", "-0.3,-4.11,1.79,0.69,0.1,0.1"));
         StartCoroutine(CreatFloor("wood", "3.9,0.44,1.857,1.24,0.5,0.5"));
         StartCoroutine(CreatFloor("wood", "3.54,1.96,2.53,1.8,0.5,0.5"));
-        StartCoroutine(CreatFloor("tile4", "-3.516,0.652,2.539,7.36,1,4")); 
+        StartCoroutine(CreatFloor("tile4", "-3.516,0.652,2.539,7.36,1,4"));
         StartCoroutine(CreatFloor("tile4", "-2.752,-3.747,2.8,1.44,1.5,1"));
         StartCoroutine(CreatFloor("tile4", "0.2632,0.355,5,1.06,2,0.5"));
         StartCoroutine(CreatFloor("tile4", "-1.8,-1.6,0.88,2.86,0.4,1.5"));
@@ -99,22 +104,23 @@ public class House : MonoBehaviour
         StartCoroutine(CreatAreaLight("0.593,0.33,4,0.8,5", "light.xxx", "178,149,70,255"));
         StartCoroutine(CreatAreaLight("1.22,2.4,1.79,0.8,2", "light.xxx", null));
 
+        //StartCoroutine(CreatFlowLine("-3.614539,4.459235,-1.1,-4.868434,4.454682,-1.1,-4.895442,-3.080526,-1.1,-4.211635,-3.101046,-1.1,-4.195337,-4.541389,-1.1,-1.315552,-4.536458,-1.1,0.6916895,-4.544263,-1.1,0.7049857,-3.88601,-1.1,2.096153,-3.88601,-1.1,2.096153,-4.559184,-1.1,4.226263,-4.559184,-1.1,4.226263,-3.867848,-1.1,4.944883,-3.867568,-1.1,4.896365,2.945096,-1.1,-2.157866,2.945096,-1.1,-2.157866,4.409803,-1.1",
+        //                             -1, "255,255,255,255", "red", "switch.xxxx"));
+        StartCoroutine(CreatFlowLine("-3.979907,3.786215,1,-3.979907,3.782755,0.1,-3.162498,3.782755,0.1,-3.162498,0.4754077,0.1,1.302327,0.4013318,0.1,1.296336,-1.111547,0.1,-0.9975456,-1.101645,0.1,-1.026982,-3.49305,0.1,1.298337,-3.513381,0.1",
+            -1, "0,165,255,255", "red", "switch.xxxx"));
+        StartCoroutine(CreatFlowLine("1.34175,0.4129494,0.1,2.299839,0.4083416,0.1,2.300617,-1.182749,0.1,4.609478,-1.177224,0.1,4.586144,-3.498736,0.1,2.178244,-3.516147,0.1",
+            -1, "255,210,0,255", "red", "switch.xxxx"));
+        StartCoroutine(CreatFlowLine("1.34175,0.5860035,0.1,3.917953,0.5754554,0.1,3.923838,1.181043,0.1,2.362754,1.187165,0.1",
+            -1, "0,255,223,255", "red", "switch.xxxx"));
+        StartCoroutine(CreatFlowLine("-1.931547,0.3116443,0.1,-1.901711,-2.992601,0.1,-1.968843,-2.982793,1.1,-1.968843,-3.266867,1.1,-1.968843,-3.267096,0.1,-1.968843,-3.869098,0.1",
+            -1, "0,255,223,255", "red", "switch.xxxx"));
+        StartCoroutine(CreatFlowLine("-2.123267,-2.820107,0.1,-4.781082,-2.769531,0.1,-4.776298,-2.776958,0.9,-4.732517,0.1199159,0.9,-4.721735,0.1224415,0.3",
+            -1, "255,210,0,255", "red", "switch.xxxx"));
+        StartCoroutine(CreatFlowLine("-3.035549,2.620526,0.1,0.1451162,2.608722,0.1,0.1221144,2.625938,1.1,1.986478,2.625938,1.1,2.006577,1.321079,1.1,1.997306,1.308576,0.9",
+            -1, "255,0,252,255", "red", "switch.xxxx"));
+        StartCoroutine(CreatStand("electricball", "-3.986,3.766,1.085,0,0,0,0.4,0.4,0.4", null));
 
-        StartCoroutine(CreatSky("space"));
-    }
-
-    IEnumerator CreatSky(string str)
-    {
-        if (string.IsNullOrWhiteSpace(str))
-            yield break;
-        yield return Help.Instance.ABLoad("sky", str);
-        var ab = Help.Instance.GetBundle("sky", str);
-        if (ab)
-        {
-            var ma = ab.LoadAsset<Material>(str);
-            if (ma)
-                RenderSettings.skybox = ma;
-        }
+        StartCoroutine(HouseWeather.Instance.CreatSky("space"));
     }
 
     /// <summary>x z y anglexyz scalexyz </summary>
@@ -146,13 +152,13 @@ public class House : MonoBehaviour
         }
     }
 
-    IEnumerator CreatFlowLine(string pos, string con, string coff, string entity)
+    IEnumerator CreatFlowLine(string pos, int speed, string con, string coff, string entity)
     {
         var vs = GetPoss(pos);
         if (vs == null)
             yield break;
-        yield return Help.Instance.ABLoad("effect", "flowline");
-        var ab = Help.Instance.GetBundle("effect", "flowline");
+        yield return Help.Instance.ABLoad("line", "flowline");
+        var ab = Help.Instance.GetBundle("line", "flowline");
         var tr = ab.LoadAsset<GameObject>("flowline");
         var lineE = Instantiate(tr, parent).GetComponent<LineEntity>();
         lineE.line.positionCount = vs.Length;
@@ -163,6 +169,10 @@ public class House : MonoBehaviour
         if (Help.Instance.TryColor(coff, out c))
             lineE.offcolor = c;
         lineE.SetEntity(entity);
+        var ma = lineE.line.material;
+        ma = new Material(ma);
+        ma.SetFloat("_Speed", speed);
+        lineE.line.material = ma;
     }
 
     Vector3[] GetPoss(string str)
@@ -176,9 +186,10 @@ public class House : MonoBehaviour
             for (int i = 0; i < ss.Length; i += 3)
             {
                 if (float.TryParse(ss[i], out va)) x = va; else return null;
-                if (float.TryParse(ss[i + 1], out va)) y = va; else return null;
-                if (float.TryParse(ss[i + 2], out va)) z = va; else return null;
+                if (float.TryParse(ss[i + 1], out va)) z = va; else return null;
+                if (float.TryParse(ss[i + 2], out va)) y = va; else return null;
                 vs[n] = new Vector3(x, y, z);
+                n++;
             }
             return vs;
         }

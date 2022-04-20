@@ -50,6 +50,8 @@ public class BundleHelp : EditorWindow
         }
 
         ReadWall();
+
+        ReadLine();
     }
 
     private void Delete()
@@ -74,6 +76,36 @@ public class BundleHelp : EditorWindow
             {
                 w = item.position.x + "," + item.position.z + "," + item.localScale.x + "," + item.localScale.y + "," + item.localScale.z + "," + item.eulerAngles.y;
                 Debug.Log(w);
+            }
+        }
+    }
+
+    void ReadLine()
+    {
+        node = EditorGUILayout.ObjectField(node, typeof(Transform), true) as Transform;
+        if (GUILayout.Button("∂¡»°œﬂÃı"))
+        {
+            if (!node)
+                return;
+            foreach (Transform item in node)
+            {
+                var lr = item.GetComponent<LineRenderer>();
+                if (lr)
+                {
+                    var posy = lr.transform.position.y;
+                    string w = string.Empty;
+                    for (int i = 0; i < lr.positionCount; i++)
+                    {
+                        var p = lr.GetPosition(i);
+                        w += p.x + "," + p.z + "," + (p.y - posy) + ",";
+                    }
+                    w = w.Substring(0,w.Length - 1);
+                    Color32 c = lr.startColor;
+                    Debug.Log(c.r + "," + c.g + "," + c.b + "," + c.a);
+                    Debug.Log(w);
+                    Debug.Log(lr.sharedMaterial.GetFloat("_Speed"));
+                }
+
             }
         }
     }
