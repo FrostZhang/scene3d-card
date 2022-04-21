@@ -485,6 +485,7 @@ public class House : MonoBehaviour
                 entity = null;
             }
         }
+        CameraControllerForUnity.Instance.xAngle += Time.deltaTime * HousePanel.Instance.RoSpeed;
     }
 
     float lastFlushTime;
@@ -614,9 +615,6 @@ public class House : MonoBehaviour
             StartCoroutine(CreatDoor(cusname, pos, entity, color));
         });
     }
-
-
-
 
     private void AnsWall(JsonData jd)
     {

@@ -7,7 +7,6 @@ using UnityEngine.UI;
 public class SysMenu : MonoBehaviour
 {
     public Slider tianguang, rain, snow, fog, lighting, ro, ranyuanjin;
-    public TextMesh time;
 
     void Start()
     {
@@ -24,15 +23,8 @@ public class SysMenu : MonoBehaviour
         ranyuanjin.onValueChanged.AddListener((x) => CameraControllerForUnity.Instance.targetdis = x);
     }
 
-    int lastminute;
     void Update()
     {
         CameraControllerForUnity.Instance.xAngle += Time.deltaTime * ro.value;
-        if (lastminute != DateTime.Now.Minute)
-        {
-            var n = DateTime.Now;
-            lastminute = n.Minute;
-            time.text = n.Hour + " : " + n.Minute;
-        }
     }
 }
