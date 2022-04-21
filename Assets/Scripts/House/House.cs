@@ -35,17 +35,7 @@ public class House : MonoBehaviour
         var va = ss[1];
         if (id == "sun.sun")
         {
-            float value;
-            if (float.TryParse(va, out value))
-            {
-                if (value > 0)
-                {
-                    var v2 = Mathf.Max(0.1f, Mathf.Sin(value * Mathf.Deg2Rad));
-                    HouseWeather.Instance.SetTianGuang(v2);
-                }
-                else
-                    Weather.Instance.SetTianGuang(0.1f);
-            }
+            AnsSun(va);
         }
         else if (id == "weather.tian_qi")
         {
@@ -58,6 +48,21 @@ public class House : MonoBehaviour
                 if (item.Entity_id == id)
                     item.StateMeassge(va);
             }
+        }
+    }
+
+    private void AnsSun(string va)
+    {
+        float value;
+        if (float.TryParse(va, out value))
+        {
+            if (value > 0)
+            {
+                var v2 = Mathf.Max(0.1f, Mathf.Sin(value * Mathf.Deg2Rad));
+                HouseWeather.Instance.SetTianGuang(v2);
+            }
+            else
+                Weather.Instance.SetTianGuang(0.1f);
         }
     }
 
@@ -424,12 +429,12 @@ public class House : MonoBehaviour
         cube.transform.localPosition = new Vector3(x, h * 0.5f, y);
         cube.transform.localScale = new Vector3(w, h, t);
         cube.transform.localEulerAngles = new Vector3(0, a, 0);
-        var r = cube.GetComponent<Renderer>();
-        var ma = r.material = new Material(r.material);
+        var r = cube.GetComponent<MeshRenderer>();
+        r.material = new Material(r.material);
         Color wcolor;
         if (Help.Instance.TryColor(color, out wcolor))
         {
-            ma.color = wcolor;
+            r.material.color = wcolor;
         }
     }
 
