@@ -19,10 +19,6 @@ public class LightEntity : HassEntity
         clight.intensity = 0;
     }
 
-    public override void HassConfig(JsonData jd)
-    {
-        
-    }
     public override void MouseExit()
     {
         _renderer.enabled = false;

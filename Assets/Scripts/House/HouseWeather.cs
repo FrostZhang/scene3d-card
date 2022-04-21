@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class HouseWeather : MonoBehaviour
+public class HouseWeather : HassEntity
 {
     public static HouseWeather Instance;
 
@@ -61,7 +61,10 @@ public class HouseWeather : MonoBehaviour
     {
         lmain.maxParticles = (int)value;
     }
-
+    protected override void Destine(string state)
+    {
+        SetWeather(state);
+    }
     internal void SetWeather(string str)
     {
         if (lastWeather == str)

@@ -17,6 +17,7 @@ public class HassEntity : MonoBehaviour
     //const string fan = "fan"; //on off
     const string on = "on";
     const string off = "off";
+    const string undefine = "undefine";
 
     string head;
     const string cmdon = "turn_on";
@@ -33,11 +34,6 @@ public class HassEntity : MonoBehaviour
             head = ids[0];
             entity_id = id;
         }
-    }
-
-    public virtual void HassConfig(LitJson.JsonData jd)
-    {
-        
     }
 
     public void Click()
@@ -64,22 +60,22 @@ public class HassEntity : MonoBehaviour
 
     public virtual void MouseOn()
     {
-        
+
     }
 
     protected virtual void TrunOn()
     {
-        
+
     }
 
     protected virtual void TrunOff()
     {
-        
+
     }
 
-    protected virtual void Offline()
+    protected virtual void Destine(string state)
     {
-        
+
     }
 
     protected virtual void AfterLongClick()
@@ -107,7 +103,7 @@ public class HassEntity : MonoBehaviour
         }
         else
         {
-            Offline();
+            Destine(state);
         }
     }
 
@@ -123,6 +119,6 @@ public class HassEntity : MonoBehaviour
 
     public virtual void MouseExit()
     {
-        
+
     }
 }

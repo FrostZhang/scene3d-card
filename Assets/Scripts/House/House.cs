@@ -25,6 +25,7 @@ public class House : MonoBehaviour
     {
         Shijie.OnGetConfig += OnGetConfig;
         Shijie.OnHassFlush += OnHassFlush;
+        lis.Add(HouseWeather.Instance);//注册天气
         TestRoom();
     }
 
@@ -36,10 +37,6 @@ public class House : MonoBehaviour
         if (id == "sun.sun")
         {
             AnsSun(va);
-        }
-        else if (id == "weather.tian_qi")
-        {
-            Weather.Instance.SetWeather(va);
         }
         else
         {
@@ -62,7 +59,7 @@ public class House : MonoBehaviour
                 HouseWeather.Instance.SetTianGuang(v2);
             }
             else
-                Weather.Instance.SetTianGuang(0.1f);
+                HouseWeather.Instance.SetTianGuang(0.1f);
         }
     }
 
@@ -500,6 +497,8 @@ public class House : MonoBehaviour
             return;
         lastFlushTime = Time.time;
         Destroy(parent.gameObject);
+        lis.Clear();
+        lis.Add(HouseWeather.Instance);//注册天气
         parent = new GameObject().transform;
         var jd = JsonMapper.ToObject(config);
         if (jd == null)
@@ -521,6 +520,8 @@ public class House : MonoBehaviour
                 AnsAppliances(jd);
             if (dic.Contains("flowLine"))
                 AnsFlowLine(jd);
+            if (dic.Contains("weather"))
+                HouseWeather.Instance.SetEntity(dic["weather"]?.ToString());
         }
     }
 
