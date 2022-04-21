@@ -642,9 +642,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2054746849}
-  - component: {fileID: 2054746850}
-  - component: {fileID: 2054746852}
   - component: {fileID: 2054746851}
+  - component: {fileID: 2054746852}
+  - component: {fileID: 2054746850}
   m_Layer: 0
   m_Name: House
   m_TagString: Untagged

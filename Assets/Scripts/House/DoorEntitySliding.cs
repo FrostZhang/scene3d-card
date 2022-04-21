@@ -2,17 +2,24 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DoorEntity : HassEntity
+public class DoorEntitySliding : DoorEntity
 {
     Coroutine coroutine;
-    public float angleclose, angleopen;
-
-    protected virtual void Start()
+    public Transform yidong;
+    protected override void Start()
     {
         var e = transform.eulerAngles;
         e.y = angleclose;
         transform.eulerAngles = e;
+        angleopen = -0.11f;
+        angleclose = -0.958f;
         TrunOff();
+        var mrs = transform.GetComponentsInChildren<MeshRenderer>();
+        var ma = transform.GetComponent<MeshRenderer>().material;
+        foreach (var item in mrs)
+        {
+            item.material = ma;
+        }
     }
 
     protected override void TrunOn()
@@ -20,20 +27,23 @@ public class DoorEntity : HassEntity
         StopAllCoroutines();
         coroutine = StartCoroutine(To(angleopen));
     }
+
     protected override void TrunOff()
     {
         StopAllCoroutines();
         coroutine = StartCoroutine(To(angleclose));
     }
+
     IEnumerator To(float f)
     {
         float t = 1 / 2f;
         float l = 0;
-        var e = transform.eulerAngles;
+        var p = yidong.localPosition;
+        var start = p;
+        p.x = f;
         while (true)
         {
-            var a = Mathf.LerpAngle(e.y, f, l += t * Time.deltaTime);
-            transform.eulerAngles = new Vector3(e.x, a, e.z);
+            yidong.localPosition = Vector3.Lerp(start, p, l += t * Time.deltaTime);
             yield return new WaitForEndOfFrame();
             if (l > 1)
                 break;

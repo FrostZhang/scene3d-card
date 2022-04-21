@@ -64,40 +64,44 @@ public class House : MonoBehaviour
     private void TestRoom()
     {
         string wallColor = "195,216,235,255";
-        CreatWall("3.7506,-0.2897,2.433167,1,0.125,0", wallColor);
-        CreatWall("1.1117,2.926,2.645943,1,0.125,0", wallColor);
-        CreatWall("-4.1035,-4.53,0.3899986,1,0.125,0", wallColor);
-        CreatWall("4.1213,-4.5336,0.3512418,1,0.1322375,0", wallColor);
-        CreatWall("-0.2699,-0.26,2.158078,1,0.125,0", wallColor);
-        CreatWall("-4.1916,4.465,1.461849,1,0.125,0", wallColor);
-        CreatWall("-4.4674,-3.097,0.8893961,1,0.125,0", wallColor);
-        CreatWall("2.5509,0.958,0.8671593,1,0.125,0", wallColor);
-        CreatWall("-0.9473,0.958,2.58769,1,0.125,0", wallColor);
-        CreatWall("1.7963,0.958,0.7185282,0.5134,0.125,0", wallColor);
-        CreatWall("1.4004,-3.88,1.523783,1,0.125,0", wallColor);
-        CreatWall("4.5771,-3.88,0.8043213,1,0.125,0", wallColor);
-        CreatWall("-1.7078,-3.115,0.7367308,1,0.125,0", wallColor);
-        CreatWall("2.2753,-4.53,0.4198744,1,0.125,0", wallColor);
-        CreatWall("0.5867,-4.535,0.2674765,1,0.1349125,0", wallColor);
-        CreatWall("4.4384,2.926,1.012607,1,0.125,0", wallColor);
-        CreatWall("-1.9781,2.926,0.5189419,1,0.125,0", wallColor);
-        CreatWall("-1.4825,-4.53,0.8897885,1,0.125,0", wallColor);
+        StartCoroutine(CreatWall("wall1", "3.7506,-0.2897,2.433167,1,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "1.1117,2.926,2.645943,1,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "-4.1035,-4.53,0.3899986,1,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "4.1213,-4.5336,0.3512418,1,0.1322375,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "-0.2699,-0.26,2.158078,1,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "-4.1916,4.465,1.461849,1,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "-4.4674,-3.097,0.8893961,1,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "2.5509,0.958,0.8671593,1,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "-0.9473,0.958,2.58769,1,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "1.7963,0.958,0.7185282,0.5134,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "1.4004,-3.88,1.523783,1,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "4.5771,-3.88,0.8043213,1,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "-1.7078,-3.115,0.7367308,1,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "2.2753,-4.53,0.4198744,1,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "0.5867,-4.535,0.2674765,1,0.1349125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "4.4384,2.926,1.012607,1,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "-1.9781,2.926,0.5189419,1,0.125,0", wallColor));
+        StartCoroutine(CreatWall("wall1", "-1.4825,-4.53,0.8897885,1,0.125,0", wallColor));
 
-        CreatWall("-4.8955,0.6771,7.67382,1,0.125,90", wallColor);
-        CreatWall("0.25,1.9325,2.036761,1,0.125,90", wallColor);
-        CreatWall("2.179,1.9244,2.052851,1,0.125,90", wallColor);
-        CreatWall("4.91,-0.4659,6.907583,1,0.125,90", wallColor);
-        CreatWall("1.676,-2.0393,3.705132,1,0.125,90", wallColor);
-        CreatWall("-1.29,-2.3744,4.349825,1,0.125,90", wallColor);
-        CreatWall("2.105,-4.2131,0.7695358,1,0.125,90", wallColor);
-        CreatWall("0.674,-4.2085,0.7788795,1,0.125,90", wallColor);
-        CreatWall("-4.23,-3.8118,1.506382,1,0.125,90", wallColor);
-        CreatWall("-2.169,3.72,1.506382,1,0.125,90", wallColor);
-        CreatWall("4.239,-4.2102,0.7753551,1,0.125,90", wallColor);
-        CreatGroud("10,10", null);
-        StartCoroutine(CreatDoor("door1", "1.568,-0.274,-1,-90,0", "switch.xxxx", null));
-        StartCoroutine(CreatDoor("door1", "1.769,-0.274,1,90,0", "switch.xxxx", null));
-        StartCoroutine(CreatDoor("door1", "2.848,0.008,1,0,-90", "switch.xxxx", null));
+        StartCoroutine(CreatWall("wall1", "-4.8955,0.6771,7.67382,1,0.125,90", wallColor));
+        StartCoroutine(CreatWall("wall1", "0.25,1.9325,2.036761,1,0.125,90", wallColor));
+        StartCoroutine(CreatWall("wall1", "2.179,1.9244,2.052851,1,0.125,90", wallColor));
+        StartCoroutine(CreatWall("wall1", "4.91,-0.4659,6.907583,1,0.125,90", wallColor));
+        StartCoroutine(CreatWall("wall1", "1.676,-2.0393,3.705132,1,0.125,90", wallColor));
+        StartCoroutine(CreatWall("wall1", "-1.29,-2.3744,4.349825,1,0.125,90", wallColor));
+        StartCoroutine(CreatWall("wall1", "2.105,-4.2131,0.7695358,1,0.125,90", wallColor));
+        StartCoroutine(CreatWall("wall1", "0.674,-4.2085,0.7788795,1,0.125,90", wallColor));
+        StartCoroutine(CreatWall("wall1", "-4.23,-3.8118,1.506382,1,0.125,90", wallColor));
+        StartCoroutine(CreatWall("wall1", "-2.169,3.72,1.506382,1,0.125,90", wallColor));
+        StartCoroutine(CreatWall("wall1", "4.239,-4.2102,0.7753551,1,0.125,90", wallColor));
+
+        StartCoroutine(CreatFloor("groud1", "0,0,10,10,1,1", 0, null));
+
+        StartCoroutine(CreatDoor("swingdoor1", "1.568,-0.274,-1,-90,0", "switch.xxxx", null));
+        StartCoroutine(CreatDoor("swingdoor1", "1.769,-0.274,1,90,0", "switch.xxxx", null));
+        StartCoroutine(CreatDoor("swingdoor1", "2.848,0.008,1,0,-90", "switch.xxxx", null));
+        StartCoroutine(CreatDoor("slidingdoor1", "1.64,1.889,0.9,0,0", "switch.xxxx", "0,255,0,120"));
+        StartCoroutine(CreatDoor("slidingdoor1", "-2.2,2.364,0.9,0,-90", "switch.xxxx", "0,0,255,120"));
         StartCoroutine(CreatStand("clock1", "0,-0.365,0.772,0,0,0,1,1,1", null));
         StartCoroutine(CreatStand("window1", "-0.3,-4.55,0,0,0,0,1,1,1", null));
         StartCoroutine(CreatStand("window1", "3.182,-4.55,0,0,0,0,1,1,1", null));
@@ -126,18 +130,18 @@ public class House : MonoBehaviour
         StartCoroutine(CreatStand("wc2", "1.648,2.413,0,0,90,0,1,1,1", null));
         StartCoroutine(CreatStand("mirror", "2.11,1.318,0.613,0,-90,0,0.6,0.57,1", null));
 
-        StartCoroutine(CreatFloor("wood", "0.1962,-2.06,2.77,3.418,0.5,0.5"));
-        StartCoroutine(CreatFloor("wood", "3.304,-2.02,3.04,3.5,0.5,0.5"));
-        StartCoroutine(CreatFloor("wood", "3.195,-4.10,1.928,0.67,0.1,0.1"));
-        StartCoroutine(CreatFloor("wood", "-0.3,-4.11,1.79,0.69,0.1,0.1"));
-        StartCoroutine(CreatFloor("wood", "3.9,0.44,1.857,1.24,0.5,0.5"));
-        StartCoroutine(CreatFloor("wood", "3.54,1.96,2.53,1.8,0.5,0.5"));
-        StartCoroutine(CreatFloor("tile4", "-3.516,0.652,2.539,7.36,1,4"));
-        StartCoroutine(CreatFloor("tile4", "-2.752,-3.747,2.8,1.44,1.5,1"));
-        StartCoroutine(CreatFloor("tile4", "0.2632,0.355,5,1.06,2,0.5"));
-        StartCoroutine(CreatFloor("tile4", "-1.8,-1.6,0.88,2.86,0.4,1.5"));
-        StartCoroutine(CreatFloor("tile4", "-1.02,1.94,2.47,1.84,1.1,1.1"));
-        StartCoroutine(CreatFloor("tile4", "1.2,1.35,1.785,0.936,0.8,0.4"));
+        StartCoroutine(CreatFloor("wood", "0.1962,-2.06,2.77,3.418,0.5,0.5", 1, null));
+        StartCoroutine(CreatFloor("wood", "3.304,-2.02,3.04,3.5,0.5,0.5", 1, null));
+        StartCoroutine(CreatFloor("wood", "3.195,-4.10,1.928,0.67,0.1,0.1", 1, null));
+        StartCoroutine(CreatFloor("wood", "-0.3,-4.11,1.79,0.69,0.1,0.1", 1, null));
+        StartCoroutine(CreatFloor("wood", "3.9,0.44,1.857,1.24,0.5,0.5", 1, null));
+        StartCoroutine(CreatFloor("wood", "3.54,1.96,2.53,1.8,0.5,0.5", 1, null));
+        StartCoroutine(CreatFloor("tile4", "-3.516,0.652,2.539,7.36,1,4", 1, null));
+        StartCoroutine(CreatFloor("tile4", "-2.752,-3.747,2.8,1.44,1.5,1", 1, null));
+        StartCoroutine(CreatFloor("tile4", "0.264,0.355,5.1,1.06,2,0.5", 1, null));
+        StartCoroutine(CreatFloor("tile4", "-1.81,-1.6,0.89,2.86,0.4,1.5", 1, null));
+        StartCoroutine(CreatFloor("tile4", "-1.02,1.94,2.47,1.84,1.1,1.1", 1, null));
+        StartCoroutine(CreatFloor("tile4", "1.2,1.35,1.785,0.936,0.8,0.4", 1, null));
 
         StartCoroutine(CreatAreaLight("-3.55,2.08,3,3,3", "light.xxx", null));
         StartCoroutine(CreatAreaLight("-2.958,-1.49,3,3,5", "light.xxx", null));
@@ -187,8 +191,7 @@ public class House : MonoBehaviour
 
             yield return Help.Instance.ABLoad("appliances", cusname);
             var ab = Help.Instance.GetBundle("appliances", cusname);
-            if (ab == null)
-                yield break;
+            if (ab == null) yield break;
             var tr = ab.LoadAsset<GameObject>(cusname);
             tr = Instantiate(tr, parent);
             tr.transform.position = new Vector3(x, z, y);
@@ -242,6 +245,7 @@ public class House : MonoBehaviour
             yield break;
         yield return Help.Instance.ABLoad("line", "flowline");
         var ab = Help.Instance.GetBundle("line", "flowline");
+        if (!ab) yield break;
         var tr = ab.LoadAsset<GameObject>("flowline");
         var lineE = Instantiate(tr, parent).GetComponent<LineEntity>();
 
@@ -284,7 +288,7 @@ public class House : MonoBehaviour
         return null;
     }
 
-    /// <summary>x z scaleX angleopen angleclose </summary>
+    /// <summary>x z scaleX open close </summary>
     IEnumerator CreatDoor(string cusname, string str, string id, string color)
     {
         var ss = str.Split(',');
@@ -319,6 +323,15 @@ public class House : MonoBehaviour
             }
             le.angleopen = o;
             le.angleclose = c;
+            Color sc;
+            if (Help.Instance.TryColor(color, out sc))
+            {
+                var mr = tr.GetComponent<MeshRenderer>();
+                if (!mr) yield break;
+                var ma = new Material(mr.material);
+                ma.color = sc;
+                mr.material = ma;
+            }
         }
     }
 
@@ -361,7 +374,7 @@ public class House : MonoBehaviour
         }
     }
 
-    IEnumerator CreatFloor(string cusname, string str)
+    IEnumerator CreatFloor(string cusname, string str, int priority, string color)
     {
         var ss = str.Split(',');
         if (ss.Length != 6) yield break;
@@ -375,69 +388,48 @@ public class House : MonoBehaviour
 
         yield return Help.Instance.ABLoad("floor", cusname);
         var ab = Help.Instance.GetBundle("floor", cusname);
+        if (!ab) yield break;
         var tr = ab.LoadAsset<GameObject>(cusname);
         tr = Instantiate(tr, parent);
-        tr.transform.position = new Vector3(x, 0.01f, y);
+        tr.transform.position = new Vector3(x, priority * 0.01f, y);
         tr.transform.localScale = new Vector3(w, 1, h);
         var ma = tr.GetComponent<MeshRenderer>().material;
         ma = new Material(ma);
         ma.SetTextureScale("_BaseMap", new Vector2(tx, ty));
+        Color c;
+        if (Help.Instance.TryColor(color, out c))
+            ma.color = c;
         tr.GetComponent<MeshRenderer>().material = ma;
     }
 
-    public void CreatGroud(string floor, string color)
-    {
-        var ss = floor.Split(',');
-        float va;
-        if (ss.Length == 2)
-        {
-            float x, y;
-            if (float.TryParse(ss[0], out va))
-                x = va;
-            else return;
-            if (float.TryParse(ss[1], out va))
-                y = va;
-            else return;
-            var plane = GameObject.CreatePrimitive(PrimitiveType.Plane);
-            plane.transform.SetParent(parent);
-            plane.transform.localScale = new Vector3(x * 0.1f, 1, y * 0.1f);
-            Destroy(plane.GetComponent<Collider>());
-            var r = plane.GetComponent<Renderer>();
-            var ma = r.material = new Material(r.material);
-            Color wcolor;
-            if (Help.Instance.TryColor(color, out wcolor))
-            {
-                ma.color = wcolor;
-            }
-        }
-    }
-
-    public void CreatWall(string wall, string color)
+    IEnumerator CreatWall(string cusname, string wall, string color)
     {
         var ws = wall.Split(',');
         float va;
-        if (ws.Length == 6)
+        if (ws.Length != 6) yield break;
+        float x, y, w, h, t, a;
+        if (float.TryParse(ws[0], out va)) x = va; else yield break;
+        if (float.TryParse(ws[1], out va)) y = va; else yield break;
+        if (float.TryParse(ws[2], out va)) w = va; else yield break;
+        if (float.TryParse(ws[3], out va)) h = va; else yield break;
+        if (float.TryParse(ws[4], out va)) t = va; else yield break;
+        if (float.TryParse(ws[5], out va)) a = va; else yield break;
+
+        yield return Help.Instance.ABLoad("wall", cusname);
+        var ab = Help.Instance.GetBundle("wall", cusname);
+        if (!ab) yield break;
+        var tr = ab.LoadAsset<GameObject>(cusname);
+        var cube = Instantiate(tr, parent);
+        cube.transform.SetParent(parent);
+        cube.transform.localPosition = new Vector3(x, h * 0.5f, y);
+        cube.transform.localScale = new Vector3(w, h, t);
+        cube.transform.localEulerAngles = new Vector3(0, a, 0);
+        var r = cube.GetComponent<Renderer>();
+        var ma = r.material = new Material(r.material);
+        Color wcolor;
+        if (Help.Instance.TryColor(color, out wcolor))
         {
-            float x, y, w, h, t, a;
-            if (float.TryParse(ws[0], out va)) x = va; else return;
-            if (float.TryParse(ws[1], out va)) y = va; else return;
-            if (float.TryParse(ws[2], out va)) w = va; else return;
-            if (float.TryParse(ws[3], out va)) h = va; else return;
-            if (float.TryParse(ws[4], out va)) t = va; else return;
-            if (float.TryParse(ws[5], out va)) a = va; else return;
-            var cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
-            cube.transform.SetParent(parent);
-            cube.transform.localPosition = new Vector3(x, h * 0.5f, y);
-            cube.transform.localScale = new Vector3(w, h, t);
-            cube.transform.localEulerAngles = new Vector3(0, a, 0);
-            Destroy(cube.GetComponent<Collider>());
-            var r = cube.GetComponent<Renderer>();
-            var ma = r.material = new Material(r.material);
-            Color wcolor;
-            if (Help.Instance.TryColor(color, out wcolor))
-            {
-                ma.color = wcolor;
-            }
+            ma.color = wcolor;
         }
     }
 
@@ -511,8 +503,8 @@ public class House : MonoBehaviour
             var dic = jd as IDictionary;
             if (dic.Contains("wall"))
                 AnsWall(jd);
-            if (dic.Contains("groud"))
-                AnsGroud(jd);
+            if (dic.Contains("floor"))
+                AnsFloor(jd);
             if (dic.Contains("door"))
                 AnsDoor(jd);
             if (dic.Contains("stand"))
@@ -526,12 +518,32 @@ public class House : MonoBehaviour
         }
     }
 
+    private void AnsFloor(JsonData jd)
+    {
+        var doors = jd["floor"];
+        doors.Foreach((cusname, door) =>
+        {
+            var dic = door as IDictionary;
+            if (dic == null) return;
+            string pos = null, color = null;
+            int priority = 0;
+            if (dic.Contains("pos"))
+                pos = dic["pos"].ToString();
+            if (dic.Contains("priority"))
+                int.TryParse(dic["priority"].ToString(), out priority);
+            if (dic.Contains("color"))
+                color = dic["color"].ToString();
+            StartCoroutine(CreatFloor(cusname, pos, priority, color));
+        });
+    }
+
     private void AnsFlowLine(JsonData jd)
     {
         var doors = jd["flowLine"];
         doors.Foreach((cusname, door) =>
         {
             var dic = door as IDictionary;
+            if (dic == null) return;
             string pos = null, entity = null, con = null, coff = null;
             int speed = 1;
             if (dic.Contains("pos"))
@@ -554,6 +566,7 @@ public class House : MonoBehaviour
         doors.Foreach((cusname, door) =>
         {
             var dic = door as IDictionary;
+            if (dic == null) return;
             string pos = null, entity = null;
             if (dic.Contains("pos"))
                 pos = dic["pos"].ToString();
@@ -574,6 +587,7 @@ public class House : MonoBehaviour
         doors.Foreach((cusname, door) =>
         {
             var dic = door as IDictionary;
+            if (dic == null) return;
             string pos = null, color = null;
             if (dic.Contains("pos"))
                 pos = dic["pos"].ToString();
@@ -589,6 +603,7 @@ public class House : MonoBehaviour
         doors.Foreach((cusname, door) =>
         {
             var dic = door as IDictionary;
+            if (dic == null) return;
             string pos = null, color = null, entity = null;
             if (dic.Contains("pos"))
                 pos = dic["pos"].ToString();
@@ -601,24 +616,21 @@ public class House : MonoBehaviour
     }
 
 
-    private void AnsGroud(JsonData jd)
-    {
-        var g = jd["groud"];
-        string p = g.Prop_Name;
-        if (p != null)
-        {
-            CreatGroud(p, g[p].ToString());
-        }
-    }
+
 
     private void AnsWall(JsonData jd)
     {
         var walls = jd["wall"];
         walls.Foreach((cusname, wall) =>
         {
-            string p = wall.Prop_Name;
-            if (p != null)
-                CreatWall(p, wall[p].ToString());
+            var dic = wall as IDictionary;
+            if (dic == null) return;
+            string pos = null, color = null;
+            if (dic.Contains("pos"))
+                pos = dic["pos"].ToString();
+            if (dic.Contains("color"))
+                color = dic["color"].ToString();
+            StartCoroutine(CreatWall(cusname, pos, color));
         });
     }
 }
