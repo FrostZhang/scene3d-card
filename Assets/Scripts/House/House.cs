@@ -530,7 +530,9 @@ public class House : MonoBehaviour
         var doors = jd["floor"];
         doors.Foreach((cusname, door) =>
         {
-            var dic = door as IDictionary;
+            cusname = door.Prop_Name;
+            var canshu = door[cusname];
+            var dic = canshu as IDictionary;
             if (dic == null) return;
             string pos = null, color = null;
             int priority = 0;
@@ -549,7 +551,9 @@ public class House : MonoBehaviour
         var doors = jd["flowLine"];
         doors.Foreach((cusname, door) =>
         {
-            var dic = door as IDictionary;
+            cusname = door.Prop_Name;
+            var canshu = door[cusname];
+            var dic = canshu as IDictionary;
             if (dic == null) return;
             string pos = null, entity = null, con = null, coff = null;
             int speed = 1;
@@ -572,7 +576,9 @@ public class House : MonoBehaviour
         var doors = jd["appliances"];
         doors.Foreach((cusname, door) =>
         {
-            var dic = door as IDictionary;
+            cusname = door.Prop_Name;
+            var canshu = door[cusname];
+            var dic = canshu as IDictionary;
             if (dic == null) return;
             string pos = null, entity = null;
             if (dic.Contains("pos"))
@@ -593,7 +599,9 @@ public class House : MonoBehaviour
         var doors = jd["stand"];
         doors.Foreach((cusname, door) =>
         {
-            var dic = door as IDictionary;
+            cusname = door.Prop_Name;
+            var canshu = door[cusname];
+            var dic = canshu as IDictionary;
             if (dic == null) return;
             string pos = null, color = null;
             if (dic.Contains("pos"))
@@ -609,7 +617,9 @@ public class House : MonoBehaviour
         var doors = jd["door"];
         doors.Foreach((cusname, door) =>
         {
-            var dic = door as IDictionary;
+            cusname = door.Prop_Name;
+            var canshu = door[cusname];
+            var dic = canshu as IDictionary;
             if (dic == null) return;
             string pos = null, color = null, entity = null;
             if (dic.Contains("pos"))
@@ -627,7 +637,9 @@ public class House : MonoBehaviour
         var walls = jd["wall"];
         walls.Foreach((cusname, wall) =>
         {
-            var dic = wall as IDictionary;
+            cusname = wall.Prop_Name;
+            var canshu = wall[cusname];
+            var dic = canshu as IDictionary;
             if (dic == null) return;
             string pos = null, color = null;
             if (dic.Contains("pos"))

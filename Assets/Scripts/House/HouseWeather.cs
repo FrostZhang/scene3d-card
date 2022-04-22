@@ -43,7 +43,8 @@ public class HouseWeather : HassEntity
     public void SetTianGuang(float v)
     {
         mainlight.color = Color.Lerp(cL, cH, v);
-        RenderSettings.skybox.SetFloat("_Exposure", v + 0.15f);
+        if (RenderSettings.skybox)
+            RenderSettings.skybox.SetFloat("_Exposure", v + 0.15f);
     }
     public void SetRain(float value)
     {

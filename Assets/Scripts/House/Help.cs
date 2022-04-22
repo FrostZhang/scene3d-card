@@ -10,7 +10,9 @@ public class Help : MonoBehaviour
     public static Help Instance;
     Dictionary<string, AssetBundle> bundles;
     Dictionary<string, Color> colors;
-    private void Awake()
+
+    string streamingAssetsPath => Application.streamingAssetsPath.Replace("lovelace/","");
+    private void Awake() 
     {
         Instance = this;
         works = new List<string>();
@@ -40,7 +42,7 @@ public class Help : MonoBehaviour
             yield return new WaitUntil(() => bundles.ContainsKey(dk));
             yield break;
         }
-        var path = $"{ Application.streamingAssetsPath}/{root}/{dk}";
+        var path = $"{streamingAssetsPath}/{root}/{dk}";
         System.Uri uri = new System.Uri(path);
         yield return Request(dk, uri);
     }
