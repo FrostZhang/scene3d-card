@@ -4421,8 +4421,8 @@ MonoBehaviour:
   xAngle: 0
   yAngle: 0
   thirdLimitAngleY: {x: 30, y: 90}
-  mobaLimitDistance: {x: 2, y: 500}
-  orthographicSizeLimit: {x: 2, y: 500}
+  mobaLimitDistance: {x: 5, y: 500}
+  orthographicSizeLimit: {x: 5, y: 500}
   offset: {x: 0, y: 0, z: 0}
   targetfov: 0
   widenSmooth: 0.2

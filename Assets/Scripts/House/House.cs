@@ -29,8 +29,9 @@ public class House : MonoBehaviour
         //lastFlushTime = Time.time;
         //var str = "{'type':'custom:scene3d-card','wall':[{ 'wall1':{ 'pos':'3.7506,-0.2897,2.433167,1,0.125,0'} },null]}";
         //OnGetConfig(str);
-
+#if UNITY_EDITOR
         TestRoom();
+#endif
     }
 
     private void OnHassFlush(string message)
@@ -181,10 +182,12 @@ public class House : MonoBehaviour
         StartCoroutine(CreatFloor("wood", "3.54,1.96,2.53,1.8,0.5,0.5", 1, null));
         StartCoroutine(CreatFloor("tile4", "-3.516,0.652,2.539,7.36,1,4", 1, null));
         StartCoroutine(CreatFloor("tile4", "-2.752,-3.747,2.8,1.44,1.5,1", 1, null));
-        StartCoroutine(CreatFloor("tile4", "0.264,0.355,5.1,1.06,2,0.5",2, null));
+        StartCoroutine(CreatFloor("tile4", "0.264,0.355,5.1,1.06,2,0.5", 2, null));
         StartCoroutine(CreatFloor("tile4", "-1.81,-1.6,0.89,2.86,0.4,1.5", 2, null));
         StartCoroutine(CreatFloor("tile4", "-1.02,1.94,2.47,1.84,1.1,1.1", 1, null));
         StartCoroutine(CreatFloor("tile4", "1.2,1.35,1.785,0.936,0.8,0.4", 1, null));
+
+        StartCoroutine(CreatAnim("zebra", "-3.516,0.652,2.539,7.36"));
 
         StartCoroutine(CreatAreaLight("-3.55,2.08,3,3,3", "light.xxx", null));
         StartCoroutine(CreatAreaLight("-2.958,-1.49,3,3,5", "light.xxx", null));
@@ -213,6 +216,30 @@ public class House : MonoBehaviour
         StartCoroutine(HouseWeather.Instance.CreatSky("space"));
         StartCoroutine(CreatAppliances("tv", "-1.56,-1.565,0.41,0,-90,0,0.7,0.7,0.7", "switch.xxx"));
         StartCoroutine(CreatAppliances("washer", "-1.68,-4.166,0,0,-90,0,1,1,1", "switch.xxx"));
+    }
+
+    IEnumerator CreatAnim(string cusname, string str)
+    {
+        if (string.IsNullOrEmpty(str)) yield break;
+        var ss = str.Split(',');
+        if (ss.Length != 4) yield break;
+        float va, x, y, w, h;
+        if (float.TryParse(ss[0], out va)) x = va; else yield break;
+        if (float.TryParse(ss[1], out va)) y = va; else yield break;
+        if (float.TryParse(ss[2], out va)) w = va; else yield break;
+        if (float.TryParse(ss[3], out va)) h = va; else yield break;
+
+        yield return Help.Instance.ABLoad("animal", cusname);
+        var ab = Help.Instance.GetBundle("animal", cusname);
+        if (!ab) yield break;
+        var tr = ab.LoadAsset<GameObject>(cusname);
+        tr = Instantiate(tr, parent);
+        var area = new GameObject().transform;
+        area.transform.SetParent(parent);
+        area.position = new Vector3(x, 0, y);
+        area.localScale = new Vector3(w, 0, h);
+        var animal = tr.GetComponent<ZebraEntity>();
+        animal.SetArea(area);
     }
 
     /// <summary>posxzy anglexyz scalexyz </summary>
@@ -423,6 +450,7 @@ public class House : MonoBehaviour
         }
     }
 
+    /// <summary>x,y w,h tx,ty</summary>
     IEnumerator CreatFloor(string cusname, string str, int priority, string color)
     {
         if (string.IsNullOrEmpty(str)) yield break;
@@ -537,6 +565,8 @@ public class House : MonoBehaviour
             }
         }
         CameraControllerForUnity.Instance.xAngle += Time.deltaTime * HousePanel.Instance.RoSpeed;
+        if (CameraControllerForUnity.Instance.xAngle > 360)
+            CameraControllerForUnity.Instance.xAngle -= 360;
     }
 
     private void AnsFloor(JsonData jd)
