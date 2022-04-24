@@ -39,7 +39,19 @@ public class HassEntity : MonoBehaviour
     public void Click()
     {
         if (string.IsNullOrEmpty(entity_id))
+        {
+            if (open)
+            {
+                open = false;
+                TrunOff();
+            }
+            else
+            {
+                open = true;
+                TrunOn();
+            }
             return;
+        }
         HassServerMessage message = new HassServerMessage();
         message.head = head;
         message.entity_id = entity_id;
@@ -109,11 +121,12 @@ public class HassEntity : MonoBehaviour
 
     public virtual void LongClick()
     {
-        if (string.IsNullOrEmpty(entity_id))
-            return;
-        HassMoreInfo info = new HassMoreInfo();
-        info.entity_id = entity_id;
-        Shijie.LongClickMessage(JsonUtility.ToJson(info));
+        if (!string.IsNullOrEmpty(entity_id))
+        {
+            HassMoreInfo info = new HassMoreInfo();
+            info.entity_id = entity_id;
+            Shijie.LongClickMessage(JsonUtility.ToJson(info));
+        }
         AfterLongClick();
     }
 

@@ -15,10 +15,6 @@ public class House : MonoBehaviour
         mainCa = Camera.main;
         QualitySettings.SetQualityLevel(2);
         lis = new List<HassEntity>(100);
-#if UNITY_WEBGL && !UNITY_EDITOR
-        Shijie.Link3DStart();
-        WebGLInput.captureAllKeyboardInput = false;
-#endif
     }
 
     void Start()
@@ -26,6 +22,14 @@ public class House : MonoBehaviour
         Shijie.OnGetConfig += OnGetConfig;
         Shijie.OnHassFlush += OnHassFlush;
         lis.Add(HouseWeather.Instance);//注册天气
+#if UNITY_WEBGL && !UNITY_EDITOR
+        Shijie.Link3DStart();
+        WebGLInput.captureAllKeyboardInput = false;
+#endif
+        //lastFlushTime = Time.time;
+        //var str = "{'type':'custom:scene3d-card','wall':[{ 'wall1':{ 'pos':'3.7506,-0.2897,2.433167,1,0.125,0'} },null]}";
+        //OnGetConfig(str);
+
         TestRoom();
     }
 
@@ -47,6 +51,43 @@ public class House : MonoBehaviour
             }
         }
     }
+
+    //float lastFlushTime;
+    private void OnGetConfig(string config)
+    {
+        //if (Time.time - lastFlushTime < 4 && lastFlushTime == 0) return;
+        //lastFlushTime = Time.time;
+        Destroy(parent.gameObject);
+        lis.Clear();
+        lis.Add(HouseWeather.Instance);//注册天气
+        parent = new GameObject().transform;
+        var jd = JsonMapper.ToObject(config);
+        if (jd == null)
+            return;
+        if (jd.IsObject)
+        {
+            var dic = jd as IDictionary;
+            if (dic.Contains("wall"))
+                AnsWall(jd);
+            if (dic.Contains("floor"))
+                AnsFloor(jd);
+            if (dic.Contains("door"))
+                AnsDoor(jd);
+            if (dic.Contains("stand"))
+                AnsStand(jd);
+            if (dic.Contains("sky"))
+                AnsSky(jd);
+            if (dic.Contains("arealight"))
+                AnsAreaLight(jd);
+            if (dic.Contains("appliances"))
+                AnsAppliances(jd);
+            if (dic.Contains("flowLine"))
+                AnsFlowLine(jd);
+            if (dic.Contains("weather"))
+                HouseWeather.Instance.SetEntity(dic["weather"]?.ToString());
+        }
+    }
+
 
     private void AnsSun(string va)
     {
@@ -140,8 +181,8 @@ public class House : MonoBehaviour
         StartCoroutine(CreatFloor("wood", "3.54,1.96,2.53,1.8,0.5,0.5", 1, null));
         StartCoroutine(CreatFloor("tile4", "-3.516,0.652,2.539,7.36,1,4", 1, null));
         StartCoroutine(CreatFloor("tile4", "-2.752,-3.747,2.8,1.44,1.5,1", 1, null));
-        StartCoroutine(CreatFloor("tile4", "0.264,0.355,5.1,1.06,2,0.5", 1, null));
-        StartCoroutine(CreatFloor("tile4", "-1.81,-1.6,0.89,2.86,0.4,1.5", 1, null));
+        StartCoroutine(CreatFloor("tile4", "0.264,0.355,5.1,1.06,2,0.5",2, null));
+        StartCoroutine(CreatFloor("tile4", "-1.81,-1.6,0.89,2.86,0.4,1.5", 2, null));
         StartCoroutine(CreatFloor("tile4", "-1.02,1.94,2.47,1.84,1.1,1.1", 1, null));
         StartCoroutine(CreatFloor("tile4", "1.2,1.35,1.785,0.936,0.8,0.4", 1, null));
 
@@ -177,6 +218,7 @@ public class House : MonoBehaviour
     /// <summary>posxzy anglexyz scalexyz </summary>
     IEnumerator CreatAppliances(string cusname, string str, string id)
     {
+        if (string.IsNullOrEmpty(str)) yield break;
         var ss = str.Split(',');
         if (ss.Length == 9)
         {
@@ -214,6 +256,7 @@ public class House : MonoBehaviour
     /// <summary>posxzy anglexyz scalexyz </summary>
     IEnumerator CreatStand(string cusname, string str, string color)
     {
+        if (string.IsNullOrEmpty(str)) yield break;
         var ss = str.Split(',');
         if (ss.Length == 9)
         {
@@ -271,6 +314,7 @@ public class House : MonoBehaviour
 
     Vector3[] GetPoss(string str)
     {
+        if (string.IsNullOrEmpty(str)) return null;
         var ss = str.Split(',');
         if (ss.Length % 3 == 0)
         {
@@ -293,6 +337,7 @@ public class House : MonoBehaviour
     /// <summary>x z scaleX open close </summary>
     IEnumerator CreatDoor(string cusname, string str, string id, string color)
     {
+        if (string.IsNullOrEmpty(str)) yield break;
         var ss = str.Split(',');
         if (ss.Length == 5)
         {
@@ -340,6 +385,7 @@ public class House : MonoBehaviour
     /// <summary>x y w h li </summary>
     IEnumerator CreatAreaLight(string str, string id, string color)
     {
+        if (string.IsNullOrEmpty(str)) yield break;
         var ss = str.Split(',');
         if (ss.Length == 5)
         {
@@ -350,14 +396,15 @@ public class House : MonoBehaviour
             if (float.TryParse(ss[2], out va)) w = va; else yield break;
             if (float.TryParse(ss[3], out va)) h = va; else yield break;
             if (float.TryParse(ss[4], out va)) li = va; else yield break;
-
-            yield return Help.Instance.ABLoad("light", "arealight");
-            var ab = Help.Instance.GetBundle("light", "arealight");
-            var tr = ab.LoadAsset<GameObject>("arealight");
-            tr = Instantiate(tr, parent);
+            //yield return Help.Instance.ABLoad("light", "arealight");
+            //var ab = Help.Instance.GetBundle("light", "arealight");
+            //var tr = ab.LoadAsset<GameObject>("arealight");
+            var prefab = transform.Find("arealight");
+            var tr = Instantiate(prefab, parent);
             tr.transform.position = new Vector3(x, 0.01f, y);
             tr.transform.localScale = new Vector3(w, 0.1f, h);
             var le = tr.GetComponent<LightEntity>();
+            tr.gameObject.SetActive(true);
             if (!string.IsNullOrWhiteSpace(id))
             {
                 le.SetEntity(id);
@@ -378,6 +425,7 @@ public class House : MonoBehaviour
 
     IEnumerator CreatFloor(string cusname, string str, int priority, string color)
     {
+        if (string.IsNullOrEmpty(str)) yield break;
         var ss = str.Split(',');
         if (ss.Length != 6) yield break;
         float va, x, y, w, h, tx, ty;
@@ -406,6 +454,7 @@ public class House : MonoBehaviour
 
     IEnumerator CreatWall(string cusname, string wall, string color)
     {
+        if (string.IsNullOrEmpty(wall)) yield break;
         var ws = wall.Split(',');
         float va;
         if (ws.Length != 6) yield break;
@@ -490,58 +539,26 @@ public class House : MonoBehaviour
         CameraControllerForUnity.Instance.xAngle += Time.deltaTime * HousePanel.Instance.RoSpeed;
     }
 
-    float lastFlushTime;
-    private void OnGetConfig(string config)
-    {
-        if (Time.time - lastFlushTime < 4)
-            return;
-        lastFlushTime = Time.time;
-        Destroy(parent.gameObject);
-        lis.Clear();
-        lis.Add(HouseWeather.Instance);//注册天气
-        parent = new GameObject().transform;
-        var jd = JsonMapper.ToObject(config);
-        if (jd == null)
-            return;
-        if (jd.IsObject)
-        {
-            var dic = jd as IDictionary;
-            if (dic.Contains("wall"))
-                AnsWall(jd);
-            if (dic.Contains("floor"))
-                AnsFloor(jd);
-            if (dic.Contains("door"))
-                AnsDoor(jd);
-            if (dic.Contains("stand"))
-                AnsStand(jd);
-            if (dic.Contains("sky"))
-                AnsSky(jd);
-            if (dic.Contains("appliances"))
-                AnsAppliances(jd);
-            if (dic.Contains("flowLine"))
-                AnsFlowLine(jd);
-            if (dic.Contains("weather"))
-                HouseWeather.Instance.SetEntity(dic["weather"]?.ToString());
-        }
-    }
-
     private void AnsFloor(JsonData jd)
     {
         var doors = jd["floor"];
+        if (doors == null || !doors.IsArray) return;
         doors.Foreach((cusname, door) =>
         {
+            if (door == null) return;
             cusname = door.Prop_Name;
+            if (cusname == null) return;
             var canshu = door[cusname];
             var dic = canshu as IDictionary;
             if (dic == null) return;
             string pos = null, color = null;
             int priority = 0;
             if (dic.Contains("pos"))
-                pos = dic["pos"].ToString();
+                pos = dic["pos"]?.ToString();
             if (dic.Contains("priority"))
-                int.TryParse(dic["priority"].ToString(), out priority);
+                int.TryParse(dic["priority"]?.ToString(), out priority);
             if (dic.Contains("color"))
-                color = dic["color"].ToString();
+                color = dic["color"]?.ToString();
             StartCoroutine(CreatFloor(cusname, pos, priority, color));
         });
     }
@@ -549,65 +566,96 @@ public class House : MonoBehaviour
     private void AnsFlowLine(JsonData jd)
     {
         var doors = jd["flowLine"];
+        if (doors == null || !doors.IsArray) return;
         doors.Foreach((cusname, door) =>
         {
+            if (door == null) return;
             cusname = door.Prop_Name;
+            if (cusname == null) return;
             var canshu = door[cusname];
             var dic = canshu as IDictionary;
             if (dic == null) return;
             string pos = null, entity = null, con = null, coff = null;
             int speed = 1;
             if (dic.Contains("pos"))
-                pos = dic["pos"].ToString();
+                pos = dic["pos"]?.ToString();
             if (dic.Contains("entity"))
-                entity = dic["entity"].ToString();
+                entity = dic["entity"]?.ToString();
             if (dic.Contains("con"))
-                con = dic["con"].ToString();
+                con = dic["con"]?.ToString();
             if (dic.Contains("coff"))
-                coff = dic["coff"].ToString();
+                coff = dic["coff"]?.ToString();
             if (dic.Contains("speed"))
-                int.TryParse(dic["speed"].ToString(), out speed);
+                int.TryParse(dic["speed"]?.ToString(), out speed);
             StartCoroutine(CreatFlowLine(pos, speed, con, coff, entity));
+        });
+    }
+    private void AnsAreaLight(JsonData jd)
+    {
+        var doors = jd["arealight"];
+        if (doors == null || !doors.IsArray) return;
+        doors.Foreach((cusname, door) =>
+        {
+            if (door == null) return;
+            cusname = door.Prop_Name;
+            if (cusname == null) return;
+            var canshu = door[cusname];
+            var dic = canshu as IDictionary;
+            if (dic == null) return;
+            string pos = null, entity = null, color = null;
+            if (dic.Contains("pos"))
+                pos = dic["pos"]?.ToString();
+            if (dic.Contains("entity"))
+                entity = dic["entity"]?.ToString();
+            if (dic.Contains("color"))
+                color = dic["color"]?.ToString();
+            StartCoroutine(CreatAreaLight(pos, entity, color));
         });
     }
 
     private void AnsAppliances(JsonData jd)
     {
         var doors = jd["appliances"];
+        if (doors == null || !doors.IsArray) return;
         doors.Foreach((cusname, door) =>
         {
+            if (door == null) return;
             cusname = door.Prop_Name;
+            if (cusname == null) return;
             var canshu = door[cusname];
             var dic = canshu as IDictionary;
             if (dic == null) return;
             string pos = null, entity = null;
             if (dic.Contains("pos"))
-                pos = dic["pos"].ToString();
+                pos = dic["pos"]?.ToString();
             if (dic.Contains("entity"))
-                entity = dic["entity"].ToString();
+                entity = dic["entity"]?.ToString();
             StartCoroutine(CreatAppliances(cusname, pos, entity));
         });
     }
     private void AnsSky(JsonData jd)
     {
-        var sky = jd["sky"].ToString();
+        var sky = jd["sky"]?.ToString();
         StartCoroutine(HouseWeather.Instance.CreatSky(sky));
     }
 
     private void AnsStand(JsonData jd)
     {
         var doors = jd["stand"];
+        if (doors == null || !doors.IsArray) return;
         doors.Foreach((cusname, door) =>
         {
+            if (door == null) return;
             cusname = door.Prop_Name;
+            if (cusname == null) return;
             var canshu = door[cusname];
             var dic = canshu as IDictionary;
             if (dic == null) return;
             string pos = null, color = null;
             if (dic.Contains("pos"))
-                pos = dic["pos"].ToString();
+                pos = dic["pos"]?.ToString();
             if (dic.Contains("color"))
-                color = dic["color"].ToString();
+                color = dic["color"]?.ToString();
             StartCoroutine(CreatStand(cusname, pos, color));
         });
     }
@@ -615,19 +663,22 @@ public class House : MonoBehaviour
     private void AnsDoor(JsonData jd)
     {
         var doors = jd["door"];
+        if (doors == null || !doors.IsArray) return;
         doors.Foreach((cusname, door) =>
         {
+            if (door == null) return;
             cusname = door.Prop_Name;
+            if (cusname == null) return;
             var canshu = door[cusname];
             var dic = canshu as IDictionary;
             if (dic == null) return;
             string pos = null, color = null, entity = null;
             if (dic.Contains("pos"))
-                pos = dic["pos"].ToString();
+                pos = dic["pos"]?.ToString();
             if (dic.Contains("color"))
-                color = dic["color"].ToString();
+                color = dic["color"]?.ToString();
             if (dic.Contains("entity"))
-                entity = dic["entity"].ToString();
+                entity = dic["entity"]?.ToString();
             StartCoroutine(CreatDoor(cusname, pos, entity, color));
         });
     }
@@ -635,17 +686,20 @@ public class House : MonoBehaviour
     private void AnsWall(JsonData jd)
     {
         var walls = jd["wall"];
+        if (walls == null || !walls.IsArray) return;
         walls.Foreach((cusname, wall) =>
         {
+            if (wall == null) return;
             cusname = wall.Prop_Name;
+            if (cusname == null) return;
             var canshu = wall[cusname];
             var dic = canshu as IDictionary;
             if (dic == null) return;
             string pos = null, color = null;
             if (dic.Contains("pos"))
-                pos = dic["pos"].ToString();
+                pos = dic["pos"]?.ToString();
             if (dic.Contains("color"))
-                color = dic["color"].ToString();
+                color = dic["color"]?.ToString();
             StartCoroutine(CreatWall(cusname, pos, color));
         });
     }

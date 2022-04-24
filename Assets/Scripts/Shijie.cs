@@ -11,7 +11,6 @@ public class Shijie : MonoBehaviour
     void Awake()
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
-        Shijie.AsherLink3DStart();
         WebGLInput.captureAllKeyboardInput = false;
 #endif
     }
