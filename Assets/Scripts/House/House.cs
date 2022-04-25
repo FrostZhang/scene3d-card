@@ -84,10 +84,13 @@ public class House : MonoBehaviour
                 AnsAppliances(jd);
             if (dic.Contains("flowLine"))
                 AnsFlowLine(jd);
+            if (dic.Contains("animal"))
+                AnsAnimal(jd);
             if (dic.Contains("weather"))
                 HouseWeather.Instance.SetEntity(dic["weather"]?.ToString());
         }
     }
+
 
 
     private void AnsSun(string va)
@@ -712,7 +715,24 @@ public class House : MonoBehaviour
             StartCoroutine(CreatDoor(cusname, pos, entity, color));
         });
     }
-
+    private void AnsAnimal(JsonData jd)
+    {
+        var doors = jd["animal"];
+        if (doors == null || !doors.IsArray) return;
+        doors.Foreach((cusname, door) =>
+        {
+            if (door == null) return;
+            cusname = door.Prop_Name;
+            if (cusname == null) return;
+            var canshu = door[cusname];
+            var dic = canshu as IDictionary;
+            if (dic == null) return;
+            string pos = null;
+            if (dic.Contains("pos"))
+                pos = dic["pos"]?.ToString();
+            StartCoroutine(CreatAnim(cusname, pos));
+        });
+    }
     private void AnsWall(JsonData jd)
     {
         var walls = jd["wall"];
