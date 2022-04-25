@@ -134,4 +134,11 @@ public class HassEntity : MonoBehaviour
     {
 
     }
+
+    /// <summary>�༭ģʽ </summary>
+    public virtual void ReconstitutionMode(bool enter)
+    {
+        var c = GetComponent<Collider>();
+        if (c) c.enabled = enter;
+    }
 }

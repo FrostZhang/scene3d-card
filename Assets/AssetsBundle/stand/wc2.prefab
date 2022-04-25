@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6654289467417794072}
+  - component: {fileID: 4896331536556360911}
   m_Layer: 0
   m_Name: wc2
   m_TagString: Untagged
@@ -31,6 +32,19 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 104.08, z: 0}
+--- !u!65 &4896331536556360911
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6654289467417299512}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.5380268, y: 0.5423735, z: 0.71304893}
+  m_Center: {x: 0.00990736, y: 0.30182192, z: 0.14347567}
 --- !u!1 &6654289467417299514
 GameObject:
   m_ObjectHideFlags: 0

@@ -8,6 +8,7 @@ public class DoorEntitySliding : DoorEntity
     public Transform yidong;
     protected override void Start()
     {
+        GetComponent<BoxCollider>().enabled = false;
         var e = transform.eulerAngles;
         e.y = angleclose;
         transform.eulerAngles = e;

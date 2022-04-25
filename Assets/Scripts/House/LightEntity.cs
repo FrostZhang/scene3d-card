@@ -41,6 +41,11 @@ public class LightEntity : HassEntity
         coroutine = StartCoroutine(To(0));
     }
 
+    public override void ReconstitutionMode(bool enter)
+    {
+        _renderer.enabled = enter;
+    }
+
     IEnumerator To(float f)
     {
         float t = 1 / 3f;

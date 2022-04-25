@@ -48,7 +48,7 @@ public class CameraControllerForUnity : MonoBehaviour
 
     [Header("第一三 视距平滑"), Range(0, 1)]
     public float widenSmooth = 0.2f;
-    [Header("旋转平滑"), Range(0, 1)] 
+    [Header("旋转平滑"), Range(0, 1)]
     public float roSmooth = 0.1f;
 
     /// <summary>
@@ -211,8 +211,8 @@ public class CameraControllerForUnity : MonoBehaviour
                 if (mode == Mode.first)
                 {
                 }
-                    mousex = -mousex;
-                    mousey = -mousey;
+                mousex = -mousex;
+                mousey = -mousey;
                 Vector3 move = new Vector3(mousex, mousey, 0) * curdistance * 0.03f;
                 transform.Translate(move, Space.Self);
                 if (followtarget)
@@ -225,6 +225,8 @@ public class CameraControllerForUnity : MonoBehaviour
         {
             if (Input.GetMouseButton(2) && canUseMouseCenter)
             {
+                mousey = -mousey;
+                mousex = -mousex;
                 if (came.orthographic)
                     transform.Translate(new Vector3(curorthographicSize * 0.06f * mousex, 0, curorthographicSize * 0.06f * mousey), Space.World);
                 else
@@ -238,7 +240,7 @@ public class CameraControllerForUnity : MonoBehaviour
     private void CameraRotate()
     {
         //当不为moba视角可旋转
-        if (Input.GetMouseButton(0) && !Input.GetMouseButton(1) &&(mode == Mode.third || mode == Mode.first))
+        if (Input.GetMouseButton(0) && !Input.GetMouseButton(1) && (mode == Mode.third || mode == Mode.first))
         {
             if (canUseMouseRight)
             {

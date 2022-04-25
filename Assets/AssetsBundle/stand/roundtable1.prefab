@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 5660992679663732359}
   - component: {fileID: 5660992679660813901}
   - component: {fileID: 5660992679661823323}
+  - component: {fileID: 7198404906057213652}
   m_Layer: 0
   m_Name: roundtable1
   m_TagString: Untagged
@@ -81,3 +82,16 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &7198404906057213652
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5660992679664025731}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 0
+  serializedVersion: 2
+  m_Size: {x: 1.0918009, y: 0.04739958, z: 1.08582}
+  m_Center: {x: 0.000000059604645, y: 0.72629607, z: -1.1483217e-15}
