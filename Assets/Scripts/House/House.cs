@@ -5,16 +5,26 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
+public enum HouseEntityType
+{
+    wall, floor, door, stand, sky, arealight, appliances, flowLine, animal, weather
+}
 public class House : MonoBehaviour
 {
+    public static House Instance;
     public Transform parent { get; set; }
+    public Dictionary<Transform, HouseEntityType> CureetHouse { get => cureetHouse; }
+
     List<HassEntity> lis;
+    Dictionary<Transform, HouseEntityType> cureetHouse;
     void Awake()
     {
+        Instance = this;
         parent = new GameObject().transform;
         mainCa = Camera.main;
         QualitySettings.SetQualityLevel(2);
         lis = new List<HassEntity>(100);
+        cureetHouse = new Dictionary<Transform, HouseEntityType>(200);
     }
 
     void Start()
@@ -62,6 +72,7 @@ public class House : MonoBehaviour
         //lastFlushTime = Time.time;
         Destroy(parent.gameObject);
         lis.Clear();
+        cureetHouse.Clear();
         lis.Add(HouseWeather.Instance);//×¢²áÌìÆø
         parent = new GameObject().transform;
         var jd = JsonMapper.ToObject(config);
@@ -245,6 +256,7 @@ public class House : MonoBehaviour
         area.localScale = new Vector3(w, 0, h);
         var animal = tr.GetComponent<ZebraEntity>();
         animal.SetArea(area);
+        cureetHouse.Add(tr.transform, HouseEntityType.animal);
     }
 
     /// <summary>posxzy anglexyz scalexyz </summary>
@@ -282,6 +294,7 @@ public class House : MonoBehaviour
                     lis.Add(e);
                 }
             }
+            cureetHouse.Add(tr.transform, HouseEntityType.appliances);
             var collider = tr.GetComponent<Collider>();
             if (collider) collider.enabled = false;
         }
@@ -314,6 +327,7 @@ public class House : MonoBehaviour
             tr.transform.position = new Vector3(x, z, y);
             tr.transform.eulerAngles = new Vector3(rx, ry, rz);
             tr.transform.localScale = new Vector3(sx, sy, sz);
+            cureetHouse.Add(tr.transform, HouseEntityType.stand);
             var collider = tr.GetComponent<Collider>();
             if (collider) collider.enabled = false;
         }
@@ -342,6 +356,7 @@ public class House : MonoBehaviour
             lineE.SetEntity(id);
             lis.Add(lineE);
         }
+        cureetHouse.Add(lineE.transform, HouseEntityType.flowLine);
         var ma = lineE.line.material;
         ma = new Material(ma);
         ma.SetFloat("_Speed", speed);
@@ -404,6 +419,7 @@ public class House : MonoBehaviour
                 le.SetEntity(id);
                 lis.Add(le);
             }
+            cureetHouse.Add(tr.transform, HouseEntityType.door);
             le.angleopen = o;
             le.angleclose = c;
             Color sc;
@@ -448,6 +464,7 @@ public class House : MonoBehaviour
                 le.SetEntity(id);
                 lis.Add(le);
             }
+            cureetHouse.Add(tr.transform, HouseEntityType.arealight);
             le.clight.intensity = li;
             Color c;
             if (Help.Instance.TryColor(color, out c))
@@ -489,6 +506,7 @@ public class House : MonoBehaviour
         if (Help.Instance.TryColor(color, out c))
             ma.color = c;
         tr.GetComponent<MeshRenderer>().material = ma;
+        cureetHouse.Add(tr.transform, HouseEntityType.floor);
         var collider = tr.GetComponent<Collider>();
         if (collider) collider.enabled = false;
     }
@@ -523,6 +541,7 @@ public class House : MonoBehaviour
         {
             r.material.color = wcolor;
         }
+        cureetHouse.Add(cube.transform, HouseEntityType.wall);
         var collider = tr.GetComponent<Collider>();
         if (collider) collider.enabled = false;
     }
@@ -556,18 +575,18 @@ public class House : MonoBehaviour
                     lastDownpos = Input.mousePosition;
                     lastDownT = Time.time;
                 }
+                else if (Input.GetMouseButton(0))
+                {
+                    if (Time.time - lastDownT > 1 && Vector3.Magnitude(Input.mousePosition - lastDownpos) < 9)
+                    {
+                        entity.LongClick();
+                    }
+                }
                 else if (Input.GetMouseButtonUp(0))
                 {
-                    if (Vector3.Magnitude(Input.mousePosition - lastDownpos) < 9)
+                    if (Time.time - lastDownT < 0.5f && Vector3.Magnitude(Input.mousePosition - lastDownpos) < 9)
                     {
-                        if (Time.time - lastDownT > 0.5f)
-                        {
-                            entity.LongClick();
-                        }
-                        else
-                        {
-                            entity.Click();
-                        }
+                        entity.Click();
                     }
                 }
             }

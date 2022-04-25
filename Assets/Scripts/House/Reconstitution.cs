@@ -18,14 +18,12 @@ public class Reconstitution : MonoBehaviour
     Outline lastO;
     Vector3 lastmousePos, lastTrpos;
     bool drag;
-    int intervel = 50;
     public Color lineColor = new Color(1, 1, 1, 0.5f);
     public Material lineMat;
     public LineRenderer lineW;
     public TextMesh linewTe;
     public LineRenderer lineH;
     public TextMesh linehTe;
-
     void Start()
     {
         Instance = this;
@@ -77,7 +75,7 @@ public class Reconstitution : MonoBehaviour
 
     void Update()
     {
-        if (!isEdit)
+        if (!isEdit || EventSystem.current.IsPointerOverGameObject())
             return;
         if (drag)
         {
@@ -90,7 +88,7 @@ public class Reconstitution : MonoBehaviour
             }
             var pos = mainCa.ScreenToWorldPoint(Input.mousePosition);
             pos.y = 0;
-            pos = lastO.transform.position = lastTrpos + (pos - lastmousePos);
+            pos = lasthit.position = lastTrpos + (pos - lastmousePos);
             var p1 = new Vector3(0, 10, pos.z);
             lineW.SetPosition(0, p1);
             lineW.SetPosition(1, new Vector3(pos.x, 10, pos.z));
@@ -116,10 +114,11 @@ public class Reconstitution : MonoBehaviour
             }
             if (Input.GetMouseButtonDown(0))
             {
-                if (lastO)
+                if (lasthit)
                 {
+                    ShowDetail(lasthit);
                     lastmousePos = new Vector3(hit.point.x, 0, hit.point.z);
-                    lastTrpos = lastO.transform.position;
+                    lastTrpos = lasthit.position;
                     lineW.gameObject.SetActive(true);
                     lineH.gameObject.SetActive(true);
                     drag = true;
@@ -132,6 +131,51 @@ public class Reconstitution : MonoBehaviour
             {
                 lastO.enabled = false;
                 lastO = null;
+            }
+        }
+    }
+
+    void ShowDetail(Transform target)
+    {
+        if (House.Instance.CureetHouse.ContainsKey(target))
+        {
+            var t = House.Instance.CureetHouse[target];
+            switch (t)
+            {
+                case HouseEntityType.wall:
+                    var sc = target.localScale;
+                    var e = target.localEulerAngles;
+                    PropPanle.Instance.Clear();
+                    PropPanle.Instance.GetV2("Pos", target.position.x, target.position.z, (x) =>
+                    {
+                        var pc = target.position;
+                        pc.x = x;
+                        target.position = pc;
+                    }, (x) =>
+                    {
+                        var pc = target.position;
+                        pc.z = x;
+                        target.position = pc;
+                    });
+                    break;
+                case HouseEntityType.floor:
+                    break;
+                case HouseEntityType.door:
+                    break;
+                case HouseEntityType.stand:
+                    break;
+                case HouseEntityType.sky:
+                    break;
+                case HouseEntityType.arealight:
+                    break;
+                case HouseEntityType.appliances:
+                    break;
+                case HouseEntityType.flowLine:
+                    break;
+                case HouseEntityType.animal:
+                    break;
+                case HouseEntityType.weather:
+                    break;
             }
         }
     }
