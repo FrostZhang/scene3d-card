@@ -9,6 +9,7 @@ public class WasherEntity : HassEntity
     void Start()
     {
         e = transform.eulerAngles;
+        GetComponent<BoxCollider>().enabled = false;
     }
     protected override void TrunOn()
     {

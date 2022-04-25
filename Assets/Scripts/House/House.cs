@@ -7,7 +7,7 @@ using UnityEngine;
 
 public class House : MonoBehaviour
 {
-    Transform parent;
+    public Transform parent { get; set; }
     List<HassEntity> lis;
     void Awake()
     {
@@ -56,6 +56,8 @@ public class House : MonoBehaviour
     //float lastFlushTime;
     private void OnGetConfig(string config)
     {
+        if (Reconstitution.Instance.IsEdit)
+            return;
         //if (Time.time - lastFlushTime < 4 && lastFlushTime == 0) return;
         //lastFlushTime = Time.time;
         Destroy(parent.gameObject);
@@ -280,6 +282,8 @@ public class House : MonoBehaviour
                     lis.Add(e);
                 }
             }
+            var collider = tr.GetComponent<Collider>();
+            if (collider) collider.enabled = false;
         }
     }
 
@@ -310,6 +314,8 @@ public class House : MonoBehaviour
             tr.transform.position = new Vector3(x, z, y);
             tr.transform.eulerAngles = new Vector3(rx, ry, rz);
             tr.transform.localScale = new Vector3(sx, sy, sz);
+            var collider = tr.GetComponent<Collider>();
+            if (collider) collider.enabled = false;
         }
     }
 
@@ -409,6 +415,8 @@ public class House : MonoBehaviour
                 ma.color = sc;
                 mr.material = ma;
             }
+            var collider = tr.GetComponent<Collider>();
+            if (collider) collider.enabled = false;
         }
     }
 
@@ -481,6 +489,8 @@ public class House : MonoBehaviour
         if (Help.Instance.TryColor(color, out c))
             ma.color = c;
         tr.GetComponent<MeshRenderer>().material = ma;
+        var collider = tr.GetComponent<Collider>();
+        if (collider) collider.enabled = false;
     }
 
     IEnumerator CreatWall(string cusname, string wall, string color)
@@ -513,6 +523,8 @@ public class House : MonoBehaviour
         {
             r.material.color = wcolor;
         }
+        var collider = tr.GetComponent<Collider>();
+        if (collider) collider.enabled = false;
     }
 
     Camera mainCa;
@@ -524,6 +536,8 @@ public class House : MonoBehaviour
     float lastDownT;
     void Update()
     {
+        if (Reconstitution.Instance.IsEdit)
+            return;
         if (Physics.Raycast(mainCa.ScreenPointToRay(Input.mousePosition), out hit, maxDistance))
         {
             if (hit.transform != lasthit)
@@ -567,9 +581,12 @@ public class House : MonoBehaviour
                 entity = null;
             }
         }
-        CameraControllerForUnity.Instance.xAngle += Time.deltaTime * HousePanel.Instance.RoSpeed;
-        if (CameraControllerForUnity.Instance.xAngle > 360)
-            CameraControllerForUnity.Instance.xAngle -= 360;
+        if (CameraControllerForUnity.Instance.mode == CameraControllerForUnity.Mode.third)
+        {
+            CameraControllerForUnity.Instance.xAngle += Time.deltaTime * HousePanel.Instance.RoSpeed;
+            if (CameraControllerForUnity.Instance.xAngle > 360)
+                CameraControllerForUnity.Instance.xAngle -= 360;
+        }
     }
 
     private void AnsFloor(JsonData jd)
