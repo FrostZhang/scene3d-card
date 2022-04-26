@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -52,6 +53,7 @@ public class Reconstitution : MonoBehaviour
                     if (c) c.enabled = false;
                 }
             }
+            PropPanle.Instance.Show(false);
             return;
         }
         isEdit = true;
@@ -99,6 +101,7 @@ public class Reconstitution : MonoBehaviour
             linewTe.transform.position = pos + (p1 - pos) * 0.5f;
             linehTe.text = pos.z.ToString("f2");
             linehTe.transform.position = pos + (p2 - pos) * 0.5f;
+            PropPanle.Instance.Flush(new int[] { 0, 1 }, pos.x, pos.z);
         }
         else if (Physics.Raycast(mainCa.ScreenPointToRay(Input.mousePosition), out hit, maxDistance))
         {
@@ -117,8 +120,9 @@ public class Reconstitution : MonoBehaviour
                 if (lasthit)
                 {
                     ShowDetail(lasthit);
-                    lastmousePos = new Vector3(hit.point.x, 0, hit.point.z);
                     lastTrpos = lasthit.position;
+                    Debug.Log(lasthit + " " + lastTrpos);
+                    lastmousePos = new Vector3(hit.point.x, 0, hit.point.z);
                     lineW.gameObject.SetActive(true);
                     lineH.gameObject.SetActive(true);
                     drag = true;
@@ -132,6 +136,10 @@ public class Reconstitution : MonoBehaviour
                 lastO.enabled = false;
                 lastO = null;
             }
+            else if (Input.GetMouseButtonDown(0))
+            {
+                PropPanle.Instance.Show(false);
+            }
         }
     }
 
@@ -143,41 +151,320 @@ public class Reconstitution : MonoBehaviour
             switch (t)
             {
                 case HouseEntityType.wall:
-                    var sc = target.localScale;
-                    var e = target.localEulerAngles;
-                    PropPanle.Instance.Clear();
-                    PropPanle.Instance.GetV2("Pos", target.position.x, target.position.z, (x) =>
-                    {
-                        var pc = target.position;
-                        pc.x = x;
-                        target.position = pc;
-                    }, (x) =>
-                    {
-                        var pc = target.position;
-                        pc.z = x;
-                        target.position = pc;
-                    });
+                    ShowWallProp(target);
                     break;
                 case HouseEntityType.floor:
+                    ShowWallFloor(target);
                     break;
                 case HouseEntityType.door:
+                    ShowDoor(target);
                     break;
                 case HouseEntityType.stand:
+                    ShowStand(target);
                     break;
-                case HouseEntityType.sky:
-                    break;
+                //case HouseEntityType.sky:
+                //    break;
                 case HouseEntityType.arealight:
+                    ShowAreaLight(target);
                     break;
                 case HouseEntityType.appliances:
+                    ShowAppliances(target);
                     break;
-                case HouseEntityType.flowLine:
-                    break;
-                case HouseEntityType.animal:
-                    break;
-                case HouseEntityType.weather:
+                //case HouseEntityType.flowLine:
+                //    break;
+                //case HouseEntityType.animal:
+                //    break;
+                //case HouseEntityType.weather:
+                //    break;
+                default:
+                    PropPanle.Instance.Show(false);
                     break;
             }
         }
+    }
+
+    private void ShowAppliances(Transform target)
+    {
+        PropPanle.Instance.Clear();
+        PropPanle.Instance.GetV3("Pos", target.position.x, target.position.z, target.position.y,
+            (x) =>
+            {
+                var pc = target.position;
+                pc.x = x;
+                target.position = pc;
+            }, (x) =>
+            {
+                var pc = target.position;
+                pc.z = x;
+                target.position = pc;
+            }, (x) =>
+            {
+                var pc = target.position;
+                pc.y = x;
+                target.position = pc;
+            });
+        PropPanle.Instance.GetV3("Rot", target.localEulerAngles.x, target.localEulerAngles.y, target.localEulerAngles.z,
+            (x) =>
+            {
+                var pc = target.localEulerAngles;
+                pc.x = x;
+                target.localEulerAngles = pc;
+            }, (x) =>
+            {
+                var pc = target.localEulerAngles;
+                pc.y = x;
+                target.localEulerAngles = pc;
+            }, (x) =>
+            {
+                var pc = target.localEulerAngles;
+                pc.z = x;
+                target.localEulerAngles = pc;
+            });
+        PropPanle.Instance.GetV3("Scale", target.localScale.x, target.localScale.y, target.localScale.z,
+            (x) =>
+            {
+                var pc = target.localScale;
+                if (x == 0) x = 0.1f;
+                pc.x = x;
+                target.localScale = pc;
+            }, (x) =>
+            {
+                var pc = target.localScale;
+                if (x == 0) x = 0.1f;
+                pc.y = x;
+                target.localScale = pc;
+            }, (x) =>
+            {
+                var pc = target.localScale;
+                if (x == 0) x = 0.1f;
+                pc.z = x;
+                target.localScale = pc;
+            });
+        var door = target.GetComponent<HassEntity>();
+        PropPanle.Instance.GetEntity("ID", door.Entity_id, (x) =>
+        {
+            door.SetEntity(x);
+        });
+        PropPanle.Instance.Show(true);
+    }
+
+    private void ShowAreaLight(Transform target)
+    {
+        var door = target.GetComponent<LightEntity>();
+        PropPanle.Instance.Clear();
+        PropPanle.Instance.GetV2("Pos", target.position.x, target.position.z, (x) =>
+        {
+            var pc = target.position;
+            pc.x = x;
+            target.position = pc;
+        }, (x) =>
+        {
+            var pc = target.position;
+            pc.z = x;
+            target.position = pc;
+        });
+        PropPanle.Instance.GetV2("W/H", target.localScale.x, target.localScale.z, (x) =>
+        {
+            var pc = target.localScale;
+            pc.x = x;
+            target.localScale = pc;
+        }, (x) =>
+        {
+            var pc = target.localScale;
+            pc.z = x;
+            target.localScale = pc;
+        });
+        PropPanle.Instance.GetV1("MaxL", door.Max, (x) =>
+        {
+            door.Max = x;
+        });
+        PropPanle.Instance.GetEntity("ID", door.Entity_id, (x) =>
+        {
+            door.SetEntity(x);
+        });
+        PropPanle.Instance.Show(true);
+    }
+
+    private void ShowWallFloor(Transform target)
+    {
+        PropPanle.Instance.Clear();
+        PropPanle.Instance.GetV2("Pos", target.position.x, target.position.z, (x) =>
+        {
+            var pc = target.position;
+            pc.x = x;
+            target.position = pc;
+        }, (x) =>
+        {
+            var pc = target.position;
+            pc.z = x;
+            target.position = pc;
+        });
+        PropPanle.Instance.GetV2("W/H", target.localScale.x, target.localScale.z, (x) =>
+        {
+            var pc = target.localScale;
+            pc.x = x;
+            target.localScale = pc;
+        }, (x) =>
+        {
+            var pc = target.localScale;
+            pc.z = x;
+            target.localScale = pc;
+        });
+        var ma = target.GetComponent<MeshRenderer>().material;
+        PropPanle.Instance.GetV2("Txy", ma.GetTextureScale("_BaseMap").x, ma.GetTextureScale("_BaseMap").y, (x) =>
+        {
+            var s = ma.GetTextureScale("_BaseMap");
+            ma.SetTextureScale("_BaseMap", new Vector2(x, s.y));
+        }, (x) =>
+        {
+            var s = ma.GetTextureScale("_BaseMap");
+            ma.SetTextureScale("_BaseMap", new Vector2(s.x, x));
+        });
+        PropPanle.Instance.Show(true);
+    }
+
+    private void ShowDoor(Transform target)
+    {
+        var door = target.GetComponent<DoorEntity>();
+        PropPanle.Instance.Clear();
+        PropPanle.Instance.GetV2("Pos", target.position.x, target.position.z, (x) =>
+        {
+            var pc = target.position;
+            pc.x = x;
+            target.position = pc;
+        }, (x) =>
+        {
+            var pc = target.position;
+            pc.z = x;
+            target.position = pc;
+        });
+        PropPanle.Instance.GetV1("W", target.localScale.x, (x) =>
+         {
+             var pc = target.localScale;
+             if (x == 0) x = 0.1f;
+             pc.x = x;
+             target.localScale = pc;
+         });
+        PropPanle.Instance.GetV2("O/C", target.position.x, target.position.z, (x) =>
+        {
+            door.angleopen = x;
+        }, (x) =>
+        {
+            door.angleclose = x;
+        });
+        PropPanle.Instance.GetEntity("ID", door.Entity_id, (x) =>
+        {
+            door.SetEntity(x);
+        });
+        PropPanle.Instance.Show(true);
+    }
+
+    private void ShowStand(Transform target)
+    {
+        PropPanle.Instance.Clear();
+        PropPanle.Instance.GetV3("Pos", target.position.x, target.position.z, target.position.y,
+            (x) =>
+        {
+            var pc = target.position;
+            pc.x = x;
+            target.position = pc;
+        }, (x) =>
+        {
+            var pc = target.position;
+            pc.z = x;
+            target.position = pc;
+        }, (x) =>
+        {
+            var pc = target.position;
+            pc.y = x;
+            target.position = pc;
+        });
+        PropPanle.Instance.GetV3("Rot", target.localEulerAngles.x, target.localEulerAngles.y, target.localEulerAngles.z,
+            (x) =>
+        {
+            var pc = target.localEulerAngles;
+            pc.x = x;
+            target.localEulerAngles = pc;
+        }, (x) =>
+        {
+            var pc = target.localEulerAngles;
+            pc.y = x;
+            target.localEulerAngles = pc;
+        }, (x) =>
+        {
+            var pc = target.localEulerAngles;
+            pc.z = x;
+            target.localEulerAngles = pc;
+        });
+        PropPanle.Instance.GetV3("Scale", target.localScale.x, target.localScale.y, target.localScale.z,
+            (x) =>
+        {
+            var pc = target.localScale;
+            if (x == 0) x = 0.1f;
+            pc.x = x;
+            target.localScale = pc;
+        }, (x) =>
+        {
+            var pc = target.localScale;
+            if (x == 0) x = 0.1f;
+            pc.y = x;
+            target.localScale = pc;
+        }, (x) =>
+        {
+            var pc = target.localScale;
+            if (x == 0) x = 0.1f;
+            pc.z = x;
+            target.localScale = pc;
+        });
+
+
+        PropPanle.Instance.Show(true);
+    }
+
+    private static void ShowWallProp(Transform target)
+    {
+        PropPanle.Instance.Clear();
+        PropPanle.Instance.GetV2("Pos", target.position.x, target.position.z, (x) =>
+        {
+            var pc = target.position;
+            pc.x = x;
+            target.position = pc;
+        }, (x) =>
+        {
+            var pc = target.position;
+            pc.z = x;
+            target.position = pc;
+        });
+        PropPanle.Instance.GetV2("W/H", target.localScale.x, target.localScale.y, (x) =>
+        {
+            var pc = target.localScale;
+            if (x == 0) x = 0.1f;
+            pc.x = x;
+            target.localScale = pc;
+        }, (x) =>
+        {
+            var pc = target.localScale;
+            if (x == 0) x = 0.1f;
+            pc.y = x;
+            target.localScale = pc;
+            pc = target.position;
+            pc.y = x * 0.5f;
+            target.position = pc;
+        });
+        PropPanle.Instance.GetV1("T", target.localScale.z, (x) =>
+         {
+             var pc = target.localScale;
+             if (x == 0) x = 0.1f;
+             pc.z = x;
+             target.localScale = pc;
+         });
+        PropPanle.Instance.GetV1("Angle", target.localEulerAngles.y, (x) =>
+        {
+            var pc = target.localEulerAngles;
+            pc.y = x;
+            target.localEulerAngles = pc;
+        });
+        PropPanle.Instance.Show(true);
     }
 
 }

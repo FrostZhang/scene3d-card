@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TVEntity : HassEntity
 {
-    public GameObject onOnj,high;
+    public GameObject onOnj, high;
     public TextMesh te;
     string[] tes;
     void Start()
@@ -17,6 +17,7 @@ public class TVEntity : HassEntity
             tes[i] = str.Clone() as string;
         }
         onOnj.SetActive(false);
+        GetComponent<BoxCollider>().enabled = true;
     }
     public override void MouseOn()
     {
@@ -34,6 +35,10 @@ public class TVEntity : HassEntity
     protected override void TrunOff()
     {
         onOnj.SetActive(false);
+    }
+    public override void ReconstitutionMode(bool enter)
+    {
+        //onOnj.SetActive(enter);
     }
 
     float interval = 3;

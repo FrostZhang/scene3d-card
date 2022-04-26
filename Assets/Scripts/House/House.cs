@@ -295,8 +295,6 @@ public class House : MonoBehaviour
                 }
             }
             cureetHouse.Add(tr.transform, HouseEntityType.appliances);
-            var collider = tr.GetComponent<Collider>();
-            if (collider) collider.enabled = false;
         }
     }
 

@@ -582,6 +582,7 @@ MonoBehaviour:
   v1p: {fileID: 420730636}
   v2p: {fileID: 608294617}
   v3p: {fileID: 338351739}
+  scroll: {fileID: 0}
 --- !u!1 &220752239
 GameObject:
   m_ObjectHideFlags: 0
@@ -1468,7 +1469,7 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Pos
+  m_Text: entity
 --- !u!222 &420730638
 CanvasRenderer:
   m_ObjectHideFlags: 0

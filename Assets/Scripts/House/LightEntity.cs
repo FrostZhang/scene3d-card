@@ -6,10 +6,13 @@ using UnityEngine;
 public class LightEntity : HassEntity
 {
     Coroutine coroutine;
-    
+
     public Light clight;
     float max;
     Renderer _renderer;
+
+    public float Max { get => max; set => max = clight.intensity = value; }
+
     void Start()
     {
         _renderer = GetComponent<MeshRenderer>();
@@ -44,6 +47,18 @@ public class LightEntity : HassEntity
     public override void ReconstitutionMode(bool enter)
     {
         _renderer.enabled = enter;
+        //还原调试带来的灯光
+        if (!enter)
+        {
+            if (open)
+            {
+                clight.intensity = max;
+            }
+            else
+            {
+                clight.intensity = 0;
+            }
+        }
     }
 
     IEnumerator To(float f)
