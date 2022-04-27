@@ -141,10 +141,11 @@ namespace RTEditor
         /// </returns>
         public bool WasPressedInCurrentFrame(int index)
         {
-            #if INPUT_MOBILE
+#if INPUT_MOBILE
             if (index >= Input.touchCount) return false;
             return Input.GetTouch(index).phase == TouchPhase.Began;
-            #else
+#else
+            Debug.Log(Input.GetMouseButtonDown(index));
             return Input.GetMouseButtonDown(index);
             #endif
         }

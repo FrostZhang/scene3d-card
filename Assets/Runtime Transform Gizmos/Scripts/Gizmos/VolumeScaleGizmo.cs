@@ -206,7 +206,7 @@ namespace RTEditor
 
         protected override void OnRenderObject()
         {
-            if (Camera.current != EditorCamera.Instance.Camera) return;
+            //if (Camera.current != EditorCamera.Instance.Camera) return;
             base.OnRenderObject();
             if (_targetObject == null) return;
   

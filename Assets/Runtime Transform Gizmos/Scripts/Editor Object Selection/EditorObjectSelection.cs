@@ -624,24 +624,24 @@ namespace RTEditor
             // entries can become available when objects are deleted from the scene.
             RemoveNullAndInactiveObjectRefs();
 
-            if (DeleteSelectionShortcut.IsActiveInCurrentFrame())
-            {
-                var deleteAction = new DeleteSelectedObjectsAction();
-                deleteAction.Execute();
-                return;
-            }
+            //if (DeleteSelectionShortcut.IsActiveInCurrentFrame())
+            //{
+            //    var deleteAction = new DeleteSelectedObjectsAction();
+            //    deleteAction.Execute();
+            //    return;
+            //}
 
-            // Duplicate objects if needed
-            if (_duplicateSelectionShortcut.IsActiveInCurrentFrame())
-            {
-                // Gather all selected objects which can be duplicated
-                List<GameObject> objectsToDuplicate = new List<GameObject>(EditorObjectSelection.Instance.SelectedGameObjects);
-                objectsToDuplicate.RemoveAll(item => !CanObjectBeDuplicated(item));
+            //// Duplicate objects if needed
+            //if (_duplicateSelectionShortcut.IsActiveInCurrentFrame())
+            //{
+            //    // Gather all selected objects which can be duplicated
+            //    List<GameObject> objectsToDuplicate = new List<GameObject>(EditorObjectSelection.Instance.SelectedGameObjects);
+            //    objectsToDuplicate.RemoveAll(item => !CanObjectBeDuplicated(item));
 
-                // Duplicate objects
-                var action = new ObjectDuplicationAction(objectsToDuplicate);
-                action.Execute();
-            }
+            //    // Duplicate objects
+            //    var action = new ObjectDuplicationAction(objectsToDuplicate);
+            //    action.Execute();
+            //}
 
             // If no UI elements were hovered, we will analyze the input device's (mouse or touch) activity
             if (!WereAnyUIElementsHovered())
