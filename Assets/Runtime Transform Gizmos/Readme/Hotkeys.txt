@@ -1,0 +1,45 @@
+Here you can find the default hotkeys. Starting with version 1.2, hotkeys can now be configured inside the Inspector.
+Note: Hotkeys that contains LCTRL will not work properly inside the Game View and you will need to add the SHIFT key to the mix in order to make them work.
+
+1. Camera:
+	> WASD + QE + RMB - move camera;
+	> F - focus camera on selection;
+	> ALT + RMB - orbit around focus point (works only after the camera has been focused);
+	> Mouse Scroll Wheel - zoom camera;
+	> Middle MB - pan camera;
+2. Gizmos:
+	> W, E, R, U - cycle through different gizmo types (move, rotate, scale, volume scale);
+	> Q - toggle gizmos on/off;
+	> P - cycle between Mesh and Center pivot points;
+	> G - change transform space to global;
+	> L - change transform space to local;
+3. Move Gizmo:
+	> LSHIFT - translate along camera local axes;
+	> V - activate vertex snapping;
+	> B - activate box snapping;
+	> SPACE - activate terrain/grid surface placement with Y axis alignment;
+	> SPACE + X - activate terrain/grid surface placement with X axis alignment;
+	> SPACE + Z - activate terrain/grid surface placement with Z axis alignment;
+	> SPACE + LCTRL - activate terrain/grid surface placement with no axis alignment;
+	> LCTRL - activate step snapping;
+	> LALT - activate move scale
+4. Rotation Gizmo:
+	> LCTRL - activate step snapping;
+5. Scale Gizmo:
+	> LCTRL - activate step snapping;
+6. Volume Scale Gimzo:
+	> LCTRL - activate step snapping;
+	> LSHIFT - activate scale by center;
+7. Object Selection:
+	> left click - select object;
+	> left click + LCTRL - add object to selection or deselect if already selected;
+	> left click + mouse drag - select objects using the selection rectangle;
+	> left click + mouse drag + LSHIFT - deselect objects using the selection rectangle;
+	> Delete - delete selected objects;
+8. Misc:
+	> (Editor Play Mode) LSHIFT + LCTRL + Z - Undo;
+	> (Editor Play Mode) LSHIFT + LCTRL + Y - Redo;
+	> (Build) LCTRL + Z - Undo;
+	> (Build) LCTRL + Y - Redo;
+	> (Editor Play Mode) LCTRL + LSHIFT + D - duplicate selected objects;
+	> (Build) LCTRL + D - duplicate selected objects.

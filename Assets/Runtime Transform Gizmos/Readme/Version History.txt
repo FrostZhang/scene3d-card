@@ -1,0 +1,335 @@
+// V 1.2.7
+New features:
+	-added UndoStart, UndoEnd, RedoStart and RedoEnd event handlers (e.g. EditorUndoRedoSystem.Instance.UndoStart += MyUndoStartHandler).
+	-it is now possible to set a move scale value for the translation gizmos. This will allow you to scale the movement of objects using
+	 a scale value in the (0, 1] range. The default hotkey for activating this behaviour is LALT but it can be changed from the move gizmo's
+	 Inspector (Move Scale property).
+	-it is now possible to register event handlers for object selection duplication events: 
+	 EditorObjectSelection.Instance.SelectionDuplicated += MyHandler;
+	 void MyHandler(List<GameObject> sourceObjects, List<GameObject> duplicatedRoots);
+	-it is now possible to specify a the layers which can participate in vertex snapping with the move gizmo. Note: this only applies to
+	 vertex snap destination selection. Source vertices can be selected from any layer which is currently selected;
+	-it is now possible to delete the selected objects via the 'Delete' key (configurable). You can also register event handlers for the
+	 delete event: EditorObjectSelection.Instance.SelectionDeleted += MyHandler;
+	 void MyHandler(List<GameObject> deletedObjects);
+
+Bug fixes:
+	-fixed object selection module internal bug: AddObjectCollectionToSelection could return false incorrectly
+	 causing selection change events to be missed;
+	-fixed bug which prevented correct interaction with objects created in play-mode using the Unity Editor interface;
+	-fixed bug which was blocking the multi-select rectangle when the mouse cursor was hovering the active gizmo;
+	-fixed bug which was preventing object deselect events to be sent when clicking on a different object than the one
+	 which was currently being selected;
+	-fixed bug which was ignoring mesh colliders when 'Use Unity Colliders' was checked;
+	-fixed bug which was causing the Selection Box Size Add value to stretch selection boxes when applying scale to objects;
+
+// V 1.2.6.1
+New features:
+	-added EditorMeshDatabase.Instance.MeshTreeBuildFinished event;
+	-added EditorMeshDatabase.Instance.BuildAllMeshesInScene method;
+	-introduced ObjectSelectActionType.MultiSelectAppend and ObjectDeselectActionType.MultiSelectNotInRect for selection change events;
+
+Bug fixes:
+	-fixed selection changed event not sent when objects were going outside of the selection rectangle thus becoming
+	 deselected;
+	-fixed selection changed events skipped when deselecting objects with the selection rectangle (i.e. using the
+	 multi-deselect shortcut key);
+
+// V 1.2.6
+New features:
+	-it is now possible to specify which object layers can be duplicated. This can be done from the EditorObjectSelection
+	 Inspector GUI;
+	-it is now possible to enable/disable different types of gizmos from the EditorGizmoSystem Inspector GUI. This is useful
+	 when you do not wish to use certain gizmos in your application.
+
+Improvements:
+	-it is now possible to specify gizmo layer masks from the gizmo Inspector GUI;
+
+Bug fixes:
+	-fixed bug which was causing incorrect information to be returned via the 'ObjectSelectionChangedEventArgs' object inside
+	 a selection changed event handler. The argument was reporting an incorrect collection of deselected objects when using the
+	 selection rectangle.
+
+// V 1.2.5
+New features:
+	-it is now possible to move the scene grid up/down using hotkeys in combination with the mouse scroll wheel. Settings
+	 can be controlled from the RuntimeEditorApplication Inspector;
+	-it is now possible to perform box snapping using the move gizmo. It works is a similar way to vertex snapping with the
+	 exception that it operates on the points of the objects' OOBBs (box volumes). The default shortcut is 'B';
+	-added GameObjectClicked event to EditorObjectSelection (e.g. EditorObjectSelection.Instance.GameObjectClicked += MyClickedHandler).
+	 The handler accepts the object which was clicked as the only parameter.
+
+Bug fixes:
+	 -fixed bug which was ignoring append to selection key when using the multi-select rectangle.
+
+// V 1.2.4.1
+New features:
+	-it is now possible to mask/unmask certain objects from being registered with the custom interaction
+	 system when NOT using Unity Colliders. You can use: EditorScene.Instance.MaskObjectCollectionForInteraction,
+	 EditorScene.Instance.MaskObjectForInteraction, EditorScene.Instance.UnmaskObjectCollectionForInteraction,
+	 EditorScene.Instance.UnmaskObjectForInteraction.
+
+// V 1.2.4
+New features:
+	-for the rotation gizmo, it is now possible to specify if any of the 3 rotation circles (X/Y/Z)
+	must be drawn in full.
+
+Bug fixes:
+	-fixed bug which was positioning the gizmos incorrectly when 'Use Unity Colliders' was checked,
+	but empty objects didn't have colliders attached.
+
+// V 1.2.3
+New features:
+	-implemented 'AddObjectToSelection' and 'RemoveObjectFromSelection' to add object to or remove them from the object selection;
+	-it is now possible to specify how the object selection boxes are rendered (PerObject, FromParentToBottom). 
+
+Removed:
+	-removed the 2 selection modes (IndividualObjects and EntireHierarchy). The same behaviours ca be implemented using the
+	 IRTEditorEventListener interface;
+
+Bug fixes:
+	-fixed bug which was ignoring Unity colliders when 'Use Unity Colliders' was checked. The interaction was done using
+	 Unity colliders, but when rendering object volumes for lights, empty objects, particles etc, the collider volume was
+	 ignored.
+
+// V 1.2.2
+New features: 
+	-it is now possible to control the visibility of different gizmo axes (see 'Show X Axis', 'Show Y Axis', 'Show Z Axis''
+	 toggles in the gizmo Inspector GUI. The visibility of the rotation sphere for the rotation gizmo can now also be
+	 toggled on/off. Components which are not visible will not be rendered and can not be interacted with.
+
+Bug fixes:
+	-fixed bug which was generating script compile errors during build;
+	-fixed bug which was causing the volume scale gizmo to miss sending a drag end message after a drag session was finished;
+	-fixed bug which was causing objects to incorrectly change their position when scaling them using the volume scale gizmo.
+	 This was happening when the object had a negative scale along the scaling axis;
+	-fixed bug which could pottentially throw an index out of bounds exception inside the MonoSingletonBase class;
+
+// V 1.2.1
+New features:
+	-added 'Can Click-Select' property in object selection Inspector. If unchecked, the user can
+	 no longer select/deselect objects by clicking;
+	-implemented new scale gizmo type called 'VolumeScaleGizmo'. This allows you to perform object
+	 scaling in almost the same way that you can modify box colliders using collider widgets.
+
+Improvements:
+	-added possibility to toggle the Undo/Redo system on/off ('Enable Undo/Redo' toggle inside the Runtime Editor Application Inspector);
+	-added possibility to specify if a custom camera must be used for scene navigation. When a custom camera is used, default camera
+	functionality is disabled.
+
+Bug fixes:
+	-fixed bug which was causing the active gizmo type to change when maniuplating the camera (happened because of hotkey clash);
+	-fixed scene gizmo was not taking the editor camera viewport into account.
+
+// V 1.2
+New features:
+	-added event for active gizmo type change (e.g. EditorGizmoSystem.Instance.ActiveGizmoTypeChanged += EventHandler);
+	-added IRTEditorEventListener interface which can be implemented by monobehaviours to listen to different 
+	 types of events;
+	-it is now possible to specify the corner where the scene gizmo will sit. Possible values are: TopLeft, TopRight, BottomRight, BottomLeft;
+	-key mappings for gizmos, object selection and camera;
+	-it is now possible to specify if Unity colliders must be used for object interaction. This is especially useful when 
+	 you are working with scenes that contain large amounts of objects or when the meshes that you are working with
+	 are very high res. If you experience low frame rates, checking the 'Use Unity Colliders' options in the RuntimeEditorApplication 
+	 Inspector should fix this issue. NOTE: Using Unity colliders is not possible when working with 2D sprites. In that case, the custom system 
+	 must be used (i.e. uncheck Use Unity Colliders).
+
+Changes:
+	-removed the 'On' prefix for gizmo drag start, end, update events (e.g. GizmoDragStart instead of OnGizmoDragStart);
+	-OnObjectSelectionChanged message was replaced with a C# event (SelectionChanged) inside the EditorObjectSelection mono.
+	 The client code can now subscribe to this event so that it can be notified when the selection changes.
+
+Bug fixes:
+	-fixed terrain and mesh surface placement for move gizmo bug which was happening when the controlled object was
+	 part of a hierarchy. The objects would snap in an awkward manner because the mouse cursor was hovering one of the 
+	 objects in the hierarchy;
+	-fixed gizmo position not updated correctly after gizmos were toggled off;
+	-fixed rotation gizmo angle snap not working correctly when activating snapping in the middle of a normal
+	 rotation session. The gizmo was applying the snap rotation relative to the existing rotation instead of the
+	 default pose (zero rotation).
+
+Removed:
+	-the scene view gizmo representation for the transform gizmos is no longer shown. This was done purely for having 
+	 a cleaner and smaller codebase as far as the gizmo classes are concerned. Besides, the scene view representation was 
+	 rather rough around the edges and it is much more useful to check the look and feel of the gizmos at runtime, in 
+	 the environment where they will actually be used;
+	-SetEnabled method from the EditorObjectSelection mono. Enabling or disabling the object selection mechanism can
+	 be done by simply enabling or disabling the EditorObjectSelection component;
+	-ObjectSelectionModeChangedAction is no longer available. The reason that this action existed was to ensure proper
+	 undo/redo of this mode change. However, this is useless and error prone. The ObjectSelectionModeChangedMessage
+	 has also been removed;
+	-AssignObjectsToSelectionMaskAction is no longer available;
+	-RemoveObjectsFromSelectionMaskAction is no longer available;
+	-removed custom object selection click/multi select handlers. In consequence the 'Custom' object selection mode has
+	 also been removed;
+	-removed gizmo change, transform pivot change, transform space change and turn off gizmos actions. These were necessary 
+	 to allow Undo/Redo for these types of proprty changes. However, Undo/Redo is no longer supported for these as it can 
+	 prove to be rather unintuitive;
+	-the 'TakeZoomFactorIntoAccount' property of the editor camera has been removed. This should always be the default
+	 behaviour;
+	-removed 'ObjectsAddedToSelectionMaskMessage' message class;
+	-removed 'ObjectsRemovedFromSelectionMaskMessage' message class;
+	-removed 'TransformSpaceChangedMessage' message class;
+	-removed 'GizmosTurnedOffMessage' message class;
+	-removed 'TransformPivotPointChangedMessage' message class;
+	-removed 'ActiveGizmoTypeChangedMessage' message class;
+	-removed redundant gizmo color properties which could easily be deduced from the specified gizmo axes colors.
+
+// V 1.1.7
+New features:
+	-scene gizmo (no smooth perspective switch; the switch is done instantly);
+	-surface placement and axis alignment for mesh surfaces for the move gizmo;
+	-axis masks for all gizmos (please see the 'SetObjectAxisMask' and 'SetObjectAxisMask' in 'Gizmo.cs'). When an
+	 axis is masked, the gizmo will not be able to transform an object using that axis. For example, for a rotation 
+	 gizmo, when an axis is masked for an object, the object can not be rotated around that axis. Same for the other
+	 gizmos;
+	-it is now possible to specify if a selection rectangle can be used for object selection. You can use the 
+	 'Can Multi-Select' toggle button inside the EditorObjectSelection Inspector to toggle the selection rectangle;
+
+Bug fixes:
+	-fixed null ref exceptions thrown when switching between scenes;
+	-fixed bug which was causing inactive objects to get selected;
+	-fixed gizmo position not calculated correctly when first object was selected;
+	-fixed grid was being rendered by all cameras which were active in the scene. Now, only the editor camera is
+	 used to render the grid;
+	-fixed camera background flicker (could sometimes happen when quickly moving and/or rotating the camera or when 
+     focusing the camera on a large group of objects in ortho mode);
+
+// V 1.1.6
+Improvements:
+	-it is no longer necessary to attach colliders to game objects. The system can now interact with 3D and 2D
+	 objects even if no colliders are present;
+	-2D sprites can now be selected correctly even if they do not reside totally inside the XY plane;
+	-the selection box scale factor has been transformed into an offset (value which is added instead of multiplied). 
+	 This was necessary because a scale factor will produce inconsistent results for objects of different sizes;
+	-it is now possible to specify if lights, particle systems or sprites can be selected;
+	-improved performance for visible object determination. This data was necessary in some situations (such as when
+	 selecting objects with the selection rectangle) and it is now cached and only updated when necessary;
+	-it is now possible to specify if the object selection boxes can be drawn. This can be controlled from the 
+	 EditorObjectSelection Inspector or 
+	 from script: EditorObjectSelection.Instance.ObjectSelectionSettings.ObjectSelectionBoxRenderSettings.DrawBoxes = desiredValue;
+	-the application no longer acquires the vertx snapping data at startup. For larger scenes, this can lead to big load times. The
+	 system now acquires the vertex snapping data only when it is needed. The algorithm used to calculate the veretx snapping data
+	 has also been improved (e.g. the floor object from the Survival Shooter Unity package was taking around 16 seconds to have
+	 this data calculated. Now it is computed almost instantly);
+
+Bug fixes (some of these may have been introduced during the development of this version):
+	-fixed bug which was causing selection boxes to be rendered incorrectly for terrain objects;
+	-fixed bug which was preventing the selection system to work correctly after using the move gizmo's
+     terrain surface placement functionality (i.e. the selection system would become disabled);
+
+// V 1.1.5
+New features:
+	-it is now possible to select and manipulate 2D sprites. The sprites can also be used in conjunction with 
+	 snapping when using the move gizmo. NOTE: sprite selection by left click works best when the sprites exist
+	 in the XY plane. Also, transparent pixels are filtered only as long as the sprite textures have the Read/Write
+	 Enabled flag set inside the Editor;
+
+Improvements:
+	-default collider attachement settings for mesh objects has been changed back to Box. In most situations,
+	 this provides a well enough selection/click precision and it also reduces level load times;
+
+Bug fixes:
+	-fixed bug which was causing the editor camera background to obscure 2D sprite objects;
+	-fixed line rendering bugs which COULD occur due to legacy shaders;
+
+// V 1.1.4
+New features:
+	-terrain and grid surface placement with axis alignment for the move gizmo;
+	-scene XZ grid with zoom fade effect;
+	-move gizmo can vertex snap to XZ grid;
+	-object duplication;
+	-it is now possible to specify if terrain objects can be selected in the EditorObjectSelection 
+	 Inspector GUI;
+	-it is now possible to specify if the camera zoom factor should be taken into account. If checked,
+	 camera zooming and moving using the WASD + QE keys will be scaled appropriately so that when the
+	 camera is moved too far or to near the scene grid, no evident slow downs or speed ups are observed;
+
+Improvements:
+	-the gizmo transform space and transform pivot point property changes are no longer recorded for Undo/Redo. This
+	 seems to be much more intuitive because users will usually want to undo/redo property changes that have a clear
+	 visual effect. Otherwise, the undo/redo will be invisible to them and can get confusing;
+	-gizmos defaut colors have been adjusted to match the Unity gizmos colors;
+	-improved lighting/shading for gizmo components (e.g. the move gizmo arrow cones were sometimes rendered dark);
+	-the number of materials needed to render the gizmos has been reduced;
+	-the system no longer creates an additional light in the scene and creating a gizmo layer is no longer required;
+	-scene setup is now performed by going to Tool->Runtime Transform Gizmos->Initialize;
+	-it is now possible to specify if terrain objects can be selected;
+	-WASD keys can now be used with an orthographic camera;
+	-changed default mesh collider type to MeshCollider for mesh objects in the collider attachment settings. Selecting
+	 objects is more precise using mesh colliders instead of the alternatives;
+	-changed default collider attachement settings to ignore light and particle system objects. This is because most
+	 of the times only mesh objects need to be manipulated;
+	-removed GUI hints (also removed the GUI hints toggle button);
+	-for the object selection box render settings, a percentage is now used (instead of length) for selection box corner
+	 lines. This allows the lines to scale properly along with the size of the objects;
+
+Bug fixes:
+	-fixed bug which was causing the rotation gizmo guide discs to not render correctly due to culling issues;
+	-fixed bug which was causing the last layer (number 31) to be ignored when displaying layers in the selectable
+	 layers list inside the Editor Object Selection Inspector;
+	-fixed model space AABB was not calculated correctly for object colliders. This could have caused problems when
+	 selecting objects or when rendering non-mesh objects;
+	-fixed object selection problem which was occuring when smaller selectable objects were contained by larger 
+	 non-selectable ones. The system was not taking the selectable layers into account properly;
+	-fixed bug which was causing the gizmos, selection rectangle, selection boxes etc to render for every camera in
+	 the scene even for those used to render to texture;
+	-fixed bug which was causing orthographic camera scrolling to cut away from geometry;
+
+// V 1.1.1
+New features:
+	-each gizmo now has an associated object collection and object layer mask. Objects that are masked will not be
+	manipulated by that gizmo;
+
+Improvements:
+	-added toggle button which can be used to turn playmode GUI hints on/off. This toggle button resides in
+	the Runtime Editor Application mono Inspector;
+	-added ability to toggle camera scrolling on/off;
+	-by default all object layers are now selectable;
+
+// V 1.1
+New features:
+	-layer selection masks (can be configured from the 'EditorObjectSelection' inspector);
+	-added 'OnGizmoDragStart', 'OnGizmoDragUpdate' and 'OnGizmoDragEnd' events to the 'Gizmo' class (documentation chapter 6.1);
+	
+Improvements:
+	-Unity style camera movement using the WASD and QE keys (camera speed can be controlled from the 'EditorCamera' inspector);
+
+Bug fixes:
+	-fixed bug which was causing gizmos to render incorrectly for different viewport offset/size configurations;
+	-fixed bug which was causing objects to get deselected when a UI element was clicked;
+
+Removed:
+	-Bootstrap scene. Prefabs should be used instead for a much cleaner and comfortable solution;
+
+// V 1.0.7
+New features:
+	-camera focus on object selection;
+	-camera orbit around focus point;
+	-invert camera pan axes;
+	-added possibility to disable the object selection mechanism;
+	-it is now possible to customize the object selection mechanism;
+	-3 selection modes are now available;
+	-added Bootstrap scene;
+
+Bug fixes:
+	-the system now performs any necessary cleanup and performs any needed actions when
+	 a new scene is loaded at runtime (e.g. clear object selection, disable gizmos etc);
+	-fixed vertex snapping bug which occured when trying to snap a parent object to one of
+	 its children.
+
+// V 1.0.1
+New features:
+	-object selection masks;
+	-added support for mesh colliders;
+	-the 'ObjectColliderAttachmentSettings' class now contains 3 new properties which allow
+	 you to specify what types of objects should be ignored during the collider attachment
+	 process;
+	-added support for camera smooth zoom and smooth pan.
+
+Bug fixes:
+	-fixed bug which was happening in Unity 5.3.1. This was related to calling 'DontDestroyOnLoad' from
+	 the editor. For some reason, in Unity 5.3.1, this makes your objects dissappear from the hierarchy
+	 view. The fix involved calling this function at runtime where it was necessary.
+
+// V 1.0 - First release

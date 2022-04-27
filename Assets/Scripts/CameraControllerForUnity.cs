@@ -223,7 +223,7 @@ public class CameraControllerForUnity : MonoBehaviour
         }
         else if (mode == Mode.moba)
         {
-            if (Input.GetMouseButton(2) && canUseMouseCenter)
+            if (canUseMouseCenter && (Input.GetMouseButton(0) || Input.GetMouseButton(2)))
             {
                 mousey = -mousey;
                 mousex = -mousex;

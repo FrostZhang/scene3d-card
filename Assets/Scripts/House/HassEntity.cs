@@ -6,6 +6,7 @@ using UnityEngine;
 public class HassEntity : MonoBehaviour
 {
     public string Entity_id { get => entity_id; }
+    public Collider editC;
     protected string entity_id;
     //const string switchkey = "switch";//on off
     //const string lightkey = "light";  //on off
@@ -138,7 +139,10 @@ public class HassEntity : MonoBehaviour
     /// <summary>�༭ģʽ </summary>
     public virtual void ReconstitutionMode(bool enter)
     {
-        var c = GetComponent<Collider>();
-        if (c) c.enabled = enter;
+        if (!editC)
+        {
+            editC = GetComponent<Collider>();
+            if (editC) editC.enabled = enter;
+        }
     }
 }

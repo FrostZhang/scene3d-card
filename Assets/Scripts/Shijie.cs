@@ -89,7 +89,6 @@ public class HassServerMessage
     public string head;
     public string cmd;
     public string entity_id;
-    public string temp;
 }
 
 public class HassMoreInfo

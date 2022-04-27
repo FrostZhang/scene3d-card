@@ -10,6 +10,7 @@ public class HousePanel : MonoBehaviour
     public static HousePanel Instance;
     public Slider tianguang, rain, snow, fog, lighting, ro, ranyuanjin;
     public Button changeCamera,edit;
+
     void Awake()
     {
         Instance = this;

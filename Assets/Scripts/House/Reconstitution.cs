@@ -25,6 +25,8 @@ public class Reconstitution : MonoBehaviour
     public TextMesh linewTe;
     public LineRenderer lineH;
     public TextMesh linehTe;
+
+    Dictionary<Transform, Bounds> bounds;
     void Start()
     {
         Instance = this;
@@ -54,54 +56,89 @@ public class Reconstitution : MonoBehaviour
                 }
             }
             PropPanle.Instance.Show(false);
+            BoundsPanel.Instance.Bingding(null, null);
             return;
         }
         isEdit = true;
         rigTr.position = new Vector3(0, -1, 0);
         CameraControllerForUnity.Instance.MobaFollow_orthogonal(rigTr, new Vector2(90, 0), 15, 5);
+        CameraControllerForUnity.Instance.orthographicSizeLimit = new Vector2(2, 10);
         cs = GetComponent<House>().parent;
+        bounds = new Dictionary<Transform, Bounds>(cs.childCount);
         foreach (Transform item in cs)
         {
             var e = item.GetComponent<HassEntity>();
             if (e)
             {
                 e.ReconstitutionMode(true);
+                if (e.editC)
+                {
+                    var bds = e.editC.bounds;
+                    bounds.Add(item, bds);
+                }
             }
             else
             {
                 var c = item.GetComponent<Collider>();
-                if (c) c.enabled = true;
+                if (c)
+                {
+                    c.enabled = true;
+                    var bds = c.bounds;
+                    bounds.Add(item, bds);
+                }
             }
         }
     }
 
+    RaycastHit[] jiances;
+    float interval;
     void Update()
     {
         if (!isEdit || EventSystem.current.IsPointerOverGameObject())
             return;
         if (drag)
         {
+            Debug.Log(EventSystem.current.IsPointerOverGameObject());
             if (Input.GetMouseButtonUp(0))
             {
                 drag = false;
                 lineW.gameObject.SetActive(false);
                 lineH.gameObject.SetActive(false);
+                CameraControllerForUnity.Instance.canUseMouseCenter = true;
                 return;
             }
-            var pos = mainCa.ScreenToWorldPoint(Input.mousePosition);
-            pos.y = 0;
-            pos = lasthit.position = lastTrpos + (pos - lastmousePos);
-            var p1 = new Vector3(0, 10, pos.z);
-            lineW.SetPosition(0, p1);
-            lineW.SetPosition(1, new Vector3(pos.x, 10, pos.z));
-            var p2 = new Vector3(pos.x, 10, 0);
-            lineH.SetPosition(0, new Vector3(pos.x, 10, 0));
-            lineH.SetPosition(1, new Vector3(pos.x, 10, pos.z));
-            linewTe.text = pos.x.ToString("f2");
-            linewTe.transform.position = pos + (p1 - pos) * 0.5f;
-            linehTe.text = pos.z.ToString("f2");
-            linehTe.transform.position = pos + (p2 - pos) * 0.5f;
-            PropPanle.Instance.Flush(new int[] { 0, 1 }, pos.x, pos.z);
+            //if ((interval -= Time.deltaTime) < 0)
+            {
+                //interval = 0.03f;
+                var pos = mainCa.ScreenToWorldPoint(Input.mousePosition);
+                pos.y = 0;
+                pos = lasthit.position = lastTrpos + (pos - lastmousePos);
+                PropPanle.Instance.Flush(new int[] { 0, 1 }, pos.x, pos.z);
+                var bds = hit.collider.bounds;
+                foreach (var item in bounds)
+                {
+                    if (item.Key != lasthit)
+                    {
+                        if (bds.Intersects(item.Value))
+                        {
+                            Debug.Log(item.Key);
+                        }
+                    }
+                }
+                var p1 = new Vector3(0, 10, pos.z);
+                lineW.SetPosition(0, p1);
+                lineW.SetPosition(1, new Vector3(pos.x, 10, pos.z));
+                var p2 = new Vector3(pos.x, 10, 0);
+                lineH.SetPosition(0, new Vector3(pos.x, 10, 0));
+                lineH.SetPosition(1, new Vector3(pos.x, 10, pos.z));
+                linewTe.text = pos.x.ToString("f2");
+                linewTe.transform.position = pos + (p1 - pos) * 0.5f;
+                linehTe.text = pos.z.ToString("f2");
+                linehTe.transform.position = pos + (p2 - pos) * 0.5f;
+
+                BoundsPanel.Instance.FlushAll(hit.collider.bounds);
+            }
+
         }
         else if (Physics.Raycast(mainCa.ScreenPointToRay(Input.mousePosition), out hit, maxDistance))
         {
@@ -110,22 +147,23 @@ public class Reconstitution : MonoBehaviour
                 if (lastO)
                     lastO.enabled = false;
                 lasthit = hit.transform;
-                lastO = lasthit.GetComponent<Outline>();
-                if (!lastO)
-                    lastO = lasthit.gameObject.AddComponent<Outline>();
-                lastO.enabled = true;
+                //lastO = lasthit.GetComponent<Outline>();
+                //if (!lastO)
+                //    lastO = lasthit.gameObject.AddComponent<Outline>();
+                //lastO.enabled = true;
             }
             if (Input.GetMouseButtonDown(0))
             {
                 if (lasthit)
                 {
                     ShowDetail(lasthit);
+                    BoundsPanel.Instance.Bingding(lasthit, hit.collider);
                     lastTrpos = lasthit.position;
-                    Debug.Log(lasthit + " " + lastTrpos);
                     lastmousePos = new Vector3(hit.point.x, 0, hit.point.z);
                     lineW.gameObject.SetActive(true);
                     lineH.gameObject.SetActive(true);
                     drag = true;
+                    CameraControllerForUnity.Instance.canUseMouseCenter = false;
                 }
             }
         }
@@ -139,6 +177,7 @@ public class Reconstitution : MonoBehaviour
             else if (Input.GetMouseButtonDown(0))
             {
                 PropPanle.Instance.Show(false);
+                BoundsPanel.Instance.Bingding(null, null);
             }
         }
     }
