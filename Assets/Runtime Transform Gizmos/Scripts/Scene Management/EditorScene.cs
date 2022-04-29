@@ -33,7 +33,7 @@ namespace RTEditor
 
         public void Update()
         {
-            if(!RuntimeEditorApplication.Instance.UseUnityColliders || Application.isEditor)
+            if (!RuntimeEditorApplication.Instance.UseUnityColliders || Application.isEditor)
                 _gameObjectSphereTree.Update();
         }
 
@@ -54,7 +54,7 @@ namespace RTEditor
 
                     // If the ray intersects the object's box, add the hit to the list
                     GameObjectRayHit gameObjectRayHit = null;
-                    if (gameObject.RaycastBox(ray, out gameObjectRayHit)) gameObjectHits.Add(gameObjectRayHit);
+                    if (gameObject.RaycastBox(ray, out gameObjectRayHit, hit.distance)) gameObjectHits.Add(gameObjectRayHit);
                 }
 
                 return gameObjectHits;

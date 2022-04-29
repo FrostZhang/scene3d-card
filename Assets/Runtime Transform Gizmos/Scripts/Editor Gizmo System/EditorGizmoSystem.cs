@@ -296,7 +296,12 @@ namespace RTEditor
         public bool IsActiveGizmoReadyForObjectManipulation()
         {
             if (_activeGizmo == null || !_activeGizmo.gameObject.activeSelf) return false;
-            return _activeGizmo.IsReadyForObjectManipulation();
+            if (ActiveGizmoType == GizmoType.VolumeScale)
+            {
+                return VolumeScaleGizmo.IsReadyForObjectManipulation() || TranslationGizmo.IsReadyForObjectManipulation();
+            }
+            else
+                return _activeGizmo.IsReadyForObjectManipulation();
         }
 
         /// <summary>
@@ -574,7 +579,16 @@ namespace RTEditor
             if (_activeGizmo == null) return;
 
             // If no objects are selected, we will deactivate the active gizmo
-            if (objectSelection.NumberOfSelectedObjects == 0) _activeGizmo.gameObject.SetActive(false);
+            if (objectSelection.NumberOfSelectedObjects == 0)
+            {
+                if (ActiveGizmoType == GizmoType.VolumeScale)
+                {
+                    _activeGizmo.gameObject.SetActive(false);
+                    TranslationGizmo.gameObject.SetActive(false);
+                }
+                else
+                    _activeGizmo.gameObject.SetActive(false);
+            }
             else
             // If the gizmos are not turned off, we may need to enable the active gizmo in the scene
             if (!_areGizmosTurnedOff)

@@ -91,10 +91,10 @@ namespace RTEditor
 
         protected override bool DetectHoveredComponents(bool updateCompStates)
         {
-            if(updateCompStates && !_isDragging)
+            if (updateCompStates && !_isDragging)
             {
                 _hoveredDragHandle = GetIndexOfHoveredDragHandle();
-                
+
                 int axisIndex = _hoveredDragHandle / 2;
                 if (axisIndex == 0) _selectedAxis = GizmoAxis.X;
                 else if (axisIndex == 1) _selectedAxis = GizmoAxis.Y;
@@ -144,6 +144,17 @@ namespace RTEditor
                 _dragStartData.DragPlane = CalculateDragPlane();
                 _dragStartData.FromPivotToObjectPos = _targetObject.transform.position - _dragStartData.ScalePivot;
             }
+
+            EditorGizmoSystem.Instance.TranslationGizmo.gameObject.SetActive(true);
+            FlushTrGizmo();
+        }
+
+        private static void FlushTrGizmo()
+        {
+            var p = EditorObjectSelection.Instance.GetSelectionWorldCenter();
+            p.x += 0.1f;
+            p.z += 0.1f;
+            EditorGizmoSystem.Instance.TranslationGizmo.transform.position = p;
         }
 
         protected override void OnInputDeviceFirstButtonUp()
@@ -154,7 +165,7 @@ namespace RTEditor
         protected override void OnInputDeviceMoved()
         {
             base.OnInputDeviceMoved();
-            if(_isDragging && _targetObject != null && _targetOOBB != null)
+            if (_isDragging && _targetObject != null && _targetOOBB != null)
             {
                 Vector3 targetObjScale = _targetObject.transform.lossyScale;
                 Camera camera = EditorCamera.Instance.Camera;
@@ -165,13 +176,13 @@ namespace RTEditor
 
                 float t;
                 if (_dragStartData.DragPlane.Raycast(ray, out t))
-                {                  
+                {
                     Vector3 hitPoint = ray.GetPoint(t);
                     float distFromPivotPlane = _dragStartData.PivotPlane.GetDistanceToPoint(hitPoint);
 
                     float currentSize = _dragStartData.TargetOOBB.ScaledSize[_dragStartData.ScaleAxisIndex];
                     float newSize = Mathf.Abs(!_dragStartData.ScaleFromCenter ? distFromPivotPlane : 2.0f * distFromPivotPlane);
-                    if(_enableStepSnappingShortcut.IsActive())
+                    if (_enableStepSnappingShortcut.IsActive())
                     {
                         float realNrSteps = newSize / _snapStepInWorldUnits;
                         int intSteps = (int)realNrSteps;
@@ -184,7 +195,6 @@ namespace RTEditor
                     targetObjScale[scaleAxisIndex] = _dragStartData.TargetObjectScale[scaleAxisIndex] * scaleFactor;
                     if (Mathf.Sign(targetObjScale[scaleAxisIndex]) != scaleSign) targetObjScale[scaleAxisIndex] *= -1.0f;
                     _targetObject.SetAbsoluteScale(targetObjScale);
-                    Debug.Log(targetObjScale);
                     Transform targetTransform = _targetObject.transform;
                     Vector3 scaleFactorVec = Vector3.one;
                     scaleFactorVec[scaleAxisIndex] = scaleFactor * (distFromPivotPlane < 0.0f ? -1.0f : 1.0f);
@@ -193,7 +203,7 @@ namespace RTEditor
                     float prjUp = Vector3.Dot(targetTransform.up, _dragStartData.FromPivotToObjectPos);
                     float prjLook = Vector3.Dot(targetTransform.forward, _dragStartData.FromPivotToObjectPos);
 
-                    
+
                     _targetObject.transform.position = _dragStartData.ScalePivot +
                                                        targetTransform.right * prjRight * scaleFactorVec[0] +
                                                        targetTransform.up * prjUp * scaleFactorVec[1] +
@@ -209,9 +219,9 @@ namespace RTEditor
             //if (Camera.current != EditorCamera.Instance.Camera) return;
             base.OnRenderObject();
             if (_targetObject == null) return;
-  
-            GLPrimitives.DrawWireOOBB(_targetOOBB, _lineColor, MaterialPool.Instance.GLLine);  
-            foreach(var dragHandle in _dragHandles)
+
+            GLPrimitives.DrawWireOOBB(_targetOOBB, _lineColor, MaterialPool.Instance.GLLine);
+            foreach (var dragHandle in _dragHandles)
             {
                 if (!dragHandle.IsVisible) continue;
 
@@ -226,19 +236,25 @@ namespace RTEditor
         {
             if (ControlledObjects == null) return null;
             List<GameObject> gameObjects = new List<GameObject>(ControlledObjects);
-            if (gameObjects.Count != 1 || !gameObjects[0].HasMesh()) return null;
-           
+            if (gameObjects.Count != 1)
+            {
+                if (!gameObjects[0].HasMesh() && !gameObjects[0].HasBoxCollider())
+                {
+                    return null;
+                }
+            }
             return gameObjects[0];
         }
 
         private void UpdateTargetOOBB()
         {
             _targetOOBB = null;
-            if(_targetObject != null)
+            if (_targetObject != null)
             {
                 _targetOOBB = _targetObject.GetWorldOrientedBox();
                 _targetOOBB.Scale = _targetOOBB.Scale.GetVectorWithAbsComponents();
             }
+            FlushTrGizmo();
         }
 
         private void UpdateDragHandles()
@@ -250,7 +266,7 @@ namespace RTEditor
             Plane cameraNearPlane = camera.GetNearPlane();
             List<BoxFace> allBoxFaces = BoxFaces.GetAll();
 
-            foreach(BoxFace face in allBoxFaces)
+            foreach (BoxFace face in allBoxFaces)
             {
                 Vector3 boxFaceCenter = _targetOOBB.GetBoxFaceCenter(face);
                 Vector2 screenFaceCenter = camera.WorldToScreenPoint(boxFaceCenter);
@@ -264,7 +280,7 @@ namespace RTEditor
         private int GetIndexOfHoveredDragHandle()
         {
             Vector2 devicePos;
-            if(!InputDevice.Instance.GetPosition(out devicePos)) return -1;
+            if (!InputDevice.Instance.GetPosition(out devicePos)) return -1;
 
             List<BoxFace> allBoxFaces = BoxFaces.GetAll();
             foreach (BoxFace face in allBoxFaces)

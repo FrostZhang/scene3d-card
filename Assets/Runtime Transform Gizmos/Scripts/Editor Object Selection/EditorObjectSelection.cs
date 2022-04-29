@@ -553,8 +553,9 @@ namespace RTEditor
         private bool CanOperate()
         {
             return gameObject.activeSelf && enabled &&
-                   !EditorGizmoSystem.Instance.IsActiveGizmoReadyForObjectManipulation() &&
-                   !SceneGizmo.Instance.IsHovered();
+                   !EditorGizmoSystem.Instance.IsActiveGizmoReadyForObjectManipulation()
+                   //Asher 本项目不显示SceneGizmo
+                   /*&&!SceneGizmo.Instance.IsHovered()*/;
         }
 
         /// <summary>
@@ -563,8 +564,12 @@ namespace RTEditor
         private bool CanPerformMultiSelect()
         {
             return ObjectSelectionSettings.CanMultiSelect &&
-                   gameObject.activeSelf && enabled && InputDevice.Instance.IsPressed(0) && !SceneGizmo.Instance.IsHovered() &&
-                   _objectSelectionRectangle.IsVisible;
+                   gameObject.activeSelf 
+                   && enabled 
+                   && InputDevice.Instance.IsPressed(0)
+                   //Asher SceneGizmo   本项目不适用
+                   //&& !SceneGizmo.Instance.IsHovered()
+                   &&_objectSelectionRectangle.IsVisible;
         }
 
         /// <summary>
@@ -622,7 +627,7 @@ namespace RTEditor
         {
             // Remove null or inactive object references. Inactive objects can not be selected. Null object
             // entries can become available when objects are deleted from the scene.
-            RemoveNullAndInactiveObjectRefs();
+            //RemoveNullAndInactiveObjectRefs();
 
             //if (DeleteSelectionShortcut.IsActiveInCurrentFrame())
             //{
@@ -717,29 +722,35 @@ namespace RTEditor
                     }
                 }
                 else
-                // The user clicked in the air, so we clear the selection
-                if (!_multiDeselectShortcut.IsActive() && !_appendToSelectionShortcut.IsActive()) ClearSelection(true, ObjectDeselectActionType.ClearClickAir);
+                {
+                    if (GameObjectClicked != null) GameObjectClicked(null);
+                }
+                //Asher 用不上
+                //else
+                //// The user clicked in the air, so we clear the selection
+                //if (!_multiDeselectShortcut.IsActive() && !_appendToSelectionShortcut.IsActive()) ClearSelection(true, ObjectDeselectActionType.ClearClickAir);
 
-                // When the left mouse button is pressed, we have to prepare for the possibility that the user
-                // is trying to select objects using the object selection shape. So we will take a snapshot of
-                // the current selection here just in case. When the button is released, another snapshot will
-                // be taken and these 2 snapshots will be used to take appropriate action.
-                _multiSelectPreChangeSnapshot = new ObjectSelectionSnapshot();
-                _multiSelectPreChangeSnapshot.TakeSnapshot();
+                //// When the left mouse button is pressed, we have to prepare for the possibility that the user
+                //// is trying to select objects using the object selection shape. So we will take a snapshot of
+                //// the current selection here just in case. When the button is released, another snapshot will
+                //// be taken and these 2 snapshots will be used to take appropriate action.
+                //_multiSelectPreChangeSnapshot = new ObjectSelectionSnapshot();
+                //_multiSelectPreChangeSnapshot.TakeSnapshot();
             }
 
-            Vector2 inputDevPos;
-            if (!InputDevice.Instance.GetPosition(out inputDevPos)) return;
+            //Asher 用不上
+            //Vector2 inputDevPos;
+            //if (!InputDevice.Instance.GetPosition(out inputDevPos)) return;
 
-            // Adjust the selection shape's corners
-            ObjectSelectionShape objectSelectionShape = GetObjectSelectionShape();
-            objectSelectionShape.SetEnclosingRectBottomRightPoint(inputDevPos);
-            objectSelectionShape.SetEnclosingRectTopLeftPoint(inputDevPos);
+            //// Adjust the selection shape's corners
+            //ObjectSelectionShape objectSelectionShape = GetObjectSelectionShape();
+            //objectSelectionShape.SetEnclosingRectBottomRightPoint(inputDevPos);
+            //objectSelectionShape.SetEnclosingRectTopLeftPoint(inputDevPos);
 
-            // When the first button of the input device is pressed, we will show the selection shape
-            // because the user may later start dragging the device (mouse or touch).
-            if (CanOperate()) objectSelectionShape.IsVisible = true;
-            else objectSelectionShape.IsVisible = false;
+            //// When the first button of the input device is pressed, we will show the selection shape
+            //// because the user may later start dragging the device (mouse or touch).
+            //if (CanOperate()) objectSelectionShape.IsVisible = true;
+            //else objectSelectionShape.IsVisible = false;
         }
 
         /// <summary>

@@ -104,8 +104,6 @@ public class House : MonoBehaviour
         }
     }
 
-
-
     private void AnsSun(string va)
     {
         float value;
@@ -187,7 +185,7 @@ public class House : MonoBehaviour
         StartCoroutine(CreatStand("sofa2", "-4.225,-2.11,0,0,-90,0,1.3,1.3,1.3", null));
         StartCoroutine(CreatStand("sofa2", "-4.225,-1.25,0,0,-90,0,1.3,1.3,1.3", null));
         StartCoroutine(CreatStand("sofa2", "-4.225,-0.387,0,0,-90,0,1.3,1.3,1.3", null));
-        StartCoroutine(CreatStand("wc2", "1.648,2.413,0,0,90,0,1,1,1", null));
+        StartCoroutine(CreatStand("wc2", "1.648,2.413,0,-90,90,0,1,1,1", null));
         StartCoroutine(CreatStand("mirror", "2.11,1.318,0.613,0,-90,0,0.6,0.57,1", null));
 
         StartCoroutine(CreatFloor("wood", "0.1962,-2.06,2.77,3.418,0.5,0.5", 1, null));

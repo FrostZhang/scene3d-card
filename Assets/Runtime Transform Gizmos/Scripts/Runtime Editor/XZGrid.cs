@@ -59,7 +59,7 @@ namespace RTEditor
 
         public void Render()
         {
-            if (!_isVisible || Camera.current != EditorCamera.Instance.Camera) return;
+            //if (!_isVisible || Camera.current != EditorCamera.Instance.Camera) return;
 
             Camera editorCamera = EditorCamera.Instance.Camera;
             Transform cameraTransform = editorCamera.transform;

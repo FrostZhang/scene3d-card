@@ -145,7 +145,6 @@ namespace RTEditor
             if (index >= Input.touchCount) return false;
             return Input.GetTouch(index).phase == TouchPhase.Began;
 #else
-            Debug.Log(Input.GetMouseButtonDown(index));
             return Input.GetMouseButtonDown(index);
             #endif
         }

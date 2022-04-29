@@ -123,27 +123,29 @@ namespace RTEditor
             */
         }
 
-        private void Update()
-        {
-            if (!Application.isPlaying) return;
-            EditorScene.Instance.Update(); 
+        //Asher 不渲染_xzGrid
+        //private void Update()
+        //{
+        //    if (!Application.isPlaying) return;
+        //    EditorScene.Instance.Update(); 
 
-            float scrollValue = Input.GetAxis("Mouse ScrollWheel");
-            if(scrollValue != 0.0f)
-            {
-                if (_scrollGridUpDownStepShortcut.IsActive()) XZGrid.ScrollUpDownStep(scrollValue);
-                else if (_scrollGridUpDownShortcut.IsActive()) XZGrid.ScrollUpDown(scrollValue);
-            }
-        }
+        //    float scrollValue = Input.GetAxis("Mouse ScrollWheel");
+        //    if(scrollValue != 0.0f)
+        //    {
+        //        if (_scrollGridUpDownStepShortcut.IsActive()) XZGrid.ScrollUpDownStep(scrollValue);
+        //        else if (_scrollGridUpDownShortcut.IsActive()) XZGrid.ScrollUpDown(scrollValue);
+        //    }
+        //}
 
-        private void OnRenderObject()
-        {
-            if (!Application.isPlaying) return;
-            _xzGrid.Render();
-        }
+        //Asher 不渲染_xzGrid
+        //private void OnRenderObject()
+        //{
+        //    if (!Application.isPlaying) return;
+        //    _xzGrid.Render();
+        //}
         #endregion
 
-        #if UNITY_EDITOR
+#if UNITY_EDITOR
         #region Menu Items
         /// <summary>
         /// Creates all the necessary subsystems which are needed for the runtime editor.

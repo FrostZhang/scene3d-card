@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -11,8 +12,8 @@ public class Help : MonoBehaviour
     Dictionary<string, AssetBundle> bundles;
     Dictionary<string, Color> colors;
 
-    string streamingAssetsPath => Application.streamingAssetsPath.Replace("lovelace/","");
-    private void Awake() 
+    string streamingAssetsPath => Application.streamingAssetsPath.Replace("lovelace/", "");
+    private void Awake()
     {
         Instance = this;
         works = new List<string>();
@@ -44,7 +45,7 @@ public class Help : MonoBehaviour
         }
         var path = $"{streamingAssetsPath}/{root}/{dk}";
         System.Uri uri = new System.Uri(path);
-        yield return Request(dk, uri);
+        yield return ABRequest(dk, uri);
     }
 
     /// <summary>
@@ -60,7 +61,7 @@ public class Help : MonoBehaviour
         return null;
     }
 
-    IEnumerator Request(string dk, System.Uri uri)
+    IEnumerator ABRequest(string dk, System.Uri uri)
     {
         works.Add(dk);
         using (var request = UnityWebRequestAssetBundle.GetAssetBundle(uri))
@@ -77,6 +78,32 @@ public class Help : MonoBehaviour
             }
         }
         works.Remove(dk);
+    }
+
+    public async Task<string> TextRequest(bool isstreamingAssets, string path)
+    {
+        System.Uri uri;
+        if (isstreamingAssets)
+        {
+            uri = new System.Uri(Application.streamingAssetsPath + "/" + path);
+        }
+        else
+        {
+            uri = new System.Uri(path);
+        }
+        using (var request = new UnityWebRequest(uri))
+        {
+            await request.SendWebRequest();
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("’“≤ªµΩµÿ÷∑:" + path);
+            }
+            else
+            {
+                 return request.downloadHandler.text;
+            }
+        }
+        return null;
     }
 
     public bool TryColor(string cstr, out Color va)

@@ -29,13 +29,13 @@ namespace RTEditor
         }
 #endif
 
-        public static bool RaycastBox(this GameObject gameObject, Ray ray, out GameObjectRayHit objectRayHit)
+        public static bool RaycastBox(this GameObject gameObject, Ray ray, out GameObjectRayHit objectRayHit, float distance = 0)
         {
             objectRayHit = null;
             OrientedBox objectWorldOrientedBox = gameObject.GetWorldOrientedBox();
 
             OrientedBoxRayHit objectBoxRayHit;
-            if (objectWorldOrientedBox.Raycast(ray, out objectBoxRayHit))
+            if (objectWorldOrientedBox.Raycast(ray, out objectBoxRayHit, distance))
                 objectRayHit = new GameObjectRayHit(ray, gameObject, objectBoxRayHit, null, null, null);
 
             return objectRayHit != null;
@@ -485,6 +485,15 @@ namespace RTEditor
             //if (mesh != null) return new OrientedBox(new Box(gameObject.GetComponent<SkinnedMeshRenderer>().localBounds), gameObject.transform);
             if (mesh != null) return new OrientedBox(new Box(mesh.bounds), gameObject.transform);
 
+            var bc = gameObject.GetComponent<BoxCollider>();
+            //if (mesh != null) return new OrientedBox(new Box(gameObject.GetComponent<SkinnedMeshRenderer>().localBounds), gameObject.transform);
+            if (bc != null)
+            {
+                var bs = bc.bounds;
+                bs.center = Vector3.zero;
+                return new OrientedBox(new Box(bs), gameObject.transform);
+            }
+
             return OrientedBox.GetInvalid();
         }
 
@@ -774,6 +783,11 @@ namespace RTEditor
         {
             SkinnedMeshRenderer skinnedMeshRenderer = gameObject.GetComponent<SkinnedMeshRenderer>();
             return skinnedMeshRenderer != null && skinnedMeshRenderer.sharedMesh != null;
+        }
+
+        public static bool HasBoxCollider(this GameObject gameObject)
+        {
+            return gameObject.GetComponent<BoxCollider>();
         }
 
         public static bool HasTerrain(this GameObject gameObject)

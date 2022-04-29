@@ -192,7 +192,7 @@ public class PropPanle : MonoBehaviour
     {
         for (int i = 0; i < index.Length; i++)
         {
-            fs[index[i]].SetTextWithoutNotify(values[index[i]].ToString("f2"));
+            fs[index[i]].SetTextWithoutNotify(values[i].ToString("f2"));
         }
     }
 }

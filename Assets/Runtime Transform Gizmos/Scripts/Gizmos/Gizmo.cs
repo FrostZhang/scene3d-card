@@ -452,16 +452,15 @@ namespace RTEditor
         protected virtual void Update()
         {
             // Throw any necessary mouse button input events
-            //if (InputDevice.Instance.WasPressedInCurrentFrame(0))
-            //{
-            //    Debug.Log("InputDevice WasPressedInCurrentFrame 0");
-            //    OnInputDeviceFirstButtonDown();
-            //}
-            if (Input.GetMouseButtonDown(0))
+            if (InputDevice.Instance.WasPressedInCurrentFrame(0))
             {
-                Debug.Log(11111);
                 OnInputDeviceFirstButtonDown();
             }
+            //if (Input.GetMouseButtonDown(0))
+            //{
+            //    Debug.Log(11111);
+            //    OnInputDeviceFirstButtonDown();
+            //}
             if (InputDevice.Instance.WasReleasedInCurrentFrame(0)) OnInputDeviceFirstButtonUp();
             if (InputDevice.Instance.WasMoved()) OnInputDeviceMoved();
 

@@ -24,17 +24,17 @@ namespace RTEditor
         public Vector3 ScaledSize { get { return Vector3.Scale(_modelSpaceBox.Size, Scale); } }
         public Quaternion Rotation { get { return _rotation; } set { _rotation = value; } }
         public Vector3 Center { get { return _center; } set { _center = value; } }
-        public Matrix4x4 TransformMatrix     
-        { 
-            get 
+        public Matrix4x4 TransformMatrix
+        {
+            get
             {
                 Vector3 translation = Center - Rotation * Vector3.Scale(_modelSpaceBox.Center, Scale);
                 return Matrix4x4.TRS(translation, Rotation, Scale);
-            } 
+            }
         }
-        public bool AllowNegativeScale 
-        { 
-            get { return _allowNegativeScale; }  
+        public bool AllowNegativeScale
+        {
+            get { return _allowNegativeScale; }
             set
             {
                 _allowNegativeScale = value;
@@ -111,7 +111,7 @@ namespace RTEditor
         public void Encapsulate(OrientedBox orientedBox)
         {
             List<Vector3> orientedBoxPoints = orientedBox.GetCenterAndCornerPoints();
-            foreach(Vector3 point in orientedBoxPoints)
+            foreach (Vector3 point in orientedBoxPoints)
             {
                 AddPoint(point);
             }
@@ -151,16 +151,16 @@ namespace RTEditor
             A[0] = transformMatrix.GetAxis(0);
             A[1] = transformMatrix.GetAxis(1);
             A[2] = transformMatrix.GetAxis(2);
-        
+
             Matrix4x4 otherTransformMatrix = otherBox.TransformMatrix;
             B[0] = otherTransformMatrix.GetAxis(0);
             B[1] = otherTransformMatrix.GetAxis(1);
             B[2] = otherTransformMatrix.GetAxis(2);
 
             // Note: We're using column major matrices.
-            for(int row = 0; row < 3; ++row)
+            for (int row = 0; row < 3; ++row)
             {
-                for(int column = 0; column < 3; ++column)
+                for (int column = 0; column < 3; ++column)
                 {
                     R[row, column] = Vector3.Dot(A[row], B[column]);
                 }
@@ -173,9 +173,9 @@ namespace RTEditor
 
             // Construct absolute rotation error matrix to account for cases when 2 local axes are parallel
             const float epsilon = 1e-4f;
-            for(int row = 0; row < 3; ++row)
+            for (int row = 0; row < 3; ++row)
             {
-                for(int column = 0; column < 3; ++column)
+                for (int column = 0; column < 3; ++column)
                 {
                     absR[row, column] = Mathf.Abs(R[row, column]) + epsilon;
                 }
@@ -185,14 +185,14 @@ namespace RTEditor
             Vector3 t = new Vector3(Vector3.Dot(trVector, A[0]), Vector3.Dot(trVector, A[1]), Vector3.Dot(trVector, A[2]));
 
             // Test extents projection on this box's local axes (A0, A1, A2)
-            for(int axisIndex = 0; axisIndex < 3; ++axisIndex)
+            for (int axisIndex = 0; axisIndex < 3; ++axisIndex)
             {
                 float bExtents = BEx[0] * absR[axisIndex, 0] + BEx[1] * absR[axisIndex, 1] + BEx[2] * absR[axisIndex, 2];
                 if (Mathf.Abs(t[axisIndex]) > AEx[axisIndex] + bExtents) return false;
             }
 
             // Test extents projection on the other box's local axes (B0, B1, B2)
-            for(int axisIndex = 0; axisIndex < 3; ++axisIndex)
+            for (int axisIndex = 0; axisIndex < 3; ++axisIndex)
             {
                 float aExtents = AEx[0] * absR[0, axisIndex] + AEx[1] * absR[1, axisIndex] + AEx[2] * absR[2, axisIndex];
                 if (Mathf.Abs(t[0] * R[0, axisIndex] +
@@ -255,7 +255,7 @@ namespace RTEditor
         {
             List<Vector3> otherBoxPoints = otherBox.GetCenterAndCornerPoints();
             List<Plane> allFacePlanes = GetBoxFacePlanes();
-            foreach(Plane plane in allFacePlanes)
+            foreach (Plane plane in allFacePlanes)
             {
                 if (PlaneExtensions.AreAllPointsInFrontOrOnPlane(plane, otherBoxPoints)) return true;
             }
@@ -270,18 +270,18 @@ namespace RTEditor
             Vector3 scaledExtents = ScaledExtents;
 
             Vector3[] localAxes = TransformMatrix.GetAllAxes();
-            for(int axisIndex = 0; axisIndex < 3; ++axisIndex)
+            for (int axisIndex = 0; axisIndex < 3; ++axisIndex)
             {
                 Vector3 localAxis = localAxes[axisIndex];
                 float axisExtent = scaledExtents[axisIndex];
 
                 float projection = Vector3.Dot(localAxis, fromCenterToPoint);
-                if (projection > axisExtent) projection =axisExtent;
+                if (projection > axisExtent) projection = axisExtent;
                 else if (projection < -axisExtent) projection = -axisExtent;
 
                 closestPoint += localAxis * projection;
             }
-        
+
             return closestPoint;
         }
 
@@ -344,7 +344,7 @@ namespace RTEditor
             List<Plane> facePlanes = new List<Plane>();
             Array boxFaces = Enum.GetValues(typeof(BoxFace));
 
-            foreach(BoxFace boxFace in boxFaces)
+            foreach (BoxFace boxFace in boxFaces)
             {
                 facePlanes.Add(GetBoxFacePlane(boxFace));
             }
@@ -376,7 +376,7 @@ namespace RTEditor
             List<Plane> facePlanes = GetBoxFacePlanes();
             int planeIndex;
             PlaneExtensions.GetPlaneWhichFacesNormal(facePlanes, normal, out planeIndex);
-            
+
             return (BoxFace)planeIndex;
         }
 
@@ -401,17 +401,20 @@ namespace RTEditor
             return Vector3Extensions.GetTransformedPoints(modelSpacePoints, TransformMatrix);
         }
 
-        public bool Raycast(Ray ray, out OrientedBoxRayHit boxRayHit)
+        public bool Raycast(Ray ray, out OrientedBoxRayHit boxRayHit, float dis = 0)
         {
             boxRayHit = null;
-            float t;
-
-            if(Raycast(ray, out t))
+            float t = 0;
+            if (Raycast(ray, out t))
             {
                 boxRayHit = new OrientedBoxRayHit(ray, t, this);
                 return true;
             }
-          
+            else
+            {
+                boxRayHit = new OrientedBoxRayHit(ray, dis, this);
+                return true;
+            }
             return false;
         }
 
@@ -419,7 +422,7 @@ namespace RTEditor
         {
             Matrix4x4 transformMatrix = TransformMatrix;
             Ray modelSpaceRay = ray.InverseTransform(transformMatrix);
-     
+
             float modelSpaceT;
             if (_modelSpaceBox.Raycast(modelSpaceRay, out modelSpaceT))
             {

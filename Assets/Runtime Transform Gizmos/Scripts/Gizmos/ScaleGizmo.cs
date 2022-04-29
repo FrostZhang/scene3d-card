@@ -439,7 +439,7 @@ namespace RTEditor
         /// </summary>
         protected override void OnRenderObject()
         {
-            if (Camera.current != EditorCamera.Instance.Camera) return;
+            //if (Camera.current != EditorCamera.Instance.Camera) return;
             base.OnRenderObject();
 
             // Draw the scale boxes

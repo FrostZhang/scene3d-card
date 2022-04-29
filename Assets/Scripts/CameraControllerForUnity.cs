@@ -223,11 +223,11 @@ public class CameraControllerForUnity : MonoBehaviour
         }
         else if (mode == Mode.moba)
         {
-            if (Input.GetMouseButton(2) || (Input.GetMouseButton(0) && RTEditor.EditorGizmoSystem.Instance.ActiveGizmo ==null))
+            if (Input.GetMouseButton(2) || (Input.GetMouseButton(0) && canUseMouseCenter))
             {
-            //}
-            //if (canUseMouseCenter && (Input.GetMouseButton(0) || Input.GetMouseButton(2)))
-            //{
+                //}
+                //if (canUseMouseCenter && (Input.GetMouseButton(0) || Input.GetMouseButton(2)))
+                //{
                 mousey = -mousey;
                 mousex = -mousex;
                 if (came.orthographic)
