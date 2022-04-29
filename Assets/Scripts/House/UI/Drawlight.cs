@@ -39,8 +39,8 @@ public class Drawlight : MonoBehaviour
             {
                 if (item.isOn)
                 {
-                    Reconstitution.Instance.CloseRTEditor();
                     lightC = item.targetGraphic.color;
+                    Reconstitution.Instance.CloseRTEditor();
                     CameraControllerForUnity.Instance.canUseMouseCenter = false;
                     draw = true;
                     break;

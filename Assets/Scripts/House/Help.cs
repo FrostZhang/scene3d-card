@@ -80,6 +80,32 @@ public class Help : MonoBehaviour
         works.Remove(dk);
     }
 
+    public async Task<Texture2D> TextureRequest(bool isstreamingAssets, string path)
+    {
+        System.Uri uri;
+        if (isstreamingAssets)
+        {
+            uri = new System.Uri(streamingAssetsPath + "/" + path);
+        }
+        else
+        {
+            uri = new System.Uri(path);
+        }
+        using (var request = UnityWebRequestTexture.GetTexture(uri))
+        {
+            await request.SendWebRequest();
+            if (request.result != UnityWebRequest.Result.Success)
+            {
+                Debug.LogError("’“≤ªµΩµÿ÷∑:" + path);
+            }
+            else
+            {
+                return DownloadHandlerTexture.GetContent(request);
+            }
+        }
+        return null;
+    }
+
     public async Task<string> TextRequest(bool isstreamingAssets, string path)
     {
         System.Uri uri;
@@ -102,7 +128,14 @@ public class Help : MonoBehaviour
             }
             else
             {
-                 return request.downloadHandler.text;
+                if (request.downloadHandler != null)
+                {
+                    return request.downloadHandler.text;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
         return null;

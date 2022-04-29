@@ -521,6 +521,7 @@ public class House : MonoBehaviour
         return tr.transform;
     }
 
+    /// <summary>xy wht a </summary>
     public async Task<Transform> CreatWall(string cusname, string wall, string color)
     {
         if (string.IsNullOrEmpty(wall)) return null;

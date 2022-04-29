@@ -7,9 +7,9 @@ using UnityEngine.UI;
 public class CreatPanel : MonoBehaviour
 {
     public static CreatPanel Instance;
-    public Image icon;
+    public RawImage icon;
     public Transform btns, panels;
-    Dictionary<string, List<Ziyuan>> zdic;
+    public Dictionary<string, List<Ziyuan>> zdic { get; private set; }
     public class Ziyuan
     {
         public string root;
@@ -95,10 +95,6 @@ public class CreatPanel : MonoBehaviour
                         }
                     }
                 });
-            }
-            foreach (var item in zdic)
-            {
-                Debug.Log(item.Value);
             }
         }
     }

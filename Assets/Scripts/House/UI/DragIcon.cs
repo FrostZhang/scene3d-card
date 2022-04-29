@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,14 +7,17 @@ using UnityEngine.UI;
 
 public class DragIcon : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
 {
-    public Image image;
-    Image icon;
+    public RawImage targetGraphic;
+    RawImage icon;
+    public Action BeginDrag;
+    public Action<PointerEventData> EndDrag;
+
     public void OnBeginDrag(PointerEventData eventData)
     {
         icon = CreatPanel.Instance.icon;
-        icon.sprite = image.sprite;
+        icon.texture = targetGraphic.texture;
         icon.gameObject.SetActive(true);
-        CameraControllerForUnity.Instance.canUseMouseCenter = false;
+        BeginDrag?.Invoke();
     }
 
     public void OnDrag(PointerEventData eventData)
@@ -24,7 +28,7 @@ public class DragIcon : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHan
     public void OnEndDrag(PointerEventData eventData)
     {
         icon.gameObject.SetActive(false);
-        CameraControllerForUnity.Instance.canUseMouseCenter = true;
+        EndDrag?.Invoke(eventData);
     }
 
     // Start is called before the first frame update
