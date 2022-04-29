@@ -576,6 +576,7 @@ public class House : MonoBehaviour
                     if (Time.time - lastDownT > 1 && Vector3.Magnitude(Input.mousePosition - lastDownpos) < 9)
                     {
                         entity.LongClick();
+                        lastDownT = Time.time + 30;
                     }
                 }
                 else if (Input.GetMouseButtonUp(0))
