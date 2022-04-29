@@ -39,6 +39,17 @@ public class Reconstitution : MonoBehaviour
         RTEditor.EditorGizmoSystem.Instance.TranslationGizmo.GizmoDragUpdate += TranslationGizmo_GizmoDragUpdate;
         RTEditor.EditorGizmoSystem.Instance.VolumeScaleGizmo.GizmoDragUpdate += VolumeScaleGizmo_GizmoDragUpdate; ;
         Invoke("CloseRTEditor", 1);
+
+        PropPanle.Instance.Ondel = OnDelete;
+    }
+
+    private void OnDelete()
+    {
+        CameraControllerForUnity.Instance.canUseMouseCenter = true;
+        RTEditor.EditorObjectSelection.Instance.ClearSelection(false);
+        House.Instance.Delete(lasthit);
+        PropPanle.Instance.Show(false);
+        lasthit = null;
     }
 
     private void VolumeScaleGizmo_GizmoDragUpdate(RTEditor.Gizmo gizmo)
@@ -52,13 +63,15 @@ public class Reconstitution : MonoBehaviour
     }
 
 
-    void OpenRTEditor()
+    public void OpenRTEditor()
     {
         RTEditor.RuntimeEditorApplication.Instance.gameObject.SetActive(true);
     }
 
-    void CloseRTEditor()
+    public void CloseRTEditor()
     {
+        PropPanle.Instance.Show(false);
+        RTEditor.EditorObjectSelection.Instance.ClearSelection(false);
         RTEditor.RuntimeEditorApplication.Instance.gameObject.SetActive(false);
     }
 
@@ -68,6 +81,7 @@ public class Reconstitution : MonoBehaviour
         {
             CameraControllerForUnity.Instance.canUseMouseCenter = true;
             RTEditor.EditorObjectSelection.Instance.ClearSelection(false);
+            PropPanle.Instance.Show(false);
         }
     }
 
@@ -101,13 +115,13 @@ public class Reconstitution : MonoBehaviour
                     if (c) c.enabled = false;
                 }
             }
-            PropPanle.Instance.Show(false);
-            BoundsPanel.Instance.Bingding(null, null);
-            RTEditor.EditorObjectSelection.Instance.ClearSelection(false);
+            //BoundsPanel.Instance.Bingding(null, null);
             CloseRTEditor();
+            CreatPanel.Instance.Show(false);
             return;
         }
         isEdit = true;
+        CreatPanel.Instance.Show(true);
         rigTr.position = new Vector3(0, -1, 0);
         CameraControllerForUnity.Instance.MobaFollow_orthogonal(rigTr, new Vector2(90, 0), 15, 5);
         CameraControllerForUnity.Instance.orthographicSizeLimit = new Vector2(2, 10);

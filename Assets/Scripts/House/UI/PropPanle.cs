@@ -12,8 +12,10 @@ public class PropPanle : MonoBehaviour
     public Transform v2p;
     public Transform v3p;
     public ScrollRect scroll;
+    public Button delete;
     List<Transform> trs;
     List<InputField> fs;
+    public Action Ondel;
     void Start()
     {
         Instance = this;
@@ -23,6 +25,10 @@ public class PropPanle : MonoBehaviour
         v2p.gameObject.SetActive(false);
         v3p.gameObject.SetActive(false);
         gameObject.SetActive(false);
+        delete.onClick.AddListener(() =>
+        {
+            Ondel?.Invoke();
+        });
     }
 
     void OnEnable()

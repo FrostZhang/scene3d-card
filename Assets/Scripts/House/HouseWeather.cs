@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class HouseWeather : HassEntity
@@ -168,12 +169,11 @@ public class HouseWeather : HassEntity
         fmain.startColor = c;
     }
 
-    public IEnumerator CreatSky(string str)
+    public async Task CreatSky(string str)
     {
-        if (string.IsNullOrWhiteSpace(str) || skyname == str)
-            yield break;
+        if (string.IsNullOrWhiteSpace(str) || skyname == str) return;
         skyname = str;
-        yield return Help.Instance.ABLoad("sky", str);
+        await Help.Instance.ABLoad("sky", str);
         var ab = Help.Instance.GetBundle("sky", str);
         if (ab)
         {

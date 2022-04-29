@@ -564,12 +564,12 @@ namespace RTEditor
         private bool CanPerformMultiSelect()
         {
             return ObjectSelectionSettings.CanMultiSelect &&
-                   gameObject.activeSelf 
-                   && enabled 
+                   gameObject.activeSelf
+                   && enabled
                    && InputDevice.Instance.IsPressed(0)
                    //Asher SceneGizmo   本项目不适用
                    //&& !SceneGizmo.Instance.IsHovered()
-                   &&_objectSelectionRectangle.IsVisible;
+                   && _objectSelectionRectangle.IsVisible;
         }
 
         /// <summary>
@@ -1259,51 +1259,16 @@ namespace RTEditor
             JustSelect();
         }
 
-        public void DisableSelect()
-        {
-            ObjectSelectionSettings.CanClickSelect = false;
-            EditorGizmoSystem.Instance.TranslationGizmo.enabled = false;
-            EditorGizmoSystem.Instance.RotationGizmo.enabled = false;
-            EditorGizmoSystem.Instance.ScaleGizmo.enabled = false;
-            EditorGizmoSystem.Instance.VolumeScaleGizmo.enabled = false;
-        }
-
         public GizmoType GetGizmoType()
         {
             return EditorGizmoSystem.Instance.ActiveGizmoType;
         }
 
-        public void ChangeGizmoType(GizmoType type)
-        {
-            EditorGizmoSystem.Instance.ActiveGizmoType = type;
-            switch (type)
-            {
-                case GizmoType.Translation:
-                    EditorGizmoSystem.Instance.TranslationGizmo.enabled = true;
-                    break;
-                case GizmoType.Rotation:
-                    EditorGizmoSystem.Instance.RotationGizmo.enabled = true;
-                    break;
-                case GizmoType.Scale:
-                    EditorGizmoSystem.Instance.ScaleGizmo.enabled = true;
-                    break;
-                case GizmoType.VolumeScale:
-                    EditorGizmoSystem.Instance.VolumeScaleGizmo.enabled = true;
-                    break;
-                default:
-                    break;
-            }
-        }
-
         public void FixedSelectObj(Transform tr, GizmoType gizmoType = GizmoType.Translation)
         {
-            //if (tr.GetComponentInChildren<MeshFilter>())
-            {
-                ClearSelection(false);
-                AddObjectToSelection(tr.gameObject, false);
-                ObjectSelectionSettings.CanClickSelect = false;
-                ChangeGizmoType(gizmoType);
-            }
+            ClearSelection(false);
+            AddObjectToSelection(tr.gameObject, false);
+            EditorGizmoSystem.Instance.ActiveGizmoType = gizmoType;
         }
     }
 }

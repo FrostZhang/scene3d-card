@@ -66,6 +66,7 @@ public class CameraControllerForUnity : MonoBehaviour
     float normalnearClipPlane;
     protected Camera came;
     private Transform ca;
+    public Transform CaTr { get => ca; }
     private Vector3 triniPivot;
     protected virtual void Awake()
     {
@@ -91,6 +92,8 @@ public class CameraControllerForUnity : MonoBehaviour
     float ycurrentVelocity;
     float xcurrentVelocity;
     Vector3 lastMousepos;
+
+
     void LateUpdate()
     {
         if (!enableUIInput && EventSystem.current.IsPointerOverGameObject())

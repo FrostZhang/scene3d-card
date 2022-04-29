@@ -65,7 +65,7 @@ public class BundleHelp : EditorWindow
         {
             ZICHAN zi = new ZICHAN();
             zichans.Add(zi);
-            zi.dadapath = item.assetBundleName;
+            zi.datapath = item.assetBundleName;
             var n = item.assetNames[0];
             var o = AssetDatabase.LoadAssetAtPath<GameObject>(n);
             if (o)
@@ -94,7 +94,7 @@ public class BundleHelp : EditorWindow
 
     public class ZICHAN
     {
-        public string dadapath;
+        public string datapath;
         public string previewpath;
     }
 

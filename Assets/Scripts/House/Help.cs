@@ -85,7 +85,7 @@ public class Help : MonoBehaviour
         System.Uri uri;
         if (isstreamingAssets)
         {
-            uri = new System.Uri(Application.streamingAssetsPath + "/" + path);
+            uri = new System.Uri(streamingAssetsPath + "/" + path);
         }
         else
         {
@@ -93,6 +93,8 @@ public class Help : MonoBehaviour
         }
         using (var request = new UnityWebRequest(uri))
         {
+            DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
+            request.downloadHandler = dH;
             await request.SendWebRequest();
             if (request.result != UnityWebRequest.Result.Success)
             {
