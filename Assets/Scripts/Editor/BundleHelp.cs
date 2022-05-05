@@ -34,7 +34,7 @@ public class BundleHelp : EditorWindow
                     {
                         var uibuild = new AssetBundleBuild();
                         string n = file;
-                        n = n.Remove(0, n.IndexOf("Assets")).Replace("\\","/");
+                        n = n.Remove(0, n.IndexOf("Assets")).Replace("\\", "/");
                         var pwithe = (file.Remove(0, file.IndexOf("AssetsBundle") + "AssetsBundle".Length + 1));
                         var p = pwithe.Remove(pwithe.LastIndexOf(".")).Replace("\\", "/");
                         uibuild.assetBundleName = p + "_" + dirname + ".asherlinkdata";
@@ -67,7 +67,7 @@ public class BundleHelp : EditorWindow
             zichans.Add(zi);
             zi.datapath = item.assetBundleName;
             var n = item.assetNames[0];
-            var o = AssetDatabase.LoadAssetAtPath<GameObject>(n);
+            Object o = AssetDatabase.LoadAssetAtPath<Object>(n);
             if (o)
             {
                 var te = AssetPreview.GetAssetPreview(o);

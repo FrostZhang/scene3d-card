@@ -14,6 +14,10 @@ mergeInto(LibraryManager.library,
   {
 	 AsherLink3DLongClickMessage(Pointer_stringify(str));
   },
+  AsherLink3DConfig: function(str)
+  {
+	AsherLink3DConfig(Pointer_stringify(str));
+  },
   HelloString: function (str) 
   {
     window.alert(Pointer_stringify(str));

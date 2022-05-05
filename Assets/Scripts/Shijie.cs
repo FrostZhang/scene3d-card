@@ -33,6 +33,8 @@ public class Shijie : MonoBehaviour
     static extern void AsherLink3DLongClickMessage(string mes);
     [System.Runtime.InteropServices.DllImport("__Internal")]
     static extern void AsherLink3DWebLog(string mes);
+    [System.Runtime.InteropServices.DllImport("__Internal")]
+    static extern void AsherLink3DConfig(string mes);
 
     public static void Link3DStart()
     {
@@ -70,6 +72,14 @@ public class Shijie : MonoBehaviour
 #endif
     }
 
+    public static void Config3D(string mes)
+    {
+#if UNITY_EDITOR
+        Debug.Log(mes);
+#else
+        AsherLink3DConfig(mes);
+#endif
+    }
 }
 
 public class HssConfig

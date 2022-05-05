@@ -140,9 +140,8 @@ public class HassEntity : MonoBehaviour
     public virtual void ReconstitutionMode(bool enter)
     {
         if (!editC)
-        {
             editC = GetComponent<Collider>();
-            if (editC) editC.enabled = enter;
-        }
+        if (editC)
+            editC.enabled = enter;
     }
 }
