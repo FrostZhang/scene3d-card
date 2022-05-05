@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEditor;
 using UnityEngine;
 
@@ -51,11 +52,12 @@ public class BundleHelp : EditorWindow
             BuildTex(buildMap);
         }
 
-        ReadWall();
-
-        ReadLine();
+        //ReadWall();
+        //ReadLine();
 
         ReadPreviewTex();
+
+        ReadDependencie();
     }
 
     private async void BuildTex(List<AssetBundleBuild> buildMap)
@@ -175,4 +177,84 @@ public class BundleHelp : EditorWindow
             }
         }
     }
+
+    GameObject go;
+    Dictionary<Object, bool> dic;
+    void ReadDependencie()
+    {
+        go = EditorGUILayout.ObjectField(go, typeof(GameObject), true) as GameObject;
+        if (GUILayout.Button("·ÖÎöprefab"))
+        {
+            var ss = AssetDatabase.GetDependencies(AssetDatabase.GetAssetPath(go));
+            dic = new Dictionary<Object, bool>(10);
+            foreach (var item in ss)
+            {
+                var obj = AssetDatabase.LoadMainAssetAtPath(item);
+                dic.Add(obj, true);
+            }
+        }
+        if (dic != null)
+        {
+            var ks = dic.Keys.ToList();
+            if (GUILayout.Button("×ªÒÆÒÀÀµ"))
+            {
+                var path = EditorUtility.SaveFolderPanel("×ªÒÆ", System.Environment.CurrentDirectory + "/Assets", "ziyuan");
+                if (string.IsNullOrEmpty(path))
+                    return;
+                var index = path.IndexOf("Assets");
+                if (index > -1)
+                {
+                    path = path.Substring(path.IndexOf("Assets"));
+                }
+                foreach (var item in ks)
+                {
+                    if (dic[item])
+                    {
+                        var p = AssetDatabase.GetAssetPath(item);
+                        Debug.Log(AssetDatabase.MoveAsset(p, path + "/" + Path.GetFileName(p)));
+                    }
+                }
+            }
+            foreach (var item in ks)
+            {
+                if (item.GetType() == typeof(Material))
+                {
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        dic[item] = EditorGUILayout.Toggle(dic[item]);
+                        EditorGUILayout.ObjectField(item, typeof(Material), false);
+                    }
+                }
+                else if (item.GetType() == typeof(Texture2D))
+                {
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        dic[item] = EditorGUILayout.Toggle(dic[item]);
+                        EditorGUILayout.ObjectField(item, typeof(Texture2D), false);
+                    }
+                }
+                else if (item.GetType() == typeof(GameObject))
+                {
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        dic[item] = EditorGUILayout.Toggle(dic[item]);
+                        EditorGUILayout.ObjectField(item, typeof(GameObject), false);
+                    }
+                }
+                else if (item.GetType() == typeof(Shader))
+                {
+                    using (new GUILayout.HorizontalScope())
+                    {
+                        dic[item] = EditorGUILayout.Toggle(dic[item]);
+                        EditorGUILayout.ObjectField(item, typeof(Shader), false);
+                    }
+                }
+                else
+                {
+                    dic[item] = false;
+                }
+            }
+        }
+    }
+
 }
