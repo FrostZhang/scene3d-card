@@ -301,7 +301,7 @@ public class Reconstitution : MonoBehaviour
             case HouseEntityType.stand:
                 p = lasthit.position;
                 sc = lasthit.localScale;
-                PropPanle.Instance.Flush(new int[] { 0, 1, 2, 6, 7, 8 }, p.x, p.y, p.z, sc.x, sc.y, sc.z);
+                PropPanle.Instance.Flush(new int[] { 0, 1, 2, 6, 7, 8 }, p.x, p.z, p.y, sc.x, sc.y, sc.z);
                 break;
             case HouseEntityType.sky:
                 break;
@@ -313,7 +313,7 @@ public class Reconstitution : MonoBehaviour
             case HouseEntityType.appliances:
                 p = lasthit.position;
                 sc = lasthit.localScale;
-                PropPanle.Instance.Flush(new int[] { 0, 1, 2, 6, 7, 8 }, p.x, p.y, p.z, sc.x, sc.y, sc.z);
+                PropPanle.Instance.Flush(new int[] { 0, 1, 2, 6, 7, 8 }, p.x, p.z, p.y, sc.x, sc.y, sc.z);
                 break;
             case HouseEntityType.flowLine:
                 break;

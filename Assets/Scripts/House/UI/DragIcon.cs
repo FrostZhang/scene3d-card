@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class DragIcon : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHandler
+public class DragIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler
 {
     public RawImage targetGraphic;
     RawImage icon;
@@ -28,13 +28,9 @@ public class DragIcon : MonoBehaviour,IBeginDragHandler,IDragHandler,IEndDragHan
     public void OnEndDrag(PointerEventData eventData)
     {
         icon.gameObject.SetActive(false);
+        if (EventSystem.current.IsPointerOverGameObject())
+            return;
         EndDrag?.Invoke(eventData);
-    }
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
     }
 
 }

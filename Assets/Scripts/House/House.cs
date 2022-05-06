@@ -42,8 +42,8 @@ public class House : MonoBehaviour
         //OnGetConfig(str);
 #if UNITY_EDITOR
         TestRoom();
-#endif
         TestJson();
+#endif
     }
 
     private async void TestJson()
@@ -235,17 +235,17 @@ public class House : MonoBehaviour
         //CreatFlowLine("-3.614539,4.459235,-1.1,-4.868434,4.454682,-1.1,-4.895442,-3.080526,-1.1,-4.211635,-3.101046,-1.1,-4.195337,-4.541389,-1.1,-1.315552,-4.536458,-1.1,0.6916895,-4.544263,-1.1,0.7049857,-3.88601,-1.1,2.096153,-3.88601,-1.1,2.096153,-4.559184,-1.1,4.226263,-4.559184,-1.1,4.226263,-3.867848,-1.1,4.944883,-3.867568,-1.1,4.896365,2.945096,-1.1,-2.157866,2.945096,-1.1,-2.157866,4.409803,-1.1",
         //                             -1, "255,255,255,255", "red", "switch.xxxx"));
         CreatFlowLine("-3.979907,3.786215,1,-3.979907,3.782755,0.1,-3.162498,3.782755,0.1,-3.162498,0.4754077,0.1,1.302327,0.4013318,0.1,1.296336,-1.111547,0.1,-0.9975456,-1.101645,0.1,-1.026982,-3.49305,0.1,1.298337,-3.513381,0.1",
-            -1, "0,165,255,255", "red", "switch.xxxx");
+            -1, "0,165,255,255", "red", "");
         CreatFlowLine("1.34175,0.4129494,0.1,2.299839,0.4083416,0.1,2.300617,-1.182749,0.1,4.609478,-1.177224,0.1,4.586144,-3.498736,0.1,2.178244,-3.516147,0.1",
-            -1, "255,210,0,255", "red", "switch.xxxx");
+            -1, "255,210,0,255", "red", "");
         CreatFlowLine("1.34175,0.5860035,0.1,3.917953,0.5754554,0.1,3.923838,1.181043,0.1,2.362754,1.187165,0.1",
-            -1, "0,255,223,255", "red", "switch.xxxx");
+            -1, "0,255,223,255", "red", "");
         CreatFlowLine("-1.931547,0.3116443,0.1,-1.901711,-2.992601,0.1,-1.968843,-2.982793,1.1,-1.968843,-3.266867,1.1,-1.968843,-3.267096,0.1,-1.968843,-3.869098,0.1",
-            -1, "0,255,223,255", "red", "switch.xxxx");
+            -1, "0,255,223,255", "red", "");
         CreatFlowLine("-2.123267,-2.820107,0.1,-4.781082,-2.769531,0.1,-4.776298,-2.776958,0.9,-4.732517,0.1199159,0.9,-4.721735,0.1224415,0.3",
-            -1, "255,210,0,255", "red", "switch.xxxx");
+            -1, "255,210,0,255", "red", "");
         CreatFlowLine("-3.035549,2.620526,0.1,0.1451162,2.608722,0.1,0.1221144,2.625938,1.1,1.986478,2.625938,1.1,2.006577,1.321079,1.1,1.997306,1.308576,0.9",
-            -1, "255,0,252,255", "red", "switch.xxxx");
+            -1, "255,0,252,255", "red", "");
         CreatStand("electricball", "-3.986,3.766,1.085,0,0,0,0.4,0.4,0.4", null);
         HouseWeather.Instance.CreatSky("space");
         CreatAppliances("tv", "-1.56,-1.565,0.41,0,-90,0,0.7,0.7,0.7", "switch.xxx");
@@ -370,15 +370,15 @@ public class House : MonoBehaviour
         lineE.line.positionCount = vs.Length;
         lineE.line.SetPositions(vs);
         Color c;
-        if (Help.Instance.TryColor(con, out c))
-            lineE.SetOnc(c);
-        if (Help.Instance.TryColor(coff, out c))
-            lineE.SetOffc(c);
         if (!string.IsNullOrWhiteSpace(id))
         {
             lineE.SetEntity(id);
             lis.Add(lineE);
         }
+        if (Help.Instance.TryColor(con, out c))
+            lineE.SetOnc(c);
+        if (Help.Instance.TryColor(coff, out c))
+            lineE.SetOffc(c);
         cureetHouse.Add(lineE.transform, HouseEntityType.flowLine);
         var ma = lineE.line.material;
         ma = new Material(ma);
@@ -912,7 +912,7 @@ public class House : MonoBehaviour
             line.line.GetPositions(v3s);
             string str = string.Empty;
             foreach (var p in v3s)
-                str += $"{p.x:f2},{p.y:f2},{p.z:f2},";
+                str += $"{p.x:f2},{p.z:f2},{p.y:f2},";
             str = str.TrimEnd(',');
             writer.Write(str);
             writer.WritePropertyName("con");
@@ -962,7 +962,7 @@ public class House : MonoBehaviour
             writer.WriteObjectStart();
             var lit = item.GetComponent<LightEntity>();
             writer.WritePropertyName("pos");
-            writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.localScale.x:f2},{item.localScale.z:f2},{item.eulerAngles.y:f2},{item.eulerAngles.z:f2},{lit.Max:f2}");
+            writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.localScale.x:f2},{item.localScale.z:f2},{lit.Max:f2}");
             writer.WritePropertyName("color");
             Color32 ma = lit.clight.color;
             writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");
@@ -1030,8 +1030,7 @@ public class House : MonoBehaviour
             var sa = item.GetComponent<MeshRenderer>().material.GetTextureScale("_BaseMap");
             writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.localScale.x * 10:f2},{item.localScale.z * 10:f2},{sa.x:f2},{sa.y:f2}");
             writer.WritePropertyName("priority");
-            int a = (int)(item.position.y * 100);
-            Debug.Log(item.name + " " + a);
+            int a = Mathf.CeilToInt(item.position.y * 100);
             writer.Write(a);
             writer.WritePropertyName("color");
             Color32 ma = item.GetComponent<MeshRenderer>().material.color;

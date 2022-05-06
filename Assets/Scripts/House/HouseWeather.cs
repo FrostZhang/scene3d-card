@@ -6,7 +6,7 @@ using UnityEngine;
 public class HouseWeather : HassEntity
 {
     public static HouseWeather Instance;
-    public string Skyname { get => skyname;}
+    public string Skyname { get => skyname; }
 
     ParticleSystem.MainModule rmain;
     ParticleSystem.MainModule smain;
@@ -195,7 +195,7 @@ public class HouseWeather : HassEntity
         if (!ab) goto err;
         var parti = ab.LoadAsset<GameObject>(str);
         if (!parti) goto err;
-        var ps = Instantiate(parti).GetComponent<ParticleSystem>();
+        var ps = Instantiate(parti, transform).GetComponent<ParticleSystem>();
         if (!ps) goto err;
         rmain = ps.main;
         SetRain(0);
@@ -212,7 +212,7 @@ public class HouseWeather : HassEntity
         if (!ab) goto err;
         var parti = ab.LoadAsset<GameObject>(str);
         if (!parti) goto err;
-        var ps = Instantiate(parti).GetComponent<ParticleSystem>();
+        var ps = Instantiate(parti, transform).GetComponent<ParticleSystem>();
         if (!ps) goto err;
         smain = ps.main;
         SetSnow(0);
@@ -229,7 +229,7 @@ public class HouseWeather : HassEntity
         if (!ab) goto err;
         var parti = ab.LoadAsset<GameObject>(str);
         if (!parti) goto err;
-        var ps = Instantiate(parti).GetComponent<ParticleSystem>();
+        var ps = Instantiate(parti, transform).GetComponent<ParticleSystem>();
         if (!ps) goto err;
         fmain = ps.main;
         SetFog(0);
@@ -246,7 +246,7 @@ public class HouseWeather : HassEntity
         if (!ab) goto err;
         var parti = ab.LoadAsset<GameObject>(str);
         if (!parti) goto err;
-        var ps = Instantiate(parti).GetComponent<ParticleSystem>();
+        var ps = Instantiate(parti, transform).GetComponent<ParticleSystem>();
         if (!ps) goto err;
         lmain = ps.main;
         SetLighting(0);

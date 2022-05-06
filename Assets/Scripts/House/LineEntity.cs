@@ -29,7 +29,7 @@ public class LineEntity : HassEntity
     public void SetOffc(Color offcolor)
     {
         this.offcolor = offcolor;
-        if (!open && string.IsNullOrEmpty(entity_id))
+        if (!open && !string.IsNullOrEmpty(entity_id))
             line.startColor = line.endColor = offcolor;
     }
 
