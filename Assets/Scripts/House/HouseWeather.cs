@@ -6,6 +6,7 @@ using UnityEngine;
 public class HouseWeather : HassEntity
 {
     public static HouseWeather Instance;
+    public string Skyname { get => skyname;}
 
     ParticleSystem.MainModule rmain;
     ParticleSystem.MainModule smain;
@@ -28,6 +29,8 @@ public class HouseWeather : HassEntity
     "—©", "–°—©", "÷–—©", "¥Û—©", "±©—©", "’Û—©",//40
     "”Íº–—©", "”Í—©ÃÏ∆¯", "’Û”Íº–—©"//43
     };
+
+
     void Awake()
     {
         Instance = this;

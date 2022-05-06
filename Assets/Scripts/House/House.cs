@@ -43,6 +43,16 @@ public class House : MonoBehaviour
 #if UNITY_EDITOR
         TestRoom();
 #endif
+        TestJson();
+    }
+
+    private async void TestJson()
+    {
+        await new WaitForSeconds(2);
+        var js = House2Json();
+        Debug.Log(js);
+        await new WaitForSeconds(2);
+        OnGetConfig(js);
     }
 
     private void OnHassFlush(string message)
@@ -241,7 +251,7 @@ public class House : MonoBehaviour
         CreatAppliances("tv", "-1.56,-1.565,0.41,0,-90,0,0.7,0.7,0.7", "switch.xxx");
         CreatAppliances("washer", "-1.68,-4.166,0,0,-90,0,1,1,1", "switch.xxx");
     }
-
+    /// <summary>xywh </summary>
     public async Task<HassEntity> CreatAnim(string cusname, string str)
     {
         if (string.IsNullOrEmpty(str)) return null;
@@ -258,6 +268,7 @@ public class House : MonoBehaviour
         if (!ab) return null;
         var tr = ab.LoadAsset<GameObject>(cusname);
         tr = Instantiate(tr, parent);
+        tr.name = cusname;
         var area = new GameObject().transform;
         area.transform.SetParent(parent);
         area.position = new Vector3(x, 0, y);
@@ -291,6 +302,7 @@ public class House : MonoBehaviour
             if (ab == null) return null;
             var tr = ab.LoadAsset<GameObject>(cusname);
             tr = Instantiate(tr, parent);
+            tr.name = cusname;
             tr.transform.position = new Vector3(x, z, y);
             tr.transform.eulerAngles = new Vector3(rx, ry, rz);
             tr.transform.localScale = new Vector3(sx, sy, sz);
@@ -332,6 +344,7 @@ public class House : MonoBehaviour
             if (ab == null) return null;
             var tr = ab.LoadAsset<GameObject>(cusname);
             tr = Instantiate(tr, parent);
+            tr.name = cusname;
             tr.transform.position = new Vector3(x, z, y);
             tr.transform.eulerAngles = new Vector3(rx, ry, rz);
             tr.transform.localScale = new Vector3(sx, sy, sz);
@@ -352,14 +365,15 @@ public class House : MonoBehaviour
         if (!ab) return null;
         var tr = ab.LoadAsset<GameObject>("flowline");
         var lineE = Instantiate(tr, parent).GetComponent<LineEntity>();
+        lineE.name = "line";
 
         lineE.line.positionCount = vs.Length;
         lineE.line.SetPositions(vs);
         Color c;
         if (Help.Instance.TryColor(con, out c))
-            lineE.oncolor = c;
+            lineE.SetOnc(c);
         if (Help.Instance.TryColor(coff, out c))
-            lineE.offcolor = c;
+            lineE.SetOffc(c);
         if (!string.IsNullOrWhiteSpace(id))
         {
             lineE.SetEntity(id);
@@ -415,6 +429,7 @@ public class House : MonoBehaviour
             if (ab == null) return null;
             var tr = ab.LoadAsset<GameObject>(cusname);
             tr = Instantiate(tr, parent);
+            tr.name = cusname;
             var p = tr.transform.position;
             p.x = x;
             p.z = y;
@@ -466,6 +481,7 @@ public class House : MonoBehaviour
             //var tr = ab.LoadAsset<GameObject>("arealight");
             var prefab = transform.Find("arealight");
             var tr = Instantiate(prefab, parent);
+            tr.name = "light";
             tr.transform.position = new Vector3(x, 0.01f, y);
             tr.transform.localScale = new Vector3(w, 0.1f, h);
             var le = tr.GetComponent<LightEntity>();
@@ -506,6 +522,7 @@ public class House : MonoBehaviour
         if (!ab) return null;
         var tr = ab.LoadAsset<GameObject>(cusname);
         tr = Instantiate(tr, parent);
+        tr.name = cusname;
         tr.transform.position = new Vector3(x, priority * 0.01f, y);
         tr.transform.localScale = new Vector3(w, 1, h);
         var ma = tr.GetComponent<MeshRenderer>().material;
@@ -541,6 +558,7 @@ public class House : MonoBehaviour
         if (!ab) return null;
         var tr = ab.LoadAsset<GameObject>(cusname);
         var cube = Instantiate(tr, parent);
+        cube.name = tr.name;
         cube.transform.SetParent(parent);
         cube.transform.localPosition = new Vector3(x, h * 0.5f, y);
         cube.transform.localScale = new Vector3(w, h, t);
@@ -801,6 +819,247 @@ public class House : MonoBehaviour
                 color = dic["color"]?.ToString();
             CreatWall(cusname, pos, color);
         });
+    }
+
+    public string House2Json()
+    {
+        var hs = from a in cureetHouse
+                 group a.Key by a.Value;
+        JsonWriter writer = new JsonWriter();
+        writer.WriteObjectStart();
+        foreach (var group in hs)
+        {
+            switch (group.Key)
+            {
+                case HouseEntityType.wall:
+                    Wall2Json(writer, group);
+                    break;
+                case HouseEntityType.floor:
+                    Floor2Json(writer, group);
+                    break;
+                case HouseEntityType.door:
+                    Door2Json(writer, group);
+                    break;
+                case HouseEntityType.stand:
+                    Stand2Json(writer, group);
+                    break;
+                case HouseEntityType.sky:
+                    break;
+                case HouseEntityType.arealight:
+                    Arealight2Json(writer, group);
+                    break;
+                case HouseEntityType.appliances:
+                    App2Json(writer, group);
+                    break;
+                case HouseEntityType.flowLine:
+                    Line2Josn(writer, group);
+                    break;
+                case HouseEntityType.animal:
+                    Animal2Json(writer, group);
+                    break;
+                case HouseEntityType.weather:
+                    break;
+                default:
+                    break;
+            }
+
+        }
+        if (!string.IsNullOrWhiteSpace(HouseWeather.Instance.Entity_id))
+        {
+            writer.WritePropertyName("weather");
+            writer.Write(HouseWeather.Instance.Entity_id);
+        }
+        if (!string.IsNullOrWhiteSpace(HouseWeather.Instance.Skyname))
+        {
+            writer.WritePropertyName("sky");
+            writer.Write(HouseWeather.Instance.Skyname);
+        }
+        writer.WriteObjectEnd();
+        return writer.ToString();
+    }
+
+    private void Animal2Json(JsonWriter writer, IGrouping<HouseEntityType, Transform> group)
+    {
+        writer.WritePropertyName("animal");
+        writer.WriteArrayStart();
+        foreach (var g in group)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName(g.name);
+            writer.WriteObjectStart();
+            var anim = g.GetComponent<ZebraEntity>();
+            writer.WritePropertyName("pos");
+            var item = anim.Area;
+            writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.localScale.x:f2},{item.localScale.z:f2}");
+            writer.WriteObjectEnd();
+            writer.WriteObjectEnd();
+        }
+        writer.WriteArrayEnd();
+    }
+
+    private void Line2Josn(JsonWriter writer, IGrouping<HouseEntityType, Transform> group)
+    {
+        writer.WritePropertyName("flowLine");
+        writer.WriteArrayStart();
+        foreach (var item in group)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName(item.name);
+            writer.WriteObjectStart();
+            var line = item.GetComponent<LineEntity>();
+            writer.WritePropertyName("pos");
+            Vector3[] v3s = new Vector3[line.line.positionCount];
+            line.line.GetPositions(v3s);
+            string str = string.Empty;
+            foreach (var p in v3s)
+                str += $"{p.x:f2},{p.y:f2},{p.z:f2},";
+            str = str.TrimEnd(',');
+            writer.Write(str);
+            writer.WritePropertyName("con");
+            Color32 ma = line.Oncolor;
+            writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");
+            writer.WritePropertyName("coff");
+            ma = line.Offcolor;
+            writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");
+            writer.WritePropertyName("speed");
+            var s = line.line.material.GetFloat("_Speed");
+            writer.Write(s);
+            writer.WritePropertyName("entity");
+            writer.Write(line.Entity_id);
+            writer.WriteObjectEnd();
+            writer.WriteObjectEnd();
+        }
+        writer.WriteArrayEnd();
+    }
+
+    private void App2Json(JsonWriter writer, IGrouping<HouseEntityType, Transform> group)
+    {
+        writer.WritePropertyName("appliances");
+        writer.WriteArrayStart();
+        foreach (var item in group)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName(item.name);
+            writer.WriteObjectStart();
+            writer.WritePropertyName("pos");
+            writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.position.y:f2},{item.eulerAngles.x:f2},{item.eulerAngles.y:f2},{item.eulerAngles.z:f2},{item.localScale.x:f2},{item.localScale.y:f2},{item.localScale.z:f2}");
+            writer.WritePropertyName("entity");
+            writer.Write(item.GetComponent<HassEntity>().Entity_id);
+            writer.WriteObjectEnd();
+            writer.WriteObjectEnd();
+        }
+        writer.WriteArrayEnd();
+    }
+
+    private void Arealight2Json(JsonWriter writer, IGrouping<HouseEntityType, Transform> group)
+    {
+        writer.WritePropertyName("arealight");
+        writer.WriteArrayStart();
+        foreach (var item in group)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName(item.name);
+            writer.WriteObjectStart();
+            var lit = item.GetComponent<LightEntity>();
+            writer.WritePropertyName("pos");
+            writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.localScale.x:f2},{item.localScale.z:f2},{item.eulerAngles.y:f2},{item.eulerAngles.z:f2},{lit.Max:f2}");
+            writer.WritePropertyName("color");
+            Color32 ma = lit.clight.color;
+            writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");
+            writer.WritePropertyName("entity");
+            writer.Write(lit.Entity_id);
+            writer.WriteObjectEnd();
+            writer.WriteObjectEnd();
+        }
+        writer.WriteArrayEnd();
+    }
+
+    private void Stand2Json(JsonWriter writer, IGrouping<HouseEntityType, Transform> group)
+    {
+        writer.WritePropertyName("stand");
+        writer.WriteArrayStart();
+        foreach (var item in group)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName(item.name);
+            writer.WriteObjectStart();
+            writer.WritePropertyName("pos");
+            writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.position.y:f2},{item.eulerAngles.x:f2},{item.eulerAngles.y:f2},{item.eulerAngles.z:f2},{item.localScale.x:f2},{item.localScale.y:f2},{item.localScale.z:f2}");
+            //writer.WritePropertyName("color");
+            //Color32 ma = item.GetComponent<MeshRenderer>().material.color;
+            //writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");
+            writer.WriteObjectEnd();
+            writer.WriteObjectEnd();
+        }
+        writer.WriteArrayEnd();
+    }
+
+    private void Door2Json(JsonWriter writer, IGrouping<HouseEntityType, Transform> group)
+    {
+        writer.WritePropertyName("door");
+        writer.WriteArrayStart();
+        foreach (var item in group)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName(item.name);
+            writer.WriteObjectStart();
+            var door = item.GetComponent<DoorEntity>();
+            writer.WritePropertyName("pos");
+            writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.localScale.x:f2},{door.angleopen:f2},{door.angleclose:f2}");
+            writer.WritePropertyName("color");
+            Color32 ma = item.GetComponent<MeshRenderer>().material.color;
+            writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");
+            writer.WritePropertyName("entity");
+            writer.Write(door.Entity_id);
+            writer.WriteObjectEnd();
+            writer.WriteObjectEnd();
+        }
+        writer.WriteArrayEnd();
+    }
+
+    private void Floor2Json(JsonWriter writer, IGrouping<HouseEntityType, Transform> group)
+    {
+        writer.WritePropertyName("floor");
+        writer.WriteArrayStart();
+        foreach (var item in group)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName(item.name);
+            writer.WriteObjectStart();
+            writer.WritePropertyName("pos");
+            var sa = item.GetComponent<MeshRenderer>().material.GetTextureScale("_BaseMap");
+            writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.localScale.x * 10:f2},{item.localScale.z * 10:f2},{sa.x:f2},{sa.y:f2}");
+            writer.WritePropertyName("priority");
+            int a = (int)(item.position.y * 100);
+            Debug.Log(item.name + " " + a);
+            writer.Write(a);
+            writer.WritePropertyName("color");
+            Color32 ma = item.GetComponent<MeshRenderer>().material.color;
+            writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");
+            writer.WriteObjectEnd();
+            writer.WriteObjectEnd();
+        }
+        writer.WriteArrayEnd();
+    }
+
+    private void Wall2Json(JsonWriter writer, IGrouping<HouseEntityType, Transform> group)
+    {
+        writer.WritePropertyName("wall");
+        writer.WriteArrayStart();
+        foreach (var item in group)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName(item.name);
+            writer.WriteObjectStart();
+            writer.WritePropertyName("pos");
+            writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.localScale.x:f2},{item.localScale.y:f2},{item.localScale.z:f2},{item.eulerAngles.y:f2}");
+            writer.WritePropertyName("color");
+            Color32 ma = item.GetComponent<MeshRenderer>().material.color;
+            writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");
+            writer.WriteObjectEnd();
+            writer.WriteObjectEnd();
+        }
+        writer.WriteArrayEnd();
     }
 }
 

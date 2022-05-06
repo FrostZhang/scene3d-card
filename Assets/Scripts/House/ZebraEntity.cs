@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class ZebraEntity : HassEntity
 {
-    public Animator anim;
     public static int info = Animator.StringToHash("AnimInfo");
+    public Animator anim;
+    public Transform Area { get => area;}
 
     Transform area;
+
+
     public void SetArea(Transform plane)
     {
         area = plane;
