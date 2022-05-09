@@ -1,0 +1,120 @@
+fileFormatVersion: 2
+guid: 85bbc6161c113a748b84934826687101
+timeCreated: 1477127277
+licenseType: Store
+ModelImporter:
+  serializedVersion: 19
+  fileIDToRecycleName:
+    100000: Computer
+    100002: Laptop
+    100004: Office_MetalLamp
+    100006: Office_NewstonsCradle
+    100008: OfficePad
+    100010: OfficeTable
+    100012: OfficeTable_Design1
+    100014: OfficeTable_Design2
+    100016: OfficeTable_Glass
+    100018: //RootNode
+    100020: OfficeTable_Stand
+    400000: Computer
+    400002: Laptop
+    400004: Office_MetalLamp
+    400006: Office_NewstonsCradle
+    400008: OfficePad
+    400010: OfficeTable
+    400012: OfficeTable_Design1
+    400014: OfficeTable_Design2
+    400016: OfficeTable_Glass
+    400018: //RootNode
+    400020: OfficeTable_Stand
+    2300000: Computer
+    2300002: Laptop
+    2300004: Office_MetalLamp
+    2300006: Office_NewstonsCradle
+    2300008: OfficePad
+    2300010: OfficeTable_Design1
+    2300012: OfficeTable_Design2
+    2300014: OfficeTable_Glass
+    2300016: OfficeTable_Stand
+    3300000: Computer
+    3300002: Laptop
+    3300004: Office_MetalLamp
+    3300006: Office_NewstonsCradle
+    3300008: OfficePad
+    3300010: OfficeTable_Design1
+    3300012: OfficeTable_Design2
+    3300014: OfficeTable_Glass
+    3300016: OfficeTable_Stand
+    4300000: Computer
+    4300002: Office_NewstonsCradle
+    4300004: Office_MetalLamp
+    4300006: Laptop
+    4300008: OfficePad
+    4300010: OfficeTable_Glass
+    4300012: OfficeTable_Stand
+    4300014: OfficeTable_Design2
+    4300016: OfficeTable_Design1
+  materials:
+    importMaterials: 0
+    materialName: 0
+    materialSearch: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importBlendShapes: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+  importAnimation: 0
+  copyAvatar: 0
+  humanDescription:
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

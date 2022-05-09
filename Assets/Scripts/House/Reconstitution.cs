@@ -126,16 +126,16 @@ public class Reconstitution : MonoBehaviour
             return;
         if (Input.GetMouseButtonDown(0))
         {
+            foreach (var item in ligizmo)
+            {
+                if (item.IsReadyForObjectManipulation())
+                {
+                    CameraControllerForUnity.Instance.canUseMouseCenter = false;
+                    return;
+                }
+            }
             if (Physics.Raycast(mainCa.ScreenPointToRay(Input.mousePosition), out hit, maxDistance))
             {
-                foreach (var item in ligizmo)
-                {
-                    if (item.IsReadyForObjectManipulation())
-                    {
-                        CameraControllerForUnity.Instance.canUseMouseCenter = false;
-                        return;
-                    }
-                }
                 if (hit.transform != lasthit)
                 {
                     lasthit = hit.transform;
@@ -146,6 +146,7 @@ public class Reconstitution : MonoBehaviour
             else
             {
                 ClearHandle();
+                lasthit = null;
             }
         }
         else if (Input.GetMouseButtonUp(0))

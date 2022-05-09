@@ -201,11 +201,10 @@ public class House : MonoBehaviour
         CreatStand("shelving", "-0.3542,-0.644,0,0,-90,0,1.218,1,3.35", null);
         CreatStand("shelving", "3.773,-0.64,0,0,-90,0,1.218,1,3.98", null);
         CreatStand("shelving", "4.48,1.27,0,0,0,0,1.218,1,5.69", null);
-        CreatStand("shelving", "1.78,1.319,0,0,0,0,1,0.61,1.158", null);
         CreatStand("shelving", "-1.24,2.5,0,0,-90,0,1.218,1,3.32", null);
+        CreatStand("shelving", "-0.115,1.97,0,0,0,0,1.218,1,3.35", null);
 
-        //CreatStand("shelving", "-0.115,1.97,0,0,0,0,1.218,1,3.35", null);
-
+        CreatStand("yushigui", "2.11,1.44,0,0,270,0,0.65,0.65,0.65", null); 
         CreatStand("sofa3", "-4.35,-1.25,0,0,0,0,0.75,0.75,0.65", null);
         CreatStand("wc2", "2.11,2.35,0,0,270,0,1,1,1", null);
         CreatStand("mirror", "2.11,1.318,0.613,0,-90,0,0.6,0.57,1", null);
