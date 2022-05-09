@@ -45,7 +45,7 @@ public class DrawStand : MonoBehaviour
                 {
                     Reconstitution.Instance.OpenRTEditor();
                     CameraControllerForUnity.Instance.canUseMouseCenter = true;
-                    if (EventSystem.current.IsPointerOverGameObject())
+                    if (!EventSystem.current.IsPointerOverGameObject())
                     {
                         CreatAreaLight();
                     }
@@ -57,41 +57,6 @@ public class DrawStand : MonoBehaviour
         }
     }
 
-    //void Update()
-    //{
-    //    if (Input.GetMouseButtonDown(0))
-    //    {
-    //        if (!draw || EventSystem.current.IsPointerOverGameObject()) return;
-    //        oldpos = Input.mousePosition;
-    //        candraw = true;
-    //    }
-    //    else if (Input.GetMouseButtonUp(0))
-    //    {
-    //        candraw = false;
-    //        if (!draw || EventSystem.current.IsPointerOverGameObject()) return;
-    //        CreatAreaLight();
-    //    }
-    //}
-    //void OnRenderObject()
-    //{
-    //    if (candraw)
-    //    {
-    //        GL.PushMatrix();
-    //        discMaterial.SetPass(0);
-    //        GL.LoadOrtho();
-    //        GL.Begin(GL.LINE_STRIP);
-    //        var v1 = new Vector3(oldpos.x / Screen.width, oldpos.y / Screen.height, oldpos.z);
-    //        var v2 = new Vector3(Input.mousePosition.x / Screen.width, Input.mousePosition.y / Screen.height, Input.mousePosition.z);
-    //        GL.Vertex(v1);
-    //        GL.Vertex(new Vector3(v1.x, v2.y, v2.z));
-    //        GL.Vertex(v2);
-    //        GL.Vertex(new Vector3(v2.x, v1.y, v2.z));
-    //        GL.Vertex(v1);
-    //        GL.End();
-    //        GL.PopMatrix();
-    //    }
-
-    //}
     private async void CreatAreaLight()
     {
         var p = Input.mousePosition;
@@ -103,6 +68,6 @@ public class DrawStand : MonoBehaviour
                                 );
         await new WaitForEndOfFrame();
         wall.GetComponent<Collider>().enabled = true;
-        RTEditor.EditorObjectSelection.Instance.FixedSelectObj(wall, RTEditor.GizmoType.VolumeScale);
+        Reconstitution.Instance.EditorTransform(wall);
     }
 }

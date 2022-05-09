@@ -112,14 +112,14 @@ public class DrawWall : MonoBehaviour
         if (Mathf.Abs(size.x) > Mathf.Abs(size.z))
         {
             wall = await House.Instance.CreatWall(choose.key
-                                , $"{center.x},{oldpos.z},{Mathf.Abs(size.x)},1,0.125,0"
+                                , $"{center.x},{oldpos.z},0,0,{Mathf.Abs(size.x)},1,0.125"
                                 , "195,216,235,255"
                                 );
         }
         else
         {
             wall = await House.Instance.CreatWall(choose.key
-                    , $"{oldpos.x},{center.z},{Mathf.Abs(size.z)},1,0.125,90"
+                    , $"{oldpos.x},{center.z},0,90,{Mathf.Abs(size.z)},1,0.125"
                     , "195,216,235,255"
                     );
         }
@@ -127,6 +127,6 @@ public class DrawWall : MonoBehaviour
         wall.GetComponent<Collider>().enabled = true;
         foreach (var item in fls)
             item.isOn = false;
-        RTEditor.EditorObjectSelection.Instance.FixedSelectObj(wall, RTEditor.GizmoType.VolumeScale);
+        Reconstitution.Instance.EditorTransform(wall);
     }
 }

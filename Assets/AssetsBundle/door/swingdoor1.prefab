@@ -92,8 +92,8 @@ GameObject:
   - component: {fileID: 85956866791890816}
   - component: {fileID: 85956866791890942}
   - component: {fileID: 85956866791890817}
-  - component: {fileID: 4963934322924107014}
   - component: {fileID: 2581163364624592160}
+  - component: {fileID: 8840822530232562230}
   m_Layer: 0
   m_Name: swingdoor1
   m_TagString: Untagged
@@ -166,19 +166,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4963934322924107014
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 85956866791890819}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.7344268, y: 0.059028544, z: 1.8590568}
-  m_Center: {x: 0.35845888, y: 0.020768274, z: -0.5817797}
 --- !u!114 &2581163364624592160
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -194,6 +181,19 @@ MonoBehaviour:
   editC: {fileID: 0}
   angleclose: 0
   angleopen: 0
+--- !u!65 &8840822530232562230
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 85956866791890819}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.7343734, y: 1.8589906, z: 0.05894839}
+  m_Center: {x: 0.3583515, y: 0.9293787, z: -0.0072273947}
 --- !u!1 &85956866932697464
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,9 +10,7 @@ public class DoorEntity : HassEntity
     protected virtual void Start()
     {
         GetComponent<BoxCollider>().enabled = false;
-        var e = transform.eulerAngles;
-        e.y = angleclose;
-        transform.eulerAngles = e;
+        angleclose = transform.eulerAngles.y;
         TrunOff();
     }
 

@@ -142,44 +142,46 @@ public class House : MonoBehaviour
     private void TestRoom()
     {
         string wallColor = "195,216,235,255";
-        CreatWall("wall1", "3.7506,-0.2897,2.433167,1,0.125,0", wallColor);
-        CreatWall("wall1", "1.1117,2.926,2.645943,1,0.125,0", wallColor);
-        CreatWall("wall1", "-4.1035,-4.53,0.3899986,1,0.125,0", wallColor);
-        CreatWall("wall1", "4.1213,-4.5336,0.3512418,1,0.1322375,0", wallColor);
-        CreatWall("wall1", "-0.2699,-0.26,2.158078,1,0.125,0", wallColor);
-        CreatWall("wall1", "-4.1916,4.465,1.461849,1,0.125,0", wallColor);
-        CreatWall("wall1", "-4.4674,-3.097,0.8893961,1,0.125,0", wallColor);
-        CreatWall("wall1", "2.5509,0.958,0.8671593,1,0.125,0", wallColor);
-        CreatWall("wall1", "-0.9473,0.958,2.58769,1,0.125,0", wallColor);
-        CreatWall("wall1", "1.7963,0.958,0.7185282,0.5134,0.125,0", wallColor);
-        CreatWall("wall1", "1.4004,-3.88,1.523783,1,0.125,0", wallColor);
-        CreatWall("wall1", "4.5771,-3.88,0.8043213,1,0.125,0", wallColor);
-        CreatWall("wall1", "-1.7078,-3.115,0.7367308,1,0.125,0", wallColor);
-        CreatWall("wall1", "2.2753,-4.53,0.4198744,1,0.125,0", wallColor);
-        CreatWall("wall1", "0.5867,-4.535,0.2674765,1,0.1349125,0", wallColor);
-        CreatWall("wall1", "4.4384,2.926,1.012607,1,0.125,0", wallColor);
-        CreatWall("wall1", "-1.9781,2.926,0.5189419,1,0.125,0", wallColor);
-        CreatWall("wall1", "-1.4825,-4.53,0.8897885,1,0.125,0", wallColor);
+        CreatWall("wall1", "3.7506,-0.2897,0,0,2.433167,1,0.125", wallColor);
+        CreatWall("wall1", "1.1117,2.926,0,0,2.645943,1,0.125", wallColor);
+        CreatWall("wall1", "-4.1035,-4.53,0,0,0.3899986,1,0.125", wallColor);
+        CreatWall("wall1", "4.1213,-4.5336,0,0,0.3512418,1,0.125", wallColor);
+        CreatWall("wall1", "-0.2699,-0.26,0,0,2.158078,1,0.125", wallColor);
+        CreatWall("wall1", "-4.1916,4.465,0,0,1.461849,1,0.125", wallColor);
+        CreatWall("wall1", "-4.4674,-3.097,0,0,0.8893961,1,0.125", wallColor);
+        CreatWall("wall1", "2.5509,0.958,0,0,0.8671593,1,0.125", wallColor);
+        CreatWall("wall1", "-0.9473,0.958,0,0,2.58769,1,0.125", wallColor);
+        CreatWall("wall1", "1.7963,0.958,0,0,0.7185282,0.5134,0.125", wallColor);
+        CreatWall("wall1", "1.4004,-3.88,0,0,1.523783,1,0.125", wallColor);
+        CreatWall("wall1", "4.5771,-3.88,0,0,0.8043213,1,0.125", wallColor);
+        CreatWall("wall1", "-1.7078,-3.115,0,0,0.7367308,1,0.125", wallColor);
+        CreatWall("wall1", "2.2753,-4.53,0,0,0.4198744,1,0.125", wallColor);
+        CreatWall("wall1", "0.5867,-4.535,0,0,0.2674765,1,0.1349125", wallColor);
+        CreatWall("wall1", "4.4384,2.926,0,0,1.012607,1,0.125", wallColor);
+        CreatWall("wall1", "-1.9781,2.926,0,0,0.5189419,1,0.125", wallColor);
+        CreatWall("wall1", "-1.4825,-4.53,0,0,0.8897885,1,0.125", wallColor);
 
-        CreatWall("wall1", "-4.8955,0.6771,7.67382,1,0.125,90", wallColor);
-        CreatWall("wall1", "0.25,1.9325,2.036761,1,0.125,90", wallColor);
-        CreatWall("wall1", "2.179,1.9244,2.052851,1,0.125,90", wallColor);
-        CreatWall("wall1", "4.91,-0.4659,6.907583,1,0.125,90", wallColor);
-        CreatWall("wall1", "1.676,-2.0393,3.705132,1,0.125,90", wallColor);
-        CreatWall("wall1", "-1.29,-2.3744,4.349825,1,0.125,90", wallColor);
-        CreatWall("wall1", "2.105,-4.2131,0.7695358,1,0.125,90", wallColor);
-        CreatWall("wall1", "0.674,-4.2085,0.7788795,1,0.125,90", wallColor);
-        CreatWall("wall1", "-4.23,-3.8118,1.506382,1,0.125,90", wallColor);
-        CreatWall("wall1", "-2.169,3.72,1.506382,1,0.125,90", wallColor);
-        CreatWall("wall1", "4.239,-4.2102,0.7753551,1,0.125,90", wallColor);
+        CreatWall("wall1", "-4.8955,0.6771,0,90,7.67382,1,0.125", wallColor);
+        CreatWall("wall1", "0.25,1.9325,0,90,2.036761,1,0.125", wallColor);
+        CreatWall("wall1", "2.179,1.9244,0,90,2.052851,1,0.125", wallColor);
+        CreatWall("wall1", "4.91,-0.4659,0,90,6.907583,1,0.125", wallColor);
+        CreatWall("wall1", "1.676,-2.0393,0,90,3.705132,1,0.125", wallColor);
+        CreatWall("wall1", "-1.29,-2.3744,0,90,4.349825,1,0.125", wallColor);
+        CreatWall("wall1", "2.105,-4.2131,0,90,0.7695358,1,0.125", wallColor);
+        CreatWall("wall1", "0.674,-4.2085,0,90,0.7788795,1,0.125", wallColor);
+        CreatWall("wall1", "-4.23,-3.8118,0,90,1.506382,1,0.125", wallColor);
+        CreatWall("wall1", "-2.169,3.72,0,90,1.506382,1,0.125", wallColor);
+        CreatWall("wall1", "4.239,-4.2102,0,90,0.7753551,1,0.125", wallColor);
 
         CreatFloor("groud1", "0,0,10,10,1,1", 0, null);
 
-        CreatDoor("swingdoor1", "1.568,-0.274,-1,-90,0", "switch.xxxx", null);
-        CreatDoor("swingdoor1", "1.769,-0.274,1,90,0", "switch.xxxx", null);
-        CreatDoor("swingdoor1", "2.848,0.008,1,0,-90", "switch.xxxx", null);
-        CreatDoor("slidingdoor1", "1.64,1.889,0.9,0,0", "switch.xxxx", "0,255,0,120");
-        CreatDoor("slidingdoor1", "-2.2,2.364,0.9,0,-90", "switch.xxxx", "0,0,255,120");
+        CreatDoor("swingdoor1", "1.568,-0.274,0,0,0,0,-1,0.5,1,-90", "switch.xxxx", null);
+        CreatDoor("swingdoor1", "1.769,-0.274,0,0,0,0,1,0.5,1,90", "switch.xxxx", null);
+        CreatDoor("swingdoor1", "2.848,0.008,0,0,-90,0,1,0.5,1,0", "switch.xxxx", null);
+
+        CreatDoor("slidingdoor1", "1.64,1.889,0,0,0,0,0.9,1,0.05,0", "switch.xxxx", "0,255,0,120");
+        CreatDoor("slidingdoor1", "-2.2,2.364,0,0,-90,0,0.9,1,0.05,0", "switch.xxxx", "0,0,255,120");
+
         CreatStand("clock1", "0,-0.365,0.772,0,0,0,1,1,1", null);
         CreatStand("window1", "-0.3,-4.55,0,0,0,0,1,1,1", null);
         CreatStand("window1", "3.182,-4.55,0,0,0,0,1,1,1", null);
@@ -201,10 +203,10 @@ public class House : MonoBehaviour
         CreatStand("shelving", "4.48,1.27,0,0,0,0,1.218,1,5.69", null);
         CreatStand("shelving", "1.78,1.319,0,0,0,0,1,0.61,1.158", null);
         CreatStand("shelving", "-1.24,2.5,0,0,-90,0,1.218,1,3.32", null);
-        CreatStand("shelving", "-0.115,1.97,0,0,0,0,1.218,1,3.35", null);
-        CreatStand("sofa2", "-4.225,-2.11,0,0,-90,0,1.3,1.3,1.3", null);
-        CreatStand("sofa2", "-4.225,-1.25,0,0,-90,0,1.3,1.3,1.3", null);
-        CreatStand("sofa2", "-4.225,-0.387,0,0,-90,0,1.3,1.3,1.3", null);
+
+        //CreatStand("shelving", "-0.115,1.97,0,0,0,0,1.218,1,3.35", null);
+
+        CreatStand("sofa3", "-4.35,-1.25,0,0,0,0,0.75,0.75,0.65", null);
         CreatStand("wc2", "2.11,2.35,0,0,270,0,1,1,1", null);
         CreatStand("mirror", "2.11,1.318,0.613,0,-90,0,0.6,0.57,1", null);
 
@@ -409,20 +411,24 @@ public class House : MonoBehaviour
         return null;
     }
 
-    /// <summary>x z scaleX open close </summary>
+    /// <summary>posxzy anglexyz scalexyz open</summary>
     public async Task<DoorEntity> CreatDoor(string cusname, string str, string id, string color)
     {
         if (string.IsNullOrEmpty(str)) return null;
         var ss = str.Split(',');
-        if (ss.Length == 5)
+        if (ss.Length == 10)
         {
-            float x, y, w, o, c;
-            float va;
+            float va, x, y, z, rx, ry, rz, sx, sy, sz, open;
             if (float.TryParse(ss[0], out va)) x = va; else return null;
             if (float.TryParse(ss[1], out va)) y = va; else return null;
-            if (float.TryParse(ss[2], out va)) w = va; else return null;
-            if (float.TryParse(ss[3], out va)) o = va; else return null;
-            if (float.TryParse(ss[4], out va)) c = va; else return null;
+            if (float.TryParse(ss[2], out va)) z = va; else return null;
+            if (float.TryParse(ss[3], out va)) rx = va; else return null;
+            if (float.TryParse(ss[4], out va)) ry = va; else return null;
+            if (float.TryParse(ss[5], out va)) rz = va; else return null;
+            if (float.TryParse(ss[6], out va)) sx = va; else return null;
+            if (float.TryParse(ss[7], out va)) sy = va; else return null;
+            if (float.TryParse(ss[8], out va)) sz = va; else return null;
+            if (float.TryParse(ss[9], out va)) open = va; else return null;
 
             await Help.Instance.ABLoad("door", cusname);
             var ab = Help.Instance.GetBundle("door", cusname);
@@ -430,12 +436,11 @@ public class House : MonoBehaviour
             var tr = ab.LoadAsset<GameObject>(cusname);
             tr = Instantiate(tr, parent);
             tr.name = cusname;
-            var p = tr.transform.position;
-            p.x = x;
-            p.z = y;
+            var p = new Vector3(x, z, y);
             tr.transform.position = p;
-            var s = tr.transform.localScale;
-            s.x = w;
+            var a = new Vector3(rx, ry, rz);
+            tr.transform.eulerAngles = a;
+            var s = new Vector3(sx, sy, sz);
             tr.transform.localScale = s;
             var le = tr.GetComponent<DoorEntity>();
             if (!string.IsNullOrWhiteSpace(id))
@@ -444,8 +449,7 @@ public class House : MonoBehaviour
                 lis.Add(le);
             }
             cureetHouse.Add(tr.transform, HouseEntityType.door);
-            le.angleopen = o;
-            le.angleclose = c;
+            le.angleopen = open;
             Color sc;
             if (Help.Instance.TryColor(color, out sc))
             {
@@ -538,20 +542,21 @@ public class House : MonoBehaviour
         return tr.transform;
     }
 
-    /// <summary>xy wht a </summary>
+    /// <summary>posxzy a wht  </summary>
     public async Task<Transform> CreatWall(string cusname, string wall, string color)
     {
         if (string.IsNullOrEmpty(wall)) return null;
         var ws = wall.Split(',');
         float va;
-        if (ws.Length != 6) return null;
-        float x, y, w, h, t, a;
+        if (ws.Length != 7) return null;
+        float x, y, z, w, h, t, a;
         if (float.TryParse(ws[0], out va)) x = va; else return null;
         if (float.TryParse(ws[1], out va)) y = va; else return null;
-        if (float.TryParse(ws[2], out va)) w = va; else return null;
-        if (float.TryParse(ws[3], out va)) h = va; else return null;
-        if (float.TryParse(ws[4], out va)) t = va; else return null;
-        if (float.TryParse(ws[5], out va)) a = va; else return null;
+        if (float.TryParse(ws[2], out va)) z = va; else return null;
+        if (float.TryParse(ws[3], out va)) a = va; else return null;
+        if (float.TryParse(ws[4], out va)) w = va; else return null;
+        if (float.TryParse(ws[5], out va)) h = va; else return null;
+        if (float.TryParse(ws[6], out va)) t = va; else return null;
 
         await Help.Instance.ABLoad("wall", cusname);
         var ab = Help.Instance.GetBundle("wall", cusname);
@@ -560,7 +565,7 @@ public class House : MonoBehaviour
         var cube = Instantiate(tr, parent);
         cube.name = tr.name;
         cube.transform.SetParent(parent);
-        cube.transform.localPosition = new Vector3(x, h * 0.5f, y);
+        cube.transform.localPosition = new Vector3(x, z, y);
         cube.transform.localScale = new Vector3(w, h, t);
         cube.transform.localEulerAngles = new Vector3(0, a, 0);
         var r = cube.GetComponent<MeshRenderer>();
@@ -1005,7 +1010,7 @@ public class House : MonoBehaviour
             writer.WriteObjectStart();
             var door = item.GetComponent<DoorEntity>();
             writer.WritePropertyName("pos");
-            writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.localScale.x:f2},{door.angleopen:f2},{door.angleclose:f2}");
+            writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.position.y:f2},{item.eulerAngles.x:f2},{item.eulerAngles.y:f2},{item.eulerAngles.z:f2},{item.localScale.x:f2},{item.localScale.y:f2},{item.localScale.z:f2},{door.angleopen}");
             writer.WritePropertyName("color");
             Color32 ma = item.GetComponent<MeshRenderer>().material.color;
             writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");
@@ -1051,7 +1056,7 @@ public class House : MonoBehaviour
             writer.WritePropertyName(item.name);
             writer.WriteObjectStart();
             writer.WritePropertyName("pos");
-            writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.localScale.x:f2},{item.localScale.y:f2},{item.localScale.z:f2},{item.eulerAngles.y:f2}");
+            writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.position.y:f2},{item.eulerAngles.y:f2},{item.localScale.x:f2},{item.localScale.y:f2},{item.localScale.z:f2}");
             writer.WritePropertyName("color");
             Color32 ma = item.GetComponent<MeshRenderer>().material.color;
             writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");

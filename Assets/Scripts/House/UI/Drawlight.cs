@@ -89,7 +89,7 @@ public class Drawlight : MonoBehaviour
         {
             item.isOn = false;
         }
-        RTEditor.EditorObjectSelection.Instance.FixedSelectObj(light.transform, RTEditor.GizmoType.VolumeScale);
+        Reconstitution.Instance.EditorTransform(light.transform);
     }
 
     void OnRenderObject()

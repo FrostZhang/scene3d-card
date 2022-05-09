@@ -26,7 +26,6 @@ public class Reconstitution : MonoBehaviour
     public LineRenderer lineH;
     public TextMesh linehTe;
 
-    Dictionary<Transform, Bounds> bounds;
     CHHandle chhadle;
     List<RTEditor.Gizmo> ligizmo;
     void Start()
@@ -44,7 +43,7 @@ public class Reconstitution : MonoBehaviour
     private void OnDelete()
     {
         CameraControllerForUnity.Instance.canUseMouseCenter = true;
-        RTEditor.EditorObjectSelection.Instance.ClearSelection(false);
+        ClearHandle();
         House.Instance.Delete(lasthit);
         PropPanle.Instance.Show(false);
         lasthit = null;
@@ -69,9 +68,7 @@ public class Reconstitution : MonoBehaviour
     public void CloseRTEditor()
     {
         PropPanle.Instance.Show(false);
-        foreach (var item in ligizmo)
-            chhadle.ReHandle(item);
-        ligizmo.Clear();
+        ClearHandle();
     }
 
     public void InEditToggle()
@@ -127,40 +124,6 @@ public class Reconstitution : MonoBehaviour
     {
         if (!isEdit || EventSystem.current.IsPointerOverGameObject())
             return;
-        //if (drag)
-        //{
-        //    if (Input.GetMouseButtonUp(0))
-        //    {
-        //        drag = false;
-        //        lineW.gameObject.SetActive(false);
-        //        lineH.gameObject.SetActive(false);
-        //        //CameraControllerForUnity.Instance.canUseMouseCenter = true;
-        //        return;
-        //    }
-        //    //if ((interval -= Time.deltaTime) < 0)
-        //    {
-        //        //interval = 0.03f;
-        //        var pos = mainCa.ScreenToWorldPoint(Input.mousePosition);
-        //        pos.y = 0;
-        //        pos = lasthit.position = lastTrpos + (pos - lastmousePos);
-        //        PropPanle.Instance.Flush(new int[] { 0, 1 }, pos.x, pos.z);
-
-        //        var p1 = new Vector3(0, 10, pos.z);
-        //        lineW.SetPosition(0, p1);
-        //        lineW.SetPosition(1, new Vector3(pos.x, 10, pos.z));
-        //        var p2 = new Vector3(pos.x, 10, 0);
-        //        lineH.SetPosition(0, new Vector3(pos.x, 10, 0));
-        //        lineH.SetPosition(1, new Vector3(pos.x, 10, pos.z));
-        //        linewTe.text = pos.x.ToString("f2");
-        //        linewTe.transform.position = pos + (p1 - pos) * 0.5f;
-        //        linehTe.text = pos.z.ToString("f2");
-        //        linehTe.transform.position = pos + (p2 - pos) * 0.5f;
-
-        //        //BoundsPanel.Instance.FlushAll(hit.collider.bounds);
-        //    }
-
-        //}
-        //else
         if (Input.GetMouseButtonDown(0))
         {
             if (Physics.Raycast(mainCa.ScreenPointToRay(Input.mousePosition), out hit, maxDistance))
@@ -176,16 +139,35 @@ public class Reconstitution : MonoBehaviour
                 if (hit.transform != lasthit)
                 {
                     lasthit = hit.transform;
-                    foreach (var item in ligizmo)
-                        chhadle.ReHandle(item);
-                    ligizmo.Clear();
+                    ClearHandle();
                     SelectTr(lasthit);
                 }
+            }
+            else
+            {
+                ClearHandle();
             }
         }
         else if (Input.GetMouseButtonUp(0))
         {
             CameraControllerForUnity.Instance.canUseMouseCenter = true;
+        }
+    }
+
+    private void ClearHandle()
+    {
+        foreach (var item in ligizmo)
+            chhadle.ReHandle(item);
+        ligizmo.Clear();
+    }
+
+    public void EditorTransform(Transform obj)
+    {
+        if (lasthit != obj)
+        {
+            lasthit = obj;
+            ClearHandle();
+            SelectTr(lasthit);
         }
     }
 
@@ -253,7 +235,6 @@ public class Reconstitution : MonoBehaviour
         }
     }
 
-
     private void FlushPropPanle()
     {
         switch (cureetET)
@@ -261,7 +242,7 @@ public class Reconstitution : MonoBehaviour
             case HouseEntityType.wall:
                 var p = lasthit.position;
                 var sc = lasthit.localScale;
-                PropPanle.Instance.Flush(new int[] { 0, 1, 2, 3, 4 }, p.x, p.z, sc.x, sc.y, sc.z);
+                PropPanle.Instance.Flush(new int[] { 0, 1, 2, 3, 4, 5 }, p.x, p.z, p.y, sc.x, sc.y, sc.z);
                 break;
             case HouseEntityType.floor:
                 p = lasthit.position;
@@ -271,7 +252,7 @@ public class Reconstitution : MonoBehaviour
             case HouseEntityType.door:
                 p = lasthit.position;
                 sc = lasthit.localScale;
-                PropPanle.Instance.Flush(new int[] { 0, 1, 2 }, p.x, p.z, sc.x);
+                PropPanle.Instance.Flush(new int[] { 0, 1, 2, 3, 4, 5 }, p.x, p.z, p.y, sc.x, sc.y, sc.z);
                 break;
             case HouseEntityType.stand:
                 p = lasthit.position;
@@ -445,7 +426,7 @@ public class Reconstitution : MonoBehaviour
     {
         var door = target.GetComponent<DoorEntity>();
         PropPanle.Instance.Clear();
-        PropPanle.Instance.GetV2("Pos", target.position.x, target.position.z, (x) =>
+        PropPanle.Instance.GetV3("Pos", target.position.x, target.position.z, target.position.y, (x) =>
         {
             var pc = target.position;
             pc.x = x;
@@ -455,21 +436,50 @@ public class Reconstitution : MonoBehaviour
             var pc = target.position;
             pc.z = x;
             target.position = pc;
-        });
-        PropPanle.Instance.GetV1("W", target.localScale.x, (x) =>
-         {
-             var pc = target.localScale;
-             if (x == 0) x = 0.1f;
-             pc.x = x;
-             target.localScale = pc;
-         });
-        PropPanle.Instance.GetV2("O/C", target.position.x, target.position.z, (x) =>
-        {
-            door.angleopen = x;
         }, (x) =>
         {
-            door.angleclose = x;
+            var pc = target.position;
+            pc.y = x;
+            target.position = pc;
         });
+        PropPanle.Instance.GetV3("Scale", target.localScale.x, target.localScale.y, target.localScale.z,
+            (x) =>
+            {
+            var pc = target.localScale;
+            if (x == 0) x = 0.1f;
+            pc.x = x;
+            target.localScale = pc;
+            }, (x) =>
+            {
+            var pc = target.localScale;
+            if (x == 0) x = 0.1f;
+            pc.y = x;
+            target.localScale = pc;
+            }, (x) =>
+            {
+            var pc = target.localScale;
+            if (x == 0) x = 0.1f;
+            pc.z = x;
+            target.localScale = pc;
+            });
+        PropPanle.Instance.GetV1("Close", target.eulerAngles.y,(x) =>
+        {
+            var pc = target.eulerAngles;
+            pc.y = x;
+            target.eulerAngles = pc;
+        });
+        if (door is DoorEntitySliding)
+        {
+
+        }
+        else
+        {
+            PropPanle.Instance.GetV1("Open", door.angleopen, (x) =>
+            {
+                door.angleopen = x;
+            });
+        }
+
         PropPanle.Instance.GetEntity("ID", door.Entity_id, (x) =>
         {
             door.SetEntity(x);
@@ -542,40 +552,43 @@ public class Reconstitution : MonoBehaviour
     private static void ShowWallProp(Transform target)
     {
         PropPanle.Instance.Clear();
-        PropPanle.Instance.GetV2("Pos", target.position.x, target.position.z, (x) =>
-        {
-            var pc = target.position;
-            pc.x = x;
-            target.position = pc;
-        }, (x) =>
-        {
-            var pc = target.position;
-            pc.z = x;
-            target.position = pc;
-        });
-        PropPanle.Instance.GetV2("W/H", target.localScale.x, target.localScale.y, (x) =>
-        {
-            var pc = target.localScale;
-            if (x == 0) x = 0.1f;
-            pc.x = x;
-            target.localScale = pc;
-        }, (x) =>
-        {
-            var pc = target.localScale;
-            if (x == 0) x = 0.1f;
-            pc.y = x;
-            target.localScale = pc;
-            pc = target.position;
-            pc.y = x * 0.5f;
-            target.position = pc;
-        });
-        PropPanle.Instance.GetV1("T", target.localScale.z, (x) =>
-         {
-             var pc = target.localScale;
-             if (x == 0) x = 0.1f;
-             pc.z = x;
-             target.localScale = pc;
-         });
+        PropPanle.Instance.GetV3("Pos", target.position.x, target.position.z, target.position.y,
+             (x) =>
+             {
+                 var pc = target.position;
+                 pc.x = x;
+                 target.position = pc;
+             }, (x) =>
+             {
+                 var pc = target.position;
+                 pc.z = x;
+                 target.position = pc;
+             }, (x) =>
+             {
+                 var pc = target.position;
+                 pc.y = x;
+                 target.position = pc;
+             });
+        PropPanle.Instance.GetV3("W/H/T", target.localScale.x, target.localScale.y, target.localScale.z,
+            (x) =>
+            {
+                var pc = target.localScale;
+                if (x == 0) x = 0.1f;
+                pc.x = x;
+                target.localScale = pc;
+            }, (x) =>
+            {
+                var pc = target.localScale;
+                if (x == 0) x = 0.1f;
+                pc.y = x;
+                target.localScale = pc;
+            }, (x) =>
+            {
+                var pc = target.localScale;
+                if (x == 0) x = 0.1f;
+                pc.z = x;
+                target.localScale = pc;
+            });
         PropPanle.Instance.GetV1("Angle", target.localEulerAngles.y, (x) =>
         {
             var pc = target.localEulerAngles;

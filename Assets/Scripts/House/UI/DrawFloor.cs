@@ -119,6 +119,6 @@ public class DrawFloor : MonoBehaviour
         {
             item.isOn = false;
         }
-        RTEditor.EditorObjectSelection.Instance.FixedSelectObj(light, RTEditor.GizmoType.VolumeScale);
+        Reconstitution.Instance.EditorTransform(light);
     }
 }

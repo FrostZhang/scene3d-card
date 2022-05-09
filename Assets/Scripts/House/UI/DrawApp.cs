@@ -45,7 +45,7 @@ public class DrawApp : MonoBehaviour
                 {
                     Reconstitution.Instance.OpenRTEditor();
                     CameraControllerForUnity.Instance.canUseMouseCenter = true;
-                    if (EventSystem.current.IsPointerOverGameObject())
+                    if (!EventSystem.current.IsPointerOverGameObject())
                     {
                         CreatAreaLight();
                     }
@@ -103,6 +103,6 @@ public class DrawApp : MonoBehaviour
                                );
         await new WaitForEndOfFrame();
         wall.ReconstitutionMode(true);
-        RTEditor.EditorObjectSelection.Instance.FixedSelectObj(wall.transform, RTEditor.GizmoType.VolumeScale);
+        Reconstitution.Instance.EditorTransform(wall.transform);
     }
 }

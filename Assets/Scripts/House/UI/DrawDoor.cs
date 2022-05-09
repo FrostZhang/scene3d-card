@@ -45,7 +45,7 @@ public class DrawDoor : MonoBehaviour
                 {
                     Reconstitution.Instance.OpenRTEditor();
                     CameraControllerForUnity.Instance.canUseMouseCenter = true;
-                    if (EventSystem.current.IsPointerOverGameObject())
+                    if (!EventSystem.current.IsPointerOverGameObject())
                     {
                         CreatAreaLight();
                     }
@@ -97,12 +97,12 @@ public class DrawDoor : MonoBehaviour
         var p = Input.mousePosition;
         p = Camera.main.ScreenToWorldPoint(p);
         var wall = await House.Instance.CreatDoor(choose.key
-                             , $"{p.x},{p.z},1,0,90"
+                             , $"{p.x},{p.z},0,0,0,0,1,1,1,90"
                              , null
                              , null
                              );
         await new WaitForEndOfFrame();
         wall.ReconstitutionMode(true);
-        RTEditor.EditorObjectSelection.Instance.FixedSelectObj(wall.transform, RTEditor.GizmoType.VolumeScale);
+        Reconstitution.Instance.EditorTransform(wall.transform);
     }
 }

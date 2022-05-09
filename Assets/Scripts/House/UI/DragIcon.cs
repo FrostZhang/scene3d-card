@@ -28,8 +28,6 @@ public class DragIcon : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDrag
     public void OnEndDrag(PointerEventData eventData)
     {
         icon.gameObject.SetActive(false);
-        if (EventSystem.current.IsPointerOverGameObject())
-            return;
         EndDrag?.Invoke(eventData);
     }
 
