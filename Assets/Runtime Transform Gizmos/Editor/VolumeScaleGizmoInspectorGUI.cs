@@ -38,12 +38,12 @@ namespace RTEditor
             }
             EditorGUILayout.EndVertical();
 
-            _keyMappingsAreVisible = EditorGUILayout.Foldout(_keyMappingsAreVisible, "Key mappings");
-            if (_keyMappingsAreVisible)
-            {
-                _volumeScaleGizmo.EnableScaleFromCenterShortcut.RenderView(_volumeScaleGizmo);
-                _volumeScaleGizmo.EnableStepSnappingShortcut.RenderView(_volumeScaleGizmo);
-            }
+            //_keyMappingsAreVisible = EditorGUILayout.Foldout(_keyMappingsAreVisible, "Key mappings");
+            //if (_keyMappingsAreVisible)
+            //{
+            //    _volumeScaleGizmo.EnableScaleFromCenterShortcut.RenderView(_volumeScaleGizmo);
+            //    _volumeScaleGizmo.EnableStepSnappingShortcut.RenderView(_volumeScaleGizmo);
+            //}
         }
 
         protected override void OnEnable()

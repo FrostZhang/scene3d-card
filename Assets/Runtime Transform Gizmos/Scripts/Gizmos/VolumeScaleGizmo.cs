@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
+using System;
 
 namespace RTEditor
 {
@@ -26,21 +27,6 @@ namespace RTEditor
             public int ScaleAxisIndex;
             public Plane DragPlane;
         }
-
-        [SerializeField]
-        private ShortcutKeys _enableScaleFromCenterShortcut = new ShortcutKeys("Scale from center", 0)
-        {
-            LShift = true,
-            UseMouseButtons = false,
-            UseStrictModifierCheck = true
-        };
-        [SerializeField]
-        private ShortcutKeys _enableStepSnappingShortcut = new ShortcutKeys("Enable step snapping", 0)
-        {
-            LCtrl = true,
-            UseMouseButtons = false,
-            UseStrictModifierCheck = true
-        };
 
         [SerializeField]
         private Color _lineColor = new Color(1.0f, 1.0f, 1.0f, 0.211f);
@@ -70,9 +56,7 @@ namespace RTEditor
         public Color LineColor { get { return _lineColor; } set { _lineColor = value; } }
         public int DragHandleSizeInPixels { get { return _dragHandleSizeInPixels; } set { _dragHandleSizeInPixels = Mathf.Clamp(value, 2, 50); } }
         public float SnapStepInWorldUnits { get { return _snapStepInWorldUnits; } set { _snapStepInWorldUnits = Mathf.Max(value, 1e-1f); } }
-        public ShortcutKeys EnableScaleFromCenterShortcut { get { return _enableScaleFromCenterShortcut; } }
-        public ShortcutKeys EnableStepSnappingShortcut { get { return _enableStepSnappingShortcut; } }
-
+        public Action<Vector3, Vector3> OnMove;
         public override GizmoType GetGizmoType()
         {
             return GizmoType.VolumeScale;
@@ -120,16 +104,16 @@ namespace RTEditor
             DetectHoveredComponents(true);
         }
 
-        protected override void OnInputDeviceFirstButtonDown()
+        protected override void OnInputDeviceButtonDown()
         {
-            base.OnInputDeviceFirstButtonDown();
+            base.OnInputDeviceButtonDown();
 
             if (_hoveredDragHandle != -1 && _targetOOBB != null && _targetObject != null)
             {
                 _dragStartData.DragHandleFace = (BoxFace)_hoveredDragHandle;
                 _dragStartData.TargetOOBB = new OrientedBox(_targetOOBB);
                 _dragStartData.TargetObjectScale = _targetObject.transform.lossyScale;
-                _dragStartData.ScaleFromCenter = _enableScaleFromCenterShortcut.IsActive();
+                //_dragStartData.ScaleFromCenter = _enableScaleFromCenterShortcut.IsActive();
                 _dragStartData.DragHandlePlane = _dragStartData.TargetOOBB.GetBoxFacePlane(_dragStartData.DragHandleFace);
 
                 _dragStartData.ScaleAxisIndex = -1;
@@ -144,35 +128,22 @@ namespace RTEditor
                 _dragStartData.DragPlane = CalculateDragPlane();
                 _dragStartData.FromPivotToObjectPos = _targetObject.transform.position - _dragStartData.ScalePivot;
             }
-
-            EditorGizmoSystem.Instance.TranslationGizmo.gameObject.SetActive(true);
-            FlushTrGizmo();
         }
 
-        private static void FlushTrGizmo()
+        protected override void OnInputDeviceButtonUp()
         {
-            var p = EditorObjectSelection.Instance.GetSelectionWorldCenter();
-            p.x += 0.1f;
-            p.z += 0.1f;
-            EditorGizmoSystem.Instance.TranslationGizmo.transform.position = p;
+            base.OnInputDeviceButtonUp();
         }
 
-        protected override void OnInputDeviceFirstButtonUp()
+        protected override void OnInputDeviceOver()
         {
-            base.OnInputDeviceFirstButtonUp();
-        }
-
-        protected override void OnInputDeviceMoved()
-        {
-            base.OnInputDeviceMoved();
+            base.OnInputDeviceOver();
             if (_isDragging && _targetObject != null && _targetOOBB != null)
             {
                 Vector3 targetObjScale = _targetObject.transform.lossyScale;
-                Camera camera = EditorCamera.Instance.Camera;
                 int scaleAxisIndex = _dragStartData.ScaleAxisIndex;
 
-                Ray ray;
-                if (!InputDevice.Instance.GetPickRay(camera, out ray)) return;
+                Ray ray = _camera.ScreenPointToRay(Input.mousePosition);
 
                 float t;
                 if (_dragStartData.DragPlane.Raycast(ray, out t))
@@ -182,7 +153,7 @@ namespace RTEditor
 
                     float currentSize = _dragStartData.TargetOOBB.ScaledSize[_dragStartData.ScaleAxisIndex];
                     float newSize = Mathf.Abs(!_dragStartData.ScaleFromCenter ? distFromPivotPlane : 2.0f * distFromPivotPlane);
-                    if (_enableStepSnappingShortcut.IsActive())
+                    if (false)
                     {
                         float realNrSteps = newSize / _snapStepInWorldUnits;
                         int intSteps = (int)realNrSteps;
@@ -204,10 +175,13 @@ namespace RTEditor
                     float prjLook = Vector3.Dot(targetTransform.forward, _dragStartData.FromPivotToObjectPos);
 
 
-                    _targetObject.transform.position = _dragStartData.ScalePivot +
+                    var npos = _dragStartData.ScalePivot +
                                                        targetTransform.right * prjRight * scaleFactorVec[0] +
                                                        targetTransform.up * prjUp * scaleFactorVec[1] +
                                                        targetTransform.forward * prjLook * scaleFactorVec[2];
+
+                    _targetObject.transform.position = npos;
+                    OnMove?.Invoke(targetObjScale, npos);
                     _objectsWereTransformedSinceLeftMouseButtonWasPressed = true;
                     UpdateTargetOOBB();
                 }
@@ -228,7 +202,7 @@ namespace RTEditor
                 if (!_axesVisibilityMask[(int)dragHandle.Axis]) continue;
 
                 Color handleColor = (_hoveredDragHandle >= 0 && dragHandle.VolumeFace == (BoxFace)_hoveredDragHandle) ? _selectedAxisColor : _axesColors[(int)dragHandle.Axis];
-                GLPrimitives.Draw2DFilledRectangle(dragHandle.ScreenRect, handleColor, MaterialPool.Instance.Geometry2D, EditorCamera.Instance.Camera);
+                GLPrimitives.Draw2DFilledRectangle(dragHandle.ScreenRect, handleColor, MaterialPool.Instance.Geometry2D, _camera);
             }
         }
 
@@ -254,7 +228,6 @@ namespace RTEditor
                 _targetOOBB = _targetObject.GetWorldOrientedBox();
                 _targetOOBB.Scale = _targetOOBB.Scale.GetVectorWithAbsComponents();
             }
-            FlushTrGizmo();
         }
 
         private void UpdateDragHandles()
@@ -262,7 +235,7 @@ namespace RTEditor
             if (_targetOOBB == null) return;
             float halfHandleScreenSize = _dragHandleSizeInPixels * 0.5f;
 
-            Camera camera = EditorCamera.Instance.Camera;
+            Camera camera = _camera;
             Plane cameraNearPlane = camera.GetNearPlane();
             List<BoxFace> allBoxFaces = BoxFaces.GetAll();
 
@@ -279,8 +252,8 @@ namespace RTEditor
 
         private int GetIndexOfHoveredDragHandle()
         {
-            Vector2 devicePos;
-            if (!InputDevice.Instance.GetPosition(out devicePos)) return -1;
+            Vector2 devicePos = Input.mousePosition;
+            //if (!InputDevice.Instance.GetPosition(out devicePos)) return -1;
 
             List<BoxFace> allBoxFaces = BoxFaces.GetAll();
             foreach (BoxFace face in allBoxFaces)
@@ -300,7 +273,7 @@ namespace RTEditor
 
             Matrix4x4 oobbTransform = _targetOOBB.TransformMatrix;
             Vector3 pointOnDragPlane = _targetOOBB.Center;
-            Camera camera = EditorCamera.Instance.Camera;
+            Camera camera = _camera;
 
             Vector3 dragPlaneNormal = Vector3.zero;
             if (_dragStartData.DragHandleFace == BoxFace.Front || _dragStartData.DragHandleFace == BoxFace.Back)

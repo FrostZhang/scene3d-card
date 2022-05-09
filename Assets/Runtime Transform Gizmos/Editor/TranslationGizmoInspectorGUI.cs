@@ -157,19 +157,19 @@ namespace RTEditor
                 EditorGUILayout.EndVertical();
             }
 
-            _keyMappingsAreVisible = EditorGUILayout.Foldout(_keyMappingsAreVisible, "Key mappings");
-            if (_keyMappingsAreVisible)
-            {
-                _translationGizmo.TranslateAlongScreenAxesShortcut.RenderView(_translationGizmo);
-                _translationGizmo.EnableStepSnappingShortcut.RenderView(_translationGizmo);
-                _translationGizmo.EnableVertexSnappingShortcut.RenderView(_translationGizmo);
-                _translationGizmo.EnableBoxSnappingShortcut.RenderView(_translationGizmo);
-                _translationGizmo.EnableSurfacePlacementWithXAlignment.RenderView(_translationGizmo);
-                _translationGizmo.EnableSurfacePlacementWithYAlignment.RenderView(_translationGizmo);
-                _translationGizmo.EnableSurfacePlacementWithZAlignment.RenderView(_translationGizmo);
-                _translationGizmo.EnableSurfacePlacementWithNoAxisAlignment.RenderView(_translationGizmo);
-                _translationGizmo.EnableMoveScale.RenderView(_translationGizmo);
-            }
+            //_keyMappingsAreVisible = EditorGUILayout.Foldout(_keyMappingsAreVisible, "Key mappings");
+            //if (_keyMappingsAreVisible)
+            //{
+            //    _translationGizmo.TranslateAlongScreenAxesShortcut.RenderView(_translationGizmo);
+            //    _translationGizmo.EnableStepSnappingShortcut.RenderView(_translationGizmo);
+            //    _translationGizmo.EnableVertexSnappingShortcut.RenderView(_translationGizmo);
+            //    _translationGizmo.EnableBoxSnappingShortcut.RenderView(_translationGizmo);
+            //    _translationGizmo.EnableSurfacePlacementWithXAlignment.RenderView(_translationGizmo);
+            //    _translationGizmo.EnableSurfacePlacementWithYAlignment.RenderView(_translationGizmo);
+            //    _translationGizmo.EnableSurfacePlacementWithZAlignment.RenderView(_translationGizmo);
+            //    _translationGizmo.EnableSurfacePlacementWithNoAxisAlignment.RenderView(_translationGizmo);
+            //    _translationGizmo.EnableMoveScale.RenderView(_translationGizmo);
+            //}
 
             // Make sure that if any color properites have been modified, the changes can be seen immediately in the scene view
             SceneView.RepaintAll();

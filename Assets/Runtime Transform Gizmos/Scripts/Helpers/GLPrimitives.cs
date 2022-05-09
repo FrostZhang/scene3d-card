@@ -9,7 +9,12 @@ namespace RTEditor
     /// </summary>
     public static class GLPrimitives
     {
-        public static Camera Camera { get { return EditorCamera.Instance.Camera; } }
+        public static Camera Camera { get { return _camera; } }
+        static Camera _camera;
+        static GLPrimitives()
+        {
+            _camera = Camera.main;
+        }
         public static Matrix4x4 CameraViewMatrix
         {
             get

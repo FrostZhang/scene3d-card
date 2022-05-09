@@ -13,12 +13,12 @@ public class Reconstitution : MonoBehaviour
     //Transform caTr;
     Transform rigTr;
     Transform cs;
-    //private RaycastHit hit;
-    //private float maxDistance = 25;
+    private RaycastHit hit;
+    private float maxDistance = 25;
     private Transform lasthit;
     //Outline lastO;
-    //Vector3 lastmousePos, lastTrpos;
-    //bool drag;
+    Vector3 lastmousePos, lastTrpos;
+    bool drag;
     public Color lineColor = new Color(1, 1, 1, 0.5f);
     public Material lineMat;
     public LineRenderer lineW;
@@ -27,19 +27,17 @@ public class Reconstitution : MonoBehaviour
     public TextMesh linehTe;
 
     Dictionary<Transform, Bounds> bounds;
+    CHHandle chhadle;
+    List<RTEditor.Gizmo> ligizmo;
     void Start()
     {
         Instance = this;
         mainCa = Camera.main;
+
+        chhadle = new CHHandle();
         //caTr = mainCa.transform;
         rigTr = CameraControllerForUnity.Instance.transform;
-
-        RTEditor.EditorObjectSelection.Instance.SelectionChanged += Instance_SelectionChanged;
-        RTEditor.EditorObjectSelection.Instance.GameObjectClicked += GameObjectClicked;
-        RTEditor.EditorGizmoSystem.Instance.TranslationGizmo.GizmoDragUpdate += TranslationGizmo_GizmoDragUpdate;
-        RTEditor.EditorGizmoSystem.Instance.VolumeScaleGizmo.GizmoDragUpdate += VolumeScaleGizmo_GizmoDragUpdate; ;
-        Invoke("CloseRTEditor", 1);
-
+        ligizmo = new List<RTEditor.Gizmo>(5);
         PropPanle.Instance.Ondel = OnDelete;
     }
 
@@ -65,34 +63,15 @@ public class Reconstitution : MonoBehaviour
 
     public void OpenRTEditor()
     {
-        RTEditor.RuntimeEditorApplication.Instance.gameObject.SetActive(true);
+
     }
 
     public void CloseRTEditor()
     {
         PropPanle.Instance.Show(false);
-        RTEditor.EditorObjectSelection.Instance.ClearSelection(false);
-        RTEditor.RuntimeEditorApplication.Instance.gameObject.SetActive(false);
-    }
-
-    private void GameObjectClicked(GameObject clickedObject)
-    {
-        if (clickedObject == null)
-        {
-            CameraControllerForUnity.Instance.canUseMouseCenter = true;
-            RTEditor.EditorObjectSelection.Instance.ClearSelection(false);
-            PropPanle.Instance.Show(false);
-        }
-    }
-
-    private void Instance_SelectionChanged(RTEditor.ObjectSelectionChangedEventArgs selectionChangedEventArgs)
-    {
-        if (selectionChangedEventArgs.SelectedObjects.Count > 0)
-        {
-            CameraControllerForUnity.Instance.canUseMouseCenter = false;
-            lasthit = selectionChangedEventArgs.SelectedObjects[0].transform;
-            ShowDetail(lasthit);
-        }
+        foreach (var item in ligizmo)
+            chhadle.ReHandle(item);
+        ligizmo.Clear();
     }
 
     public void InEditToggle()
@@ -130,24 +109,11 @@ public class Reconstitution : MonoBehaviour
         foreach (Transform item in cs)
         {
             var e = item.GetComponent<HassEntity>();
-            if (e)
-            {
-                e.ReconstitutionMode(true);
-                //if (e.editC)
-                //{
-                //    var bds = e.editC.bounds;
-                //    bounds.Add(item, bds);
-                //}
-            }
+            if (e) e.ReconstitutionMode(true);
             else
             {
                 var c = item.GetComponent<Collider>();
-                if (c)
-                {
-                    c.enabled = true;
-                    //var bds = c.bounds;
-                    //bounds.Add(item, bds);
-                }
+                if (c) c.enabled = true;
             }
         }
 
@@ -155,86 +121,95 @@ public class Reconstitution : MonoBehaviour
 
     }
 
-    //RaycastHit[] jiances;
-    //float interval;
-    //void Update()
-    //{
-    //    if (!isEdit || EventSystem.current.IsPointerOverGameObject())
-    //        return;
-    //    if (drag)
-    //    {
-    //        if (Input.GetMouseButtonUp(0))
-    //        {
-    //            drag = false;
-    //            lineW.gameObject.SetActive(false);
-    //            lineH.gameObject.SetActive(false);
-    //            //CameraControllerForUnity.Instance.canUseMouseCenter = true;
-    //            return;
-    //        }
-    //        //if ((interval -= Time.deltaTime) < 0)
-    //        {
-    //            //interval = 0.03f;
-    //            var pos = mainCa.ScreenToWorldPoint(Input.mousePosition);
-    //            pos.y = 0;
-    //            pos = lasthit.position = lastTrpos + (pos - lastmousePos);
-    //            PropPanle.Instance.Flush(new int[] { 0, 1 }, pos.x, pos.z);
+    RaycastHit[] jiances;
+    float interval;
+    void Update()
+    {
+        if (!isEdit || EventSystem.current.IsPointerOverGameObject())
+            return;
+        //if (drag)
+        //{
+        //    if (Input.GetMouseButtonUp(0))
+        //    {
+        //        drag = false;
+        //        lineW.gameObject.SetActive(false);
+        //        lineH.gameObject.SetActive(false);
+        //        //CameraControllerForUnity.Instance.canUseMouseCenter = true;
+        //        return;
+        //    }
+        //    //if ((interval -= Time.deltaTime) < 0)
+        //    {
+        //        //interval = 0.03f;
+        //        var pos = mainCa.ScreenToWorldPoint(Input.mousePosition);
+        //        pos.y = 0;
+        //        pos = lasthit.position = lastTrpos + (pos - lastmousePos);
+        //        PropPanle.Instance.Flush(new int[] { 0, 1 }, pos.x, pos.z);
 
-    //            var p1 = new Vector3(0, 10, pos.z);
-    //            lineW.SetPosition(0, p1);
-    //            lineW.SetPosition(1, new Vector3(pos.x, 10, pos.z));
-    //            var p2 = new Vector3(pos.x, 10, 0);
-    //            lineH.SetPosition(0, new Vector3(pos.x, 10, 0));
-    //            lineH.SetPosition(1, new Vector3(pos.x, 10, pos.z));
-    //            linewTe.text = pos.x.ToString("f2");
-    //            linewTe.transform.position = pos + (p1 - pos) * 0.5f;
-    //            linehTe.text = pos.z.ToString("f2");
-    //            linehTe.transform.position = pos + (p2 - pos) * 0.5f;
+        //        var p1 = new Vector3(0, 10, pos.z);
+        //        lineW.SetPosition(0, p1);
+        //        lineW.SetPosition(1, new Vector3(pos.x, 10, pos.z));
+        //        var p2 = new Vector3(pos.x, 10, 0);
+        //        lineH.SetPosition(0, new Vector3(pos.x, 10, 0));
+        //        lineH.SetPosition(1, new Vector3(pos.x, 10, pos.z));
+        //        linewTe.text = pos.x.ToString("f2");
+        //        linewTe.transform.position = pos + (p1 - pos) * 0.5f;
+        //        linehTe.text = pos.z.ToString("f2");
+        //        linehTe.transform.position = pos + (p2 - pos) * 0.5f;
 
-    //            //BoundsPanel.Instance.FlushAll(hit.collider.bounds);
-    //        }
+        //        //BoundsPanel.Instance.FlushAll(hit.collider.bounds);
+        //    }
 
-    //    }
-    //    else if (Physics.Raycast(mainCa.ScreenPointToRay(Input.mousePosition), out hit, maxDistance))
-    //    {
-    //        if (!drag && hit.transform != lasthit)
-    //        {
-    //            if (lastO)
-    //                lastO.enabled = false;
-    //            lasthit = hit.transform;
-    //            //lastO = lasthit.GetComponent<Outline>();
-    //            //if (!lastO)
-    //            //    lastO = lasthit.gameObject.AddComponent<Outline>();
-    //            //lastO.enabled = true;
-    //        }
-    //        if (Input.GetMouseButtonDown(0))
-    //        {
-    //            if (lasthit)
-    //            {
-    //                //BoundsPanel.Instance.Bingding(lasthit, hit.collider);
-    //                //RTEditor.EditorObjectSelection.Instance.FixedSelectObj(lasthit, RTEditor.GizmoType.VolumeScale);
-    //                //lastTrpos = lasthit.position;
-    //                //lastmousePos = new Vector3(hit.point.x, 0, hit.point.z);
-    //                //lineW.gameObject.SetActive(true);
-    //                //lineH.gameObject.SetActive(true);
-    //                //drag = true;
-    //                //CameraControllerForUnity.Instance.canUseMouseCenter = false;
-    //            }
-    //        }
-    //    }
-    //    else
-    //    {
-    //        if (lastO)
-    //        {
-    //            lastO.enabled = false;
-    //            lastO = null;
-    //        }
-    //        else if (Input.GetMouseButtonDown(0))
-    //        {
-    //            PropPanle.Instance.Show(false);
-    //            BoundsPanel.Instance.Bingding(null, null);
-    //        }
-    //    }
-    //}
+        //}
+        //else
+        if (Input.GetMouseButtonDown(0))
+        {
+            if (Physics.Raycast(mainCa.ScreenPointToRay(Input.mousePosition), out hit, maxDistance))
+            {
+                foreach (var item in ligizmo)
+                {
+                    if (item.IsReadyForObjectManipulation())
+                    {
+                        CameraControllerForUnity.Instance.canUseMouseCenter = false;
+                        return;
+                    }
+                }
+                if (hit.transform != lasthit)
+                {
+                    lasthit = hit.transform;
+                    foreach (var item in ligizmo)
+                        chhadle.ReHandle(item);
+                    ligizmo.Clear();
+                    SelectTr(lasthit);
+                }
+            }
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            CameraControllerForUnity.Instance.canUseMouseCenter = true;
+        }
+    }
+
+    private void SelectTr(Transform lasthit)
+    {
+        Vector3 offset = new Vector3(1, 0, 1) * 0.125f;
+        var h = chhadle.PositionHandle(lasthit.position + offset, Quaternion.identity, (x) =>
+             {
+                 lasthit.position += x;
+                 FlushPropPanle();
+             });
+        h.SetAxisVisibility(false, 1);
+        ligizmo.Add(h);
+        var s = chhadle.VolumeHandle(lasthit.gameObject, (a, b) =>
+         {
+             lasthit.localScale = a;
+             lasthit.position = b;
+             h.transform.position = lasthit.position + offset;
+             FlushPropPanle();
+         });
+        s.SetAxisVisibility(false, 1);
+        ligizmo.Add(s);
+        ShowDetail(lasthit);
+    }
 
     HouseEntityType cureetET;
     void ShowDetail(Transform target)

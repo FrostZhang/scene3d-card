@@ -43,7 +43,7 @@ namespace RTEditor
         /// This is the camera that will be used to render the gizmo at runtime. We will
         /// set this in the 'Start' method to point to the 'EditorCamera' singleton instance.
         /// </summary>
-        protected Camera _camera;
+        protected static Camera _camera;
 
         /// <summary>
         /// Every gizmo will have 3 axes associated with it: X, Y and Z. This is an array
@@ -88,7 +88,7 @@ namespace RTEditor
         /// <summary>
         /// Cached camera transform for easy access.
         /// </summary>
-        protected Transform _cameraTransform;
+        protected static Transform _cameraTransform;
 
         /// <summary>
         /// Holds the currently selected gizmo axis. A selected gizmo axis is the axis which is being hovered 
@@ -172,7 +172,7 @@ namespace RTEditor
         public static float MinGizmoBaseScale { get { return 0.01f; } }
         public static Color DefaultXAxisColor { get { return new Color(219.0f / 255.0f, 62.0f / 255.0f, 29.0f / 255.0f, 1.0f); } }
         public static Color DefaultYAxisColor { get { return new Color(154.0f / 255.0f, 243.0f / 255.0f, 72.0f / 255.0f, 1.0f); } }
-        public static Color DefaultZAxisColor { get { return new Color(58.0f / 255.0f, 122.0f / 255.0f, 248.0f / 255.0f, 1.0f);} }
+        public static Color DefaultZAxisColor { get { return new Color(58.0f / 255.0f, 122.0f / 255.0f, 248.0f / 255.0f, 1.0f); } }
         public static Color DefaultSelectedAxisColor { get { return new Color(246.0f / 255.0f, 242.0f / 255.0f, 50.0f / 255.0f, 1.0f); } }
         #endregion
 
@@ -276,7 +276,7 @@ namespace RTEditor
         /// </summary>
         public void MaskObjectCollection(IEnumerable<GameObject> objectCollection)
         {
-            foreach(GameObject gameObject in objectCollection)
+            foreach (GameObject gameObject in objectCollection)
             {
                 MaskObject(gameObject);
             }
@@ -342,7 +342,7 @@ namespace RTEditor
         {
             if (ControlledObjects != null)
             {
-                foreach(GameObject gameObject in ControlledObjects)
+                foreach (GameObject gameObject in ControlledObjects)
                 {
                     if (!CanObjectBeManipulated(gameObject)) return false;
                 }
@@ -435,15 +435,17 @@ namespace RTEditor
         /// </summary>
         protected virtual void Start()
         {
-            _camera = EditorCamera.Instance.Camera;
-            _cameraTransform = _camera.transform;
+            if (!_camera)
+            {
+                _camera = Camera.main;
+                _cameraTransform = _camera.transform;
+            }
             _gizmoTransform = transform;
-
             // Make sure that the line rendering material doesn't use the stencil by default. This is necessary
             // because not all gizmo types will be updating this value and if we don't set it here, we might get
             // incorrect rendering results. For example, the rotation gizmo doesn't use this value and if we don't
             // initialize it here, the rotation circle lines will be rendered incorrectly.
-            MaterialPool.Instance.GizmoLine.SetInt("_StencilRefValue", _doNotUseStencil);
+            //MaterialPool.Instance.GizmoLine.SetInt("_StencilRefValue", _doNotUseStencil);
         }
 
         /// <summary>
@@ -452,21 +454,9 @@ namespace RTEditor
         protected virtual void Update()
         {
             // Throw any necessary mouse button input events
-            if (InputDevice.Instance.WasPressedInCurrentFrame(0))
-            {
-                OnInputDeviceFirstButtonDown();
-            }
-            //if (Input.GetMouseButtonDown(0))
-            //{
-            //    Debug.Log(11111);
-            //    OnInputDeviceFirstButtonDown();
-            //}
-            if (InputDevice.Instance.WasReleasedInCurrentFrame(0)) OnInputDeviceFirstButtonUp();
-            if (InputDevice.Instance.WasMoved()) OnInputDeviceMoved();
-
-            // We always need to make sure that the gizmo scale is set up properly. This is necessary especially when
-            // the '_preserveGizmoScreenSize' variable is set to true because then we need to make sure that the gizmo
-            // has roughly the same size regardless of its distance from the camera position.
+            if (Input.GetMouseButtonDown(0)) OnInputDeviceButtonDown();
+            else if (Input.GetMouseButtonUp(0)) OnInputDeviceButtonUp();
+            else if (Input.GetAxis("Mouse X") != 0.0f || Input.GetAxis("Mouse Y") != 0.0f) OnInputDeviceOver();
             AdjustGizmoScale();
         }
 
@@ -746,7 +736,7 @@ namespace RTEditor
                 return new float[]
                 {
                     dotProductRight > 0.0f ? -1.0f * gizmoScaleSign : 1.0f * gizmoScaleSign,
-                    dotProductUp > 0.0f ? -1.0f * gizmoScaleSign : 1.0f * gizmoScaleSign, 
+                    dotProductUp > 0.0f ? -1.0f * gizmoScaleSign : 1.0f * gizmoScaleSign,
                     dotProductForward > 0.0f ? -1.0f * gizmoScaleSign : 1.0f * gizmoScaleSign
                 };
             }
@@ -786,7 +776,7 @@ namespace RTEditor
             // When the controlled game object collection hasn't been setup properly, return an empty list
             if (ControlledObjects == null) return new List<GameObject>();
 
-            if(!filterOnlyCanBeManipulated) return GameObjectExtensions.GetRootObjectsFromObjectCollection(ControlledObjects.ToList());
+            if (!filterOnlyCanBeManipulated) return GameObjectExtensions.GetRootObjectsFromObjectCollection(ControlledObjects.ToList());
             else
             {
                 List<GameObject> objectsWhichCanBeManipulated = GetControlledObjectsWhichCanBeManipulated();
@@ -794,7 +784,7 @@ namespace RTEditor
             }
         }
 
-        protected virtual void OnInputDeviceFirstButtonDown()
+        protected virtual void OnInputDeviceButtonDown()
         {
             // When the left mouse button is pressed, we will take a snapshot of all game objects
             // which can be transformed by the gizmo. This will allow us to execute a post gizmo
@@ -803,14 +793,14 @@ namespace RTEditor
 
             /*_isDragging = true;
             if (GizmoDragStart != null && IsReadyForObjectManipulation()) GizmoDragStart(this);*/
-            if(IsReadyForObjectManipulation())
+            if (IsReadyForObjectManipulation())
             {
                 _isDragging = true;
                 if (GizmoDragStart != null) GizmoDragStart(this);
             }
         }
 
-        protected virtual void OnInputDeviceFirstButtonUp()
+        protected virtual void OnInputDeviceButtonUp()
         {
             // If the objects were transformed since the left mouse button was pressed, we will
             // take a snapshot of all game objects which were transformed and then use the pre
@@ -830,14 +820,14 @@ namespace RTEditor
 
             /*_isDragging = false;
             if (GizmoDragEnd != null && IsReadyForObjectManipulation()) GizmoDragEnd(this);*/
-            if(_isDragging)
+            if (_isDragging)
             {
                 _isDragging = false;
-                if (GizmoDragEnd != null) GizmoDragEnd(this);         
+                if (GizmoDragEnd != null) GizmoDragEnd(this);
             }
         }
 
-        protected virtual void OnInputDeviceMoved()
+        protected virtual void OnInputDeviceOver()
         {
             if (GizmoDragUpdate != null && InputDevice.Instance.IsPressed(0) && IsReadyForObjectManipulation()) GizmoDragUpdate(this);
         }
@@ -849,16 +839,6 @@ namespace RTEditor
         /// </summary>
         protected virtual void OnRenderObject()
         {
-            if (Camera.current != EditorCamera.Instance.Camera) return;
-
-            // In the derived classes we will usually perform any necessary line drawing in this method. 
-            // Depending on how the gizmo objects are activated and deactivated in the scene, we will get 
-            // some unwanted effects when a gizmo is activated, but its 'Update' method was not called. If
-            // only 'OnRenderObject' is called, the lines will not be drawn properly because the scale of
-            // the gizmo is not up to date. This results in the gizmo object being rendered at a different
-            // scale for a frame which yields an unwanted visual effect. You can actually see the gizmo being
-            // snapped to the correct scale. Calling this method here, allows us to be sure that the gizmos 
-            // are rendered properly.
             AdjustGizmoScale();
         }
         #endregion
@@ -887,7 +867,7 @@ namespace RTEditor
             objectTransformSnapshots = new List<ObjectTransformSnapshot>(objectWhichCanBeTransformed.Count);
 
             // Loop through all game objects which can be transformed
-            foreach(GameObject gameObject in objectWhichCanBeTransformed)
+            foreach (GameObject gameObject in objectWhichCanBeTransformed)
             {
                 // Create a snapshot for the current object
                 var objectTransformSnapshot = new ObjectTransformSnapshot();

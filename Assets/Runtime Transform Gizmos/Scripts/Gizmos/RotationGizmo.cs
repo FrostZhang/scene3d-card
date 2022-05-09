@@ -357,9 +357,9 @@ namespace RTEditor
         /// checking which components of the gizmo were picked and perform any additional
         /// actions like storing data which is needed while processing mouse move events.
         /// </summary>
-        protected override void OnInputDeviceFirstButtonDown()
+        protected override void OnInputDeviceButtonDown()
         {
-            base.OnInputDeviceFirstButtonDown();
+            base.OnInputDeviceButtonDown();
             if (InputDevice.Instance.UsingMobile) DetectHoveredComponents(true);
 
             // If there is an axis which is selected, it means the user was hovering one
@@ -424,9 +424,9 @@ namespace RTEditor
         /// Called when the mouse is moved. This method will make sure that any necessary rotation 
         /// is applied to the gizmo and its controlled objects.
         /// </summary>
-        protected override void OnInputDeviceMoved()
+        protected override void OnInputDeviceOver()
         {
-            base.OnInputDeviceMoved();
+            base.OnInputDeviceOver();
 
             if (!CanAnyControlledObjectBeManipulated()) return;
 

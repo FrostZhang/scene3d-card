@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.1823639, g: 0.22500001, b: 0.28945965, a: 1}
+  m_IndirectSpecularColor: {r: 0.4495769, g: 0.49663627, b: 0.5594774, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -261,275 +261,38 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c17708a1e1efb864c907e0f23150f63a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &387356813
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 387356814}
-  - component: {fileID: 387356815}
-  m_Layer: 0
-  m_Name: Rotation Gizmo
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &387356814
+--- !u!4 &387356814 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 7810003740310511370, guid: a648004fac142934fad62d226b148048, type: 3}
+  m_PrefabInstance: {fileID: 7810003740596406148}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 387356813}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 890494710}
-  m_RootOrder: 9
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &387356815
+--- !u!114 &387356815 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 7810003740310511371, guid: a648004fac142934fad62d226b148048, type: 3}
+  m_PrefabInstance: {fileID: 7810003740596406148}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 387356813}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 91432485c5bc3764c9aeceab3e6828f8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maskedObjectLayers: 0
-  _axesColors:
-  - {r: 0.85882354, g: 0.24313726, b: 0.11372549, a: 1}
-  - {r: 0.6039216, g: 0.9529412, b: 0.28235295, a: 1}
-  - {r: 0.22745098, g: 0.47843137, b: 0.972549, a: 1}
-  _selectedAxisColor: {r: 0.9647059, g: 0.9490196, b: 0.19607843, a: 1}
-  _gizmoBaseScale: 1.3
-  _preserveGizmoScreenSize: 1
-  _axesVisibilityMask: 010101
-  _enableStepSnappingShortcut:
-    _keys: 0000000000000000
-    _numberOfKeys: 0
-    _lCtrl: 1
-    _lCmd: 0
-    _lAlt: 0
-    _lShift: 0
-    _useModifiers: 1
-    _useStrictModifierCheck: 0
-    _lMouseBtn: 0
-    _rMouseBtn: 0
-    _mMouseBtn: 0
-    _useMouseButtons: 0
-    _useStrictMouseCheck: 0
-    _name: Enable step snapping
-  _rotationSphereRadius: 3
-  _rotationSphereColor: {r: 0.3, g: 0.3, b: 0.3, a: 0.12}
-  _isRotationSphereLit: 1
-  _showRotationGuide: 1
-  _rotationGuieLineColor: {r: 0.8, g: 0.8, b: 0.8, a: 0.8}
-  _rotationGuideDiscColor: {r: 0.5, g: 0.5, b: 0.5, a: 0.1}
-  _showRotationSphere: 1
-  _showFullRotationCircleX: 0
-  _showFullRotationCircleY: 0
-  _showFullRotationCircleZ: 0
-  _showRotationSphereBoundary: 1
-  _rotationSphereBoundaryLineColor: {r: 1, g: 1, b: 1, a: 1}
-  _showCameraLookRotationCircle: 1
-  _cameraLookRotationCircleRadiusScale: 1.11
-  _cameraLookRotationCircleLineColor: {r: 1, g: 1, b: 1, a: 1}
-  _cameraLookRotationCircleColorWhenSelected: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _snapSettings:
-    _stepValueInDegrees: 15
---- !u!1 &498149712
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 498149713}
-  - component: {fileID: 498149714}
-  m_Layer: 0
-  m_Name: Translation Gizmo
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &498149713
+--- !u!4 &498149713 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2899933016247147756, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+  m_PrefabInstance: {fileID: 2899933015887558077}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 498149712}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 890494710}
-  m_RootOrder: 8
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &498149714
+--- !u!114 &498149714 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 2899933016247147759, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+  m_PrefabInstance: {fileID: 2899933015887558077}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 498149712}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6401bf28448259d4380cea6b8f42ff93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maskedObjectLayers: 0
-  _axesColors:
-  - {r: 0.85882354, g: 0.24313726, b: 0.11372549, a: 1}
-  - {r: 0.6039216, g: 0.9529412, b: 0.28235295, a: 1}
-  - {r: 0.22745098, g: 0.47843137, b: 0.972549, a: 1}
-  _selectedAxisColor: {r: 0.9647059, g: 0.9490196, b: 0.19607843, a: 1}
-  _gizmoBaseScale: 0.77
-  _preserveGizmoScreenSize: 1
-  _axesVisibilityMask: 010101
-  _translateAlongScreenAxesShortcut:
-    _keys: 0000000000000000
-    _numberOfKeys: 0
-    _lCtrl: 0
-    _lCmd: 0
-    _lAlt: 0
-    _lShift: 1
-    _useModifiers: 1
-    _useStrictModifierCheck: 1
-    _lMouseBtn: 0
-    _rMouseBtn: 0
-    _mMouseBtn: 0
-    _useMouseButtons: 0
-    _useStrictMouseCheck: 0
-    _name: Translate along screen axes
-  _enableStepSnappingShortcut:
-    _keys: 0000000000000000
-    _numberOfKeys: 0
-    _lCtrl: 1
-    _lCmd: 0
-    _lAlt: 0
-    _lShift: 0
-    _useModifiers: 1
-    _useStrictModifierCheck: 1
-    _lMouseBtn: 0
-    _rMouseBtn: 0
-    _mMouseBtn: 0
-    _useMouseButtons: 0
-    _useStrictMouseCheck: 0
-    _name: Enable step snapping
-  _enableVertexSnappingShortcut:
-    _keys: 7600000000000000
-    _numberOfKeys: 1
-    _lCtrl: 0
-    _lCmd: 0
-    _lAlt: 0
-    _lShift: 0
-    _useModifiers: 0
-    _useStrictModifierCheck: 1
-    _lMouseBtn: 0
-    _rMouseBtn: 0
-    _mMouseBtn: 0
-    _useMouseButtons: 0
-    _useStrictMouseCheck: 0
-    _name: Enable vertex snapping
-  _enableSurfacePlacementWithYAlignment:
-    _keys: 2000000000000000
-    _numberOfKeys: 1
-    _lCtrl: 0
-    _lCmd: 0
-    _lAlt: 0
-    _lShift: 0
-    _useModifiers: 0
-    _useStrictModifierCheck: 1
-    _lMouseBtn: 0
-    _rMouseBtn: 0
-    _mMouseBtn: 0
-    _useMouseButtons: 0
-    _useStrictMouseCheck: 0
-    _name: Enable surface placement (with Y axis alignment)
-  _enableSurfacePlacementWithXAlignment:
-    _keys: 2000000078000000
-    _numberOfKeys: 2
-    _lCtrl: 0
-    _lCmd: 0
-    _lAlt: 0
-    _lShift: 0
-    _useModifiers: 0
-    _useStrictModifierCheck: 1
-    _lMouseBtn: 0
-    _rMouseBtn: 0
-    _mMouseBtn: 0
-    _useMouseButtons: 0
-    _useStrictMouseCheck: 0
-    _name: Enable surface placement (with X axis alignment)
-  _enableSurfacePlacementWithZAlignment:
-    _keys: 200000007a000000
-    _numberOfKeys: 2
-    _lCtrl: 0
-    _lCmd: 0
-    _lAlt: 0
-    _lShift: 0
-    _useModifiers: 0
-    _useStrictModifierCheck: 1
-    _lMouseBtn: 0
-    _rMouseBtn: 0
-    _mMouseBtn: 0
-    _useMouseButtons: 0
-    _useStrictMouseCheck: 0
-    _name: Enable surface placement (with Z axis alignment)
-  _enableSurfacePlacementNoAxisAlignment:
-    _keys: 2000000000000000
-    _numberOfKeys: 1
-    _lCtrl: 1
-    _lCmd: 0
-    _lAlt: 0
-    _lShift: 0
-    _useModifiers: 1
-    _useStrictModifierCheck: 1
-    _lMouseBtn: 0
-    _rMouseBtn: 0
-    _mMouseBtn: 0
-    _useMouseButtons: 0
-    _useStrictMouseCheck: 0
-    _name: Enable surface placement (no alignment
-  _enableMoveScale:
-    _keys: 0000000000000000
-    _numberOfKeys: 0
-    _lCtrl: 0
-    _lCmd: 0
-    _lAlt: 1
-    _lShift: 0
-    _useModifiers: 1
-    _useStrictModifierCheck: 1
-    _lMouseBtn: 0
-    _rMouseBtn: 0
-    _mMouseBtn: 0
-    _useMouseButtons: 0
-    _useStrictMouseCheck: 0
-    _name: Enable move scale
-  _axisLength: 5
-  _arrowConeRadius: 0.4
-  _arrowConeLength: 1.19
-  _multiAxisSquareSize: 1
-  _adjustMultiAxisForBetterVisibility: 1
-  _multiAxisSquareAlpha: 0.2
-  _areArrowConesLit: 1
-  _specialOpSquareColor: {r: 1, g: 1, b: 1, a: 1}
-  _specialOpSquareColorWhenSelected: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _screenSizeOfSpecialOpSquare: 25
-  _vertexSnapLayers: -1
-  _moveScale: 0.5
 --- !u!1 &596276202
 GameObject:
   m_ObjectHideFlags: 0
@@ -1080,91 +843,22 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _actionLimit: 50
---- !u!1 &1229447997
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1229447999}
-  - component: {fileID: 1229447998}
-  m_Layer: 0
-  m_Name: Volume Scale Gizmo
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!114 &1229447998
+--- !u!114 &1229447998 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 6979186080794247268, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+  m_PrefabInstance: {fileID: 6979186079573238618}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1229447997}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 142886f19e79e164a99a2626bb761ac2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maskedObjectLayers: 0
-  _axesColors:
-  - {r: 0.85882354, g: 0.24313726, b: 0.11372549, a: 1}
-  - {r: 0.6039216, g: 0.9529412, b: 0.28235295, a: 1}
-  - {r: 0.22745098, g: 0.47843137, b: 0.972549, a: 1}
-  _selectedAxisColor: {r: 0.9647059, g: 0.9490196, b: 0.19607843, a: 1}
-  _gizmoBaseScale: 0.77
-  _preserveGizmoScreenSize: 1
-  _axesVisibilityMask: 010101
-  _enableScaleFromCenterShortcut:
-    _keys: 0000000000000000
-    _numberOfKeys: 0
-    _lCtrl: 0
-    _lCmd: 0
-    _lAlt: 0
-    _lShift: 1
-    _useModifiers: 1
-    _useStrictModifierCheck: 1
-    _lMouseBtn: 0
-    _rMouseBtn: 0
-    _mMouseBtn: 0
-    _useMouseButtons: 0
-    _useStrictMouseCheck: 0
-    _name: Scale from center
-  _enableStepSnappingShortcut:
-    _keys: 0000000000000000
-    _numberOfKeys: 0
-    _lCtrl: 1
-    _lCmd: 0
-    _lAlt: 0
-    _lShift: 0
-    _useModifiers: 1
-    _useStrictModifierCheck: 1
-    _lMouseBtn: 0
-    _rMouseBtn: 0
-    _mMouseBtn: 0
-    _useMouseButtons: 0
-    _useStrictMouseCheck: 0
-    _name: Enable step snapping
-  _lineColor: {r: 1, g: 1, b: 1, a: 0.211}
-  _dragHandleSizeInPixels: 8
-  _snapStepInWorldUnits: 1
---- !u!4 &1229447999
+--- !u!4 &1229447999 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 6979186080794247269, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+  m_PrefabInstance: {fileID: 6979186079573238618}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1229447997}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 890494710}
-  m_RootOrder: 11
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1247977757
 GameObject:
   m_ObjectHideFlags: 0
@@ -1178,7 +872,7 @@ GameObject:
   - component: {fileID: 1247977759}
   m_Layer: 0
   m_Name: (Singleton)RTEditor.EditorCamera
-  m_TagString: Untagged
+  m_TagString: MainCamera
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1527,108 +1221,22 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1603715825
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1603715826}
-  - component: {fileID: 1603715827}
-  m_Layer: 0
-  m_Name: Scale Gizmo
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 0
---- !u!4 &1603715826
+--- !u!4 &1603715826 stripped
 Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 6837782980642296012, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+  m_PrefabInstance: {fileID: 6837782981842801214}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1603715825}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_Children: []
-  m_Father: {fileID: 890494710}
-  m_RootOrder: 10
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1603715827
+--- !u!114 &1603715827 stripped
 MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 6837782980642296013, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+  m_PrefabInstance: {fileID: 6837782981842801214}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1603715825}
+  m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: b7c276881dd94934fb5ef12ed48eca8f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _maskedObjectLayers: 0
-  _axesColors:
-  - {r: 0.85882354, g: 0.24313726, b: 0.11372549, a: 1}
-  - {r: 0.6039216, g: 0.9529412, b: 0.28235295, a: 1}
-  - {r: 0.22745098, g: 0.47843137, b: 0.972549, a: 1}
-  _selectedAxisColor: {r: 0.9647059, g: 0.9490196, b: 0.19607843, a: 1}
-  _gizmoBaseScale: 0.77
-  _preserveGizmoScreenSize: 1
-  _axesVisibilityMask: 010101
-  _enableStepSnappingShortcut:
-    _keys: 0000000000000000
-    _numberOfKeys: 0
-    _lCtrl: 1
-    _lCmd: 0
-    _lAlt: 0
-    _lShift: 0
-    _useModifiers: 1
-    _useStrictModifierCheck: 0
-    _lMouseBtn: 0
-    _rMouseBtn: 0
-    _mMouseBtn: 0
-    _useMouseButtons: 0
-    _useStrictMouseCheck: 0
-    _name: Enable step snapping
-  _enableScaleAlongAllAxesShortcut:
-    _keys: 0000000000000000
-    _numberOfKeys: 0
-    _lCtrl: 0
-    _lCmd: 0
-    _lAlt: 0
-    _lShift: 1
-    _useModifiers: 1
-    _useStrictModifierCheck: 0
-    _lMouseBtn: 0
-    _rMouseBtn: 0
-    _mMouseBtn: 0
-    _useMouseButtons: 0
-    _useStrictMouseCheck: 0
-    _name: Scale along all axes
-  _axisLength: 5
-  _scaleBoxWidth: 0.5
-  _scaleBoxHeight: 0.5
-  _scaleBoxDepth: 0.5
-  _screenSizeOfAllAxesSquare: 25
-  _colorOfAllAxesSquareLines: {r: 1, g: 1, b: 1, a: 1}
-  _colorOfAllAxesSquareLinesWhenSelected: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
-  _adjustAllAxesScaleSquareWhileScalingObjects: 1
-  _areScaleBoxesLit: 1
-  _adjustAxisLengthWhileScalingObjects: 1
-  _multiAxisTriangleAlpha: 0.2
-  _multiAxisTriangleSideLength: 1.3
-  _adjustMultiAxisForBetterVisibility: 1
-  _adjustMultiAxisTrianglesWhileScalingObjects: 1
-  _drawObjectsLocalAxesWhileScaling: 1
-  _objectsLocalAxesLength: 1
-  _preserveObjectLocalAxesScreenSize: 1
-  _adjustObjectLocalAxesWhileScalingObjects: 0
-  _snapSettings:
-    _stepValueInWorldUnits: 1
 --- !u!1 &1635073047
 GameObject:
   m_ObjectHideFlags: 0
@@ -2134,3 +1742,231 @@ MonoBehaviour:
   _hoveredComponentColor: {r: 0.9647059, g: 0.9490196, b: 0.19607843, a: 1}
   _cameraAlignDuration: 0.3
   offset: {x: 0, y: 0}
+--- !u!1001 &2899933015887558077
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 890494710}
+    m_Modifications:
+    - target: {fileID: 2899933016247147756, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+      propertyPath: m_RootOrder
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 2899933016247147756, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2899933016247147756, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2899933016247147756, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2899933016247147756, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 2899933016247147756, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2899933016247147756, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2899933016247147756, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2899933016247147756, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2899933016247147756, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2899933016247147756, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2899933016247147757, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+      propertyPath: m_Name
+      value: Translation Gizmo
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 0619ce8e82d7eb14b90693e63a117e31, type: 3}
+--- !u!1001 &6837782981842801214
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 890494710}
+    m_Modifications:
+    - target: {fileID: 6837782980642296012, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+      propertyPath: m_RootOrder
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837782980642296012, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837782980642296012, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837782980642296012, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837782980642296012, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837782980642296012, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837782980642296012, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837782980642296012, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837782980642296012, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837782980642296012, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837782980642296012, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6837782980642296015, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+      propertyPath: m_Name
+      value: Scale Gizmo
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 3d08433832f8ac34c9ac02c27bff6277, type: 3}
+--- !u!1001 &6979186079573238618
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 890494710}
+    m_Modifications:
+    - target: {fileID: 6979186080794247269, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+      propertyPath: m_RootOrder
+      value: 11
+      objectReference: {fileID: 0}
+    - target: {fileID: 6979186080794247269, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6979186080794247269, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6979186080794247269, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6979186080794247269, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6979186080794247269, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6979186080794247269, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6979186080794247269, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6979186080794247269, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6979186080794247269, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6979186080794247269, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6979186080794247271, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+      propertyPath: m_Name
+      value: Volume Scale Gizmo
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: 5d86ae248100a7e4aa7949bbd66ae11d, type: 3}
+--- !u!1001 &7810003740596406148
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 890494710}
+    m_Modifications:
+    - target: {fileID: 7810003740310511369, guid: a648004fac142934fad62d226b148048, type: 3}
+      propertyPath: m_Name
+      value: Rotation Gizmo
+      objectReference: {fileID: 0}
+    - target: {fileID: 7810003740310511370, guid: a648004fac142934fad62d226b148048, type: 3}
+      propertyPath: m_RootOrder
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 7810003740310511370, guid: a648004fac142934fad62d226b148048, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7810003740310511370, guid: a648004fac142934fad62d226b148048, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7810003740310511370, guid: a648004fac142934fad62d226b148048, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7810003740310511370, guid: a648004fac142934fad62d226b148048, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7810003740310511370, guid: a648004fac142934fad62d226b148048, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7810003740310511370, guid: a648004fac142934fad62d226b148048, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7810003740310511370, guid: a648004fac142934fad62d226b148048, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7810003740310511370, guid: a648004fac142934fad62d226b148048, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7810003740310511370, guid: a648004fac142934fad62d226b148048, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7810003740310511370, guid: a648004fac142934fad62d226b148048, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: a648004fac142934fad62d226b148048, type: 3}

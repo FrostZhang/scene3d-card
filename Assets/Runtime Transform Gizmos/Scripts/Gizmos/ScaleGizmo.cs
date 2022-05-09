@@ -407,6 +407,8 @@ namespace RTEditor
         {
             return GizmoType.Scale;
         }
+        public System.Action<Vector3> OnMove;
+        public System.Func<Vector3> OnBegin;
         #endregion
 
         #region Protected Methods
@@ -429,8 +431,8 @@ namespace RTEditor
             // If the left mouse button is down, we don't want to update the selections
             // because the user may be moving the mouse around in order to perform a
             // scale operating and we don't want to deselect any axes while that happens.
-            if (InputDevice.Instance.IsPressed(0)) return;
-            DetectHoveredComponents(true);
+            //if (InputDevice.Instance.IsPressed(0)) return;
+            //DetectHoveredComponents(true);
         }
 
         /// <summary>
@@ -470,20 +472,21 @@ namespace RTEditor
         /// checking which components of the gizmo were picked and perform any additional
         /// actions like storing data which is needed while processing mouse move events.
         /// </summary>
-        protected override void OnInputDeviceFirstButtonDown()
+        protected override void OnInputDeviceButtonDown()
         {
-            base.OnInputDeviceFirstButtonDown();
-            if (InputDevice.Instance.UsingMobile) DetectHoveredComponents(true);
-
+            base.OnInputDeviceButtonDown();
+            //if (InputDevice.Instance.UsingMobile) DetectHoveredComponents(true);
+            beginscale = OnBegin.Invoke();
             // Construct a ray using the mouse cursor position
-            Ray pickRay;
-            bool canPick = InputDevice.Instance.GetPickRay(_camera, out pickRay);
+            //Ray pickRay;
+            //bool canPick = InputDevice.Instance.GetPickRay(_camera, out pickRay);
+            Ray pickRay = _camera.ScreenPointToRay(Input.mousePosition);
 
             // If there something selected, it means the user was hovering one of the scale 
             // gizmo's components when they pressed the left mouse button. In that case
             // we want to store any necessary information that is needed when processing
             // the next mouse move event.
-            if (canPick && (_selectedAxis != GizmoAxis.None || _selectedMultiAxisTriangle != MultiAxisTriangle.None))
+            if (/*canPick &&*/ (_selectedAxis != GizmoAxis.None || _selectedMultiAxisTriangle != MultiAxisTriangle.None))
             {
                 // For the next mouse move event we will need to have access to the point which
                 // lies on the plane that contains the currently selected component.
@@ -505,19 +508,19 @@ namespace RTEditor
             // so that it contains the local scale of all controlled objects.
             if (IsReadyForObjectManipulation())
             {
-                foreach (GameObject gameObject in ControlledObjects)
-                {
-                    _gameObjectLocalScaleSnapshot.Add(gameObject, gameObject.transform.localScale);
-                }
+                //foreach (GameObject gameObject in ControlledObjects)
+                //{
+                //    _gameObjectLocalScaleSnapshot.Add(gameObject, gameObject.transform.localScale);
+                //}
             }
         }
 
         /// <summary>
         /// Called when the left mouse button is released.
         /// </summary>
-        protected override void OnInputDeviceFirstButtonUp()
+        protected override void OnInputDeviceButtonUp()
         {
-            base.OnInputDeviceFirstButtonUp();
+            base.OnInputDeviceButtonUp();
 
             // Whenever the left mouse button is released, we will reset the accumulated scale 
             // axis drag back to 0 so that the gizmo axes can be rendered normally. We do the
@@ -536,14 +539,18 @@ namespace RTEditor
         /// Called when the mouse is moved. The main responsibility of this method is to
         /// make sure that any necessary scale is applied to the controlled objects.
         /// </summary>
-        protected override void OnInputDeviceMoved()
+        protected override void OnInputDeviceOver()
         {
-            base.OnInputDeviceMoved();
+            base.OnInputDeviceOver();
 
-            if (!CanAnyControlledObjectBeManipulated()) return;
-
+            //if (!CanAnyControlledObjectBeManipulated()) return;
+            if (!Input.GetMouseButton(0))
+            {
+                DetectHoveredComponents(true);
+                return;
+            }
             // If the left mouse button is down, we will perform a scale operation if something is selected
-            if (InputDevice.Instance.IsPressed(0))
+            if (Input.GetMouseButton(0))
             {
                 // Is there a scale axis/box selected?
                 if (_selectedAxis != GizmoAxis.None)
@@ -556,12 +563,13 @@ namespace RTEditor
 
                     // Retrieve the plane that contains the selected axis and construct a ray using the current mouse cursor position
                     Plane coordinateSystemPlane = GetCoordinateSystemPlaneFromSelectedAxis();
-                    Ray pickRay;
-                    bool canPick = InputDevice.Instance.GetPickRay(_camera, out pickRay);
+                    //Ray pickRay;
+                    //bool canPick = InputDevice.Instance.GetPickRay(_camera, out pickRay);
+                    Ray pickRay = _camera.ScreenPointToRay(Input.mousePosition);
 
                     // If the ray intersects the plane, we have some work to do
                     float t;
-                    if (canPick && coordinateSystemPlane.Raycast(pickRay, out t))
+                    if (/*canPick &&*/ coordinateSystemPlane.Raycast(pickRay, out t))
                     {
                         // The ray intersects the plane. In order to perform a scale operation, we will calculate a vector
                         // which goes from the last gizmo pick point to the current intersection point. Projecting the
@@ -592,12 +600,13 @@ namespace RTEditor
                     Plane trianglePlane = GetMultiAxisTrianglePlane(_selectedMultiAxisTriangle);
 
                     // Construct a ray using the current mouse cursor position
-                    Ray pickRay;
-                    bool canPick = InputDevice.Instance.GetPickRay(_camera, out pickRay);
+                    //Ray pickRay;
+                    //bool canPick = InputDevice.Instance.GetPickRay(_camera, out pickRay);
+                    Ray pickRay = _camera.ScreenPointToRay(Input.mousePosition);
 
                     // Check if the ray intersects the triangle plane
                     float t;
-                    if (canPick && trianglePlane.Raycast(pickRay, out t))
+                    if (/*canPick && */trianglePlane.Raycast(pickRay, out t))
                     {
                         // The ray intersects the plane. In order to perform a scale operation, we will calculate a vector
                         // which goes from the last gizmo pick point to the current intersection point. Projecting the
@@ -673,9 +682,10 @@ namespace RTEditor
                     // ensure that we are scaling in the same direction.
                     float t;
                     Plane squareWorldPlane = new Plane(_cameraTransform.forward, _gizmoTransform.position);
-                    Ray pickRay;
-                    bool canPick = InputDevice.Instance.GetPickRay(_camera, out pickRay);
-                    if (canPick && squareWorldPlane.Raycast(pickRay, out t))
+                    //Ray pickRay;
+                    //bool canPick = InputDevice.Instance.GetPickRay(_camera, out pickRay);
+                    Ray pickRay = _camera.ScreenPointToRay(Input.mousePosition);
+                    if (/*canPick &&*/ squareWorldPlane.Raycast(pickRay, out t))
                     {
                         // Calculate the intersection point
                         Vector3 intersectionPoint = pickRay.origin + pickRay.direction * t;
@@ -692,7 +702,7 @@ namespace RTEditor
 
         protected override bool DetectHoveredComponents(bool updateCompStates)
         {
-            if(updateCompStates)
+            if (updateCompStates)
             {
                 // Reset selection information. We will be updating these in the code which follows.
                 _selectedAxis = GizmoAxis.None;
@@ -701,8 +711,9 @@ namespace RTEditor
 
                 if (_camera == null) return false;
 
-                Ray pickRay;
-                bool canPick = InputDevice.Instance.GetPickRay(_camera, out pickRay);
+                //Ray pickRay;
+                //bool canPick = InputDevice.Instance.GetPickRay(_camera, out pickRay);
+                Ray pickRay = _camera.ScreenPointToRay(Input.mousePosition);
 
                 // Cache needed variables
                 float minimumDistanceFromCamera = float.MaxValue;
@@ -711,7 +722,7 @@ namespace RTEditor
                 Vector3 cameraPosition = _cameraTransform.position;
                 Vector3 gizmoPosition = _gizmoTransform.position;
 
-                if (canPick)
+                if (true)
                 {
                     // Loop through all gizmo axis lines and identify the one which is picked by the 
                     // mouse cursor with the closest pick point to the camera position.
@@ -825,15 +836,16 @@ namespace RTEditor
             {
                 if (_camera == null) return false;
 
-                Ray pickRay;
-                bool canPick = InputDevice.Instance.GetPickRay(_camera, out pickRay);
+                //Ray pickRay;
+                //bool canPick = InputDevice.Instance.GetPickRay(_camera, out pickRay);
+                Ray pickRay = _camera.ScreenPointToRay(Input.mousePosition);
 
                 // Cache needed variables
                 float gizmoScale = CalculateGizmoScale();
                 float cylinderRadius = 0.2f * gizmoScale;           // We will need this to check the intersection between the ray and the axis lines which we will treat as really thin cylinders.
                 Vector3 gizmoPosition = _gizmoTransform.position;
 
-                if (canPick)
+                if (true)
                 {
                     // Loop through all gizmo axis lines and identify the one which is picked by the 
                     // mouse cursor with the closest pick point to the camera position.
@@ -1136,10 +1148,10 @@ namespace RTEditor
             // array.
             float gizmoScale = CalculateGizmoScale();
             int indexOfFirstAxis = (int)multiAxisTriangleIndex * 2;
-            return new Vector3[] 
+            return new Vector3[]
             { 
                 // Note: We will scale the axes by the gizmo scale to obtain the actual axis length as it exists in world space.
-                _gizmoTransform.position, 
+                _gizmoTransform.position,
                 _gizmoTransform.position + axesUsedToDrawTriangles[indexOfFirstAxis + 1] * _multiAxisTriangleSideLength * gizmoScale,
                 _gizmoTransform.position + axesUsedToDrawTriangles[indexOfFirstAxis] * _multiAxisTriangleSideLength * gizmoScale
             };
@@ -1307,7 +1319,7 @@ namespace RTEditor
             // box is mapped.
             return new Quaternion[]
             {
-                Quaternion.identity,                    
+                Quaternion.identity,
                 Quaternion.Euler(0.0f, 0.0f, 90.0f),
                 Quaternion.Euler(0.0f, 90.0f, 0.0f),
             };
@@ -1626,7 +1638,7 @@ namespace RTEditor
         {
             // The user must be performing a scale operation and the '_drawObjectsLocalAxesWhileScaling' must be true
             // for any drawing to be performed.
-            if (InputDevice.Instance.IsPressed(0) && _drawObjectsLocalAxesWhileScaling && IsReadyForObjectManipulation() && ControlledObjects != null)
+            if (Input.GetMouseButton(0) && _drawObjectsLocalAxesWhileScaling && IsReadyForObjectManipulation() && ControlledObjects != null)
             {
                 // Retrieve the points and colors which can be used to draw the axes lines.
                 // Note: We will call 'GetTopParentsFromControlledObjects' to get the list of objects that have
@@ -1767,7 +1779,7 @@ namespace RTEditor
             return new Vector3[]
             {
                 _gizmoTransform.right * signs[0],
-                _gizmoTransform.up * signs[1], 
+                _gizmoTransform.up * signs[1],
                 _gizmoTransform.forward * signs[2],
             };
         }
@@ -1777,120 +1789,132 @@ namespace RTEditor
         /// the array is mapped to a scale axis in the following manner: element 0 -> X, element 1 -> Y,
         /// element 2 -> Z. When an element is true, a scale operation will be performed along that axis.
         /// </summary>
+        Vector3 beginscale;
         private void ScaleControlledObjects(bool[] axesFlags)
         {
-            if (ControlledObjects != null)
+            float scaleFactor = GetScaleFactorForGameObjectGlobalScaleSnapshot();
+            Vector3 scaleFactorVector = Vector3.one;
+            for (int axisIndex = 0; axisIndex < 3; ++axisIndex)
             {
-                // The new objects' scale along the scale axes is the scale the objects had at the moment the scale operation  
-                // started multiplied by the scale which is returned from 'GetScaleFactorForGameObjectGlobalScaleSnapshot'.
-                float scaleFactor = GetScaleFactorForGameObjectGlobalScaleSnapshot();
-
-                // In order to avoid having 'if' statements inside the 'for' loop, we will construct a scale vector which we
-                // will use to scale each axis individually for those axes that require scaling. We will start with a vector 
-                // that has all components set to 1 an all axes by default. Components which require scaling will be set to
-                // 'scaleFactor'.
-                Vector3 scaleFactorVector = Vector3.one;
-                for (int axisIndex = 0; axisIndex < 3; ++axisIndex)
-                {
-                    // If the axis requires scaling, we will store the scale factor
-                    if (axesFlags[axisIndex]) scaleFactorVector[axisIndex] = scaleFactor;
-                }
-
-                // Experimenting a little bit with the way in which Unity scales objects which belong to
-                // hierarchies, it seems that when you select a group of objects that belong to the same 
-                // hierarchy, only the top parent of the selection is scaled. This makes sense because if
-                // we were to modify the scale of all objects, without taking into consideration the parent
-                // child relationships, we would get undesirable results because the scale that we apply 
-                // to the parents would propagate to the children and combining that with the scale that 
-                // we would also apply to the children directly, would result in really uncontrollable scale
-                // values. So, the first step is to identify the top parents and store them in a separate list.
-                List<GameObject> topParents = GetParentsFromControlledObjects(true);
-
-                if(topParents.Count != 0)
-                {
-                    // Loop through all top parents and scale them accordingly
-                    const float minObjectScale = 0.00001f;
-                    foreach (GameObject topParent in topParents)
-                    {
-                        if (topParent != null)
-                        {
-                            // Cache object data
-                            Transform objectTransform = topParent.transform;
-
-                            // Calculate the new scale of the object.
-                            // Note: Make sure the game object's scale doesn't reach 0 on any axis. If that happens, we would not be 
-                            //       able to further scale the game object because every scale factor applied to 0 would result in a
-                            //       value of 0.
-                            Vector3 newObjectLocalScale = _gameObjectLocalScaleSnapshot[topParent];
-                            newObjectLocalScale = Vector3.Scale(newObjectLocalScale, scaleFactorVector);
-                            if (newObjectLocalScale.x == 0.0f) newObjectLocalScale.x = minObjectScale;
-                            if (newObjectLocalScale.y == 0.0f) newObjectLocalScale.y = minObjectScale;
-                            if (newObjectLocalScale.z == 0.0f) newObjectLocalScale.z = minObjectScale;
-
-                            // We will need to calculate the relative scale of the game object (i.e. how much it has changed).
-                            // Note: We will make sure to clamp the scale to the minimum value to avoid divides by 0.
-                            Vector3 oldLocalScale = objectTransform.localScale;
-                            if (oldLocalScale.x == 0.0f) oldLocalScale.x = minObjectScale;
-                            if (oldLocalScale.y == 0.0f) oldLocalScale.y = minObjectScale;
-                            if (oldLocalScale.z == 0.0f) oldLocalScale.z = minObjectScale;
-
-                            // Calculate the relative scale by performing a component-wise division between the new scale and the old one
-                            Vector3 relativeScale = Vector3.Scale(newObjectLocalScale, new Vector3(1.0f / oldLocalScale.x, 1.0f / oldLocalScale.y, 1.0f / oldLocalScale.z));
-
-                            if(_objAxisMask.ContainsKey(topParent))
-                            {
-                                bool[] mask = _objAxisMask[topParent];
-                                for (int axisIndex = 0; axisIndex < 3; ++axisIndex)
-                                {
-                                    if (!mask[axisIndex])
-                                    {
-                                        Vector3 scaleSnapshot = _gameObjectLocalScaleSnapshot[topParent];
-                                        newObjectLocalScale[axisIndex] = scaleSnapshot[axisIndex];
-                                        relativeScale[axisIndex] = 1.0f;
-                                    }
-                                }
-                            }
-
-                            // If the center transform pivot point is used, we will scale the objects' distance from the gizmo position.
-                            // This seems to be the behaviour of the Unity gizmos, so we will do the same thing.
-                            if (_transformPivotPoint == TransformPivotPoint.Center)
-                            {
-                                // Construct a vector from the gizmo position to the object's position
-                                Vector3 fromPivotPointToPosition = objectTransform.position - _gizmoTransform.position;
-
-                                // Store the object's local axes
-                                Vector3 objectRight = objectTransform.right;
-                                Vector3 objectUp = objectTransform.up;
-                                Vector3 objectLook = objectTransform.forward;
-
-                                // Calculate the projection of 'fromPivotPointToPosition' onto the object's local axes. This
-                                // will give us the distance between the object's position and the gizmo position along each
-                                // of the 3 axes.
-                                float projectionOnRight = Vector3.Dot(objectRight, fromPivotPointToPosition);
-                                float projectionOnUp = Vector3.Dot(objectUp, fromPivotPointToPosition);
-                                float projectionOnLook = Vector3.Dot(objectLook, fromPivotPointToPosition);
-
-                                // Scale the offsets which correspond to the axes that are being scaled
-                                if (axesFlags[0]) projectionOnRight *= relativeScale.x;
-                                if (axesFlags[1]) projectionOnUp *= relativeScale.y;
-                                if (axesFlags[2]) projectionOnLook *= relativeScale.z;
-
-                                // Change the object's scale and also adjust the position by scaling the distance between the
-                                // object and the gizmo position.
-                                objectTransform.localScale = newObjectLocalScale;
-                                objectTransform.position = _gizmoTransform.position + objectRight * projectionOnRight + objectUp * projectionOnUp + objectLook * projectionOnLook;
-                            }
-                            else objectTransform.localScale = newObjectLocalScale;  // When mesh pivot is used as the transform pivot, just scale the object and leave the postion untouched
-
-                            IRTEditorEventListener editorEventListener = topParent.GetComponent<IRTEditorEventListener>();
-                            if (editorEventListener != null) editorEventListener.OnAlteredByTransformGizmo(this);
-
-                            // The game objects were transformed since the left mouse button was pressed
-                            _objectsWereTransformedSinceLeftMouseButtonWasPressed = true;
-                        }
-                    }
-                }               
+                // If the axis requires scaling, we will store the scale factor
+                if (axesFlags[axisIndex]) scaleFactorVector[axisIndex] = scaleFactor;
             }
+            Vector3 send = beginscale;
+            send.Scale(scaleFactorVector);
+            OnMove?.Invoke(send);
+            return;
+            //if (ControlledObjects != null)
+            //{
+            //    // The new objects' scale along the scale axes is the scale the objects had at the moment the scale operation  
+            //    // started multiplied by the scale which is returned from 'GetScaleFactorForGameObjectGlobalScaleSnapshot'.
+            //    float scaleFactor = GetScaleFactorForGameObjectGlobalScaleSnapshot();
+
+            //    // In order to avoid having 'if' statements inside the 'for' loop, we will construct a scale vector which we
+            //    // will use to scale each axis individually for those axes that require scaling. We will start with a vector 
+            //    // that has all components set to 1 an all axes by default. Components which require scaling will be set to
+            //    // 'scaleFactor'.
+            //    Vector3 scaleFactorVector = Vector3.one;
+            //    for (int axisIndex = 0; axisIndex < 3; ++axisIndex)
+            //    {
+            //        // If the axis requires scaling, we will store the scale factor
+            //        if (axesFlags[axisIndex]) scaleFactorVector[axisIndex] = scaleFactor;
+            //    }
+
+            //    // Experimenting a little bit with the way in which Unity scales objects which belong to
+            //    // hierarchies, it seems that when you select a group of objects that belong to the same 
+            //    // hierarchy, only the top parent of the selection is scaled. This makes sense because if
+            //    // we were to modify the scale of all objects, without taking into consideration the parent
+            //    // child relationships, we would get undesirable results because the scale that we apply 
+            //    // to the parents would propagate to the children and combining that with the scale that 
+            //    // we would also apply to the children directly, would result in really uncontrollable scale
+            //    // values. So, the first step is to identify the top parents and store them in a separate list.
+            //    List<GameObject> topParents = GetParentsFromControlledObjects(true);
+
+            //    if (topParents.Count != 0)
+            //    {
+            //        // Loop through all top parents and scale them accordingly
+            //        const float minObjectScale = 0.00001f;
+            //        foreach (GameObject topParent in topParents)
+            //        {
+            //            if (topParent != null)
+            //            {
+            //                // Cache object data
+            //                Transform objectTransform = topParent.transform;
+
+            //                // Calculate the new scale of the object.
+            //                // Note: Make sure the game object's scale doesn't reach 0 on any axis. If that happens, we would not be 
+            //                //       able to further scale the game object because every scale factor applied to 0 would result in a
+            //                //       value of 0.
+            //                Vector3 newObjectLocalScale = _gameObjectLocalScaleSnapshot[topParent];
+            //                newObjectLocalScale = Vector3.Scale(newObjectLocalScale, scaleFactorVector);
+            //                if (newObjectLocalScale.x == 0.0f) newObjectLocalScale.x = minObjectScale;
+            //                if (newObjectLocalScale.y == 0.0f) newObjectLocalScale.y = minObjectScale;
+            //                if (newObjectLocalScale.z == 0.0f) newObjectLocalScale.z = minObjectScale;
+
+            //                // We will need to calculate the relative scale of the game object (i.e. how much it has changed).
+            //                // Note: We will make sure to clamp the scale to the minimum value to avoid divides by 0.
+            //                Vector3 oldLocalScale = objectTransform.localScale;
+            //                if (oldLocalScale.x == 0.0f) oldLocalScale.x = minObjectScale;
+            //                if (oldLocalScale.y == 0.0f) oldLocalScale.y = minObjectScale;
+            //                if (oldLocalScale.z == 0.0f) oldLocalScale.z = minObjectScale;
+
+            //                // Calculate the relative scale by performing a component-wise division between the new scale and the old one
+            //                Vector3 relativeScale = Vector3.Scale(newObjectLocalScale, new Vector3(1.0f / oldLocalScale.x, 1.0f / oldLocalScale.y, 1.0f / oldLocalScale.z));
+
+            //                if (_objAxisMask.ContainsKey(topParent))
+            //                {
+            //                    bool[] mask = _objAxisMask[topParent];
+            //                    for (int axisIndex = 0; axisIndex < 3; ++axisIndex)
+            //                    {
+            //                        if (!mask[axisIndex])
+            //                        {
+            //                            Vector3 scaleSnapshot = _gameObjectLocalScaleSnapshot[topParent];
+            //                            newObjectLocalScale[axisIndex] = scaleSnapshot[axisIndex];
+            //                            relativeScale[axisIndex] = 1.0f;
+            //                        }
+            //                    }
+            //                }
+
+            //                // If the center transform pivot point is used, we will scale the objects' distance from the gizmo position.
+            //                // This seems to be the behaviour of the Unity gizmos, so we will do the same thing.
+            //                if (_transformPivotPoint == TransformPivotPoint.Center)
+            //                {
+            //                    // Construct a vector from the gizmo position to the object's position
+            //                    Vector3 fromPivotPointToPosition = objectTransform.position - _gizmoTransform.position;
+
+            //                    // Store the object's local axes
+            //                    Vector3 objectRight = objectTransform.right;
+            //                    Vector3 objectUp = objectTransform.up;
+            //                    Vector3 objectLook = objectTransform.forward;
+
+            //                    // Calculate the projection of 'fromPivotPointToPosition' onto the object's local axes. This
+            //                    // will give us the distance between the object's position and the gizmo position along each
+            //                    // of the 3 axes.
+            //                    float projectionOnRight = Vector3.Dot(objectRight, fromPivotPointToPosition);
+            //                    float projectionOnUp = Vector3.Dot(objectUp, fromPivotPointToPosition);
+            //                    float projectionOnLook = Vector3.Dot(objectLook, fromPivotPointToPosition);
+
+            //                    // Scale the offsets which correspond to the axes that are being scaled
+            //                    if (axesFlags[0]) projectionOnRight *= relativeScale.x;
+            //                    if (axesFlags[1]) projectionOnUp *= relativeScale.y;
+            //                    if (axesFlags[2]) projectionOnLook *= relativeScale.z;
+
+            //                    // Change the object's scale and also adjust the position by scaling the distance between the
+            //                    // object and the gizmo position.
+            //                    objectTransform.localScale = newObjectLocalScale;
+            //                    objectTransform.position = _gizmoTransform.position + objectRight * projectionOnRight + objectUp * projectionOnUp + objectLook * projectionOnLook;
+            //                }
+            //                else objectTransform.localScale = newObjectLocalScale;  // When mesh pivot is used as the transform pivot, just scale the object and leave the postion untouched
+
+            //                IRTEditorEventListener editorEventListener = topParent.GetComponent<IRTEditorEventListener>();
+            //                if (editorEventListener != null) editorEventListener.OnAlteredByTransformGizmo(this);
+
+            //                // The game objects were transformed since the left mouse button was pressed
+            //                _objectsWereTransformedSinceLeftMouseButtonWasPressed = true;
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         /// <summary>
@@ -1913,7 +1937,7 @@ namespace RTEditor
         private float GetAxisScaleFactorForAccumulatedDrag(GizmoAxis gizmoAxis)
         {
             // We need to handle this differently based on whether or not snapping is used
-            if(IsStepSnappingShActive)
+            if (IsStepSnappingShActive)
             {
                 // If the accumulated scale axis drag is greater than the step value in world units, we will
                 // need to calculate the scale factor and return it. Otherwise, we will return 1.0f meaning that
@@ -1951,7 +1975,7 @@ namespace RTEditor
             // Note: The code which handles snapping is the same as the one used in 'GetAxisScaleFactorForAccumulatedDrag',
             //       with the exception that we are now using '_accumulatedMultiAxisTriangleDrag' to perform the necessary
             //       calculations.
-            if(IsStepSnappingShActive)
+            if (IsStepSnappingShActive)
             {
                 if (Mathf.Abs(_accumulatedMultiAxisTriangleDrag) >= _snapSettings.StepValueInWorldUnits)
                 {
@@ -1984,7 +2008,7 @@ namespace RTEditor
             // Note: The code which handles snapping is the same as the one used in 'GetAxisScaleFactorForAccumulatedDrag',
             //       with the exception that we are now using '_accumulatedAllAxesSquareDragInWorldUnits' to perform the 
             //       necessary calculations.
-            if(IsStepSnappingShActive)
+            if (IsStepSnappingShActive)
             {
                 if (Mathf.Abs(_accumulatedAllAxesSquareDragInWorldUnits) >= _snapSettings.StepValueInWorldUnits)
                 {
