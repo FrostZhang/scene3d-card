@@ -8,11 +8,19 @@ public class Shijie : MonoBehaviour
 {
     public static Action<string> OnGetConfig;
     public static Action<string> OnHassFlush;
+    public static string domain;
     void Awake()
     {
 #if UNITY_WEBGL && !UNITY_EDITOR
         WebGLInput.captureAllKeyboardInput = false;
 #endif
+        var path = Application.streamingAssetsPath;
+        var index = path.IndexOf('/', 8);
+        if (index !=-1)
+        {
+            domain = path.Remove(index);
+            Debug.Log(domain);
+        }
     }
 
     public void HassConfig(string configStr)

@@ -32,21 +32,47 @@ public class House : MonoBehaviour
     {
         Shijie.OnGetConfig += OnGetConfig;
         Shijie.OnHassFlush += OnHassFlush;
-        lis.Add(HouseWeather.Instance);//注册天气
+        //lis.Add(HouseWeather.Instance);//注册天气
 #if UNITY_WEBGL && !UNITY_EDITOR
         Shijie.Link3DStart();
         WebGLInput.captureAllKeyboardInput = false;
 #endif
-        //lastFlushTime = Time.time;
-        //var str = "{'type':'custom:scene3d-card','wall':[{ 'wall1':{ 'pos':'3.7506,-0.2897,2.433167,1,0.125,0'} },null]}";
-        //OnGetConfig(str);
+
 #if UNITY_EDITOR
-        TestRoom();
-        TestJson();
+        Test();
+#else
+    ReadCustomConfig();
 #endif
     }
 
-    private async void TestJson()
+    private async void ReadCustomConfig()
+    {
+        var te = await Help.Instance.TextRequest(false, Shijie.domain + "/3dscene_local/Customdata/houseconnfig.json", false);
+        if (te != null)
+        {
+            if (te.StartsWith(""))
+                te = te.TrimStart('\"').TrimEnd('\"');
+            te = te.Replace("None", "null");
+            OnGetConfig(te);
+        }
+    }
+
+    private async void Test()
+    {
+        var te = await Help.Instance.TextRequest(true, "Customdata/houseconnfig.json");
+        if (te != null)
+        {
+            if (te.StartsWith(""))
+                te = te.TrimStart('\"').TrimEnd('\"');
+            te = te.Replace("None", "null");
+            OnGetConfig(te);
+            return;
+        }
+        TestRoom();
+        await TestJson();
+    }
+
+    private async Task TestJson()
     {
         await new WaitForSeconds(2);
         var js = House2Json();
@@ -90,6 +116,9 @@ public class House : MonoBehaviour
     {
         if (Reconstitution.Instance.IsEdit)
             return;
+        var jd = JsonMapper.ToObject(config);
+        if (jd == null)
+            return;
         //if (Time.time - lastFlushTime < 4 && lastFlushTime == 0) return;
         //lastFlushTime = Time.time;
         Destroy(parent.gameObject);
@@ -97,12 +126,11 @@ public class House : MonoBehaviour
         cureetHouse.Clear();
         lis.Add(HouseWeather.Instance);//注册天气
         parent = new GameObject().transform;
-        var jd = JsonMapper.ToObject(config);
-        if (jd == null)
-            return;
         if (jd.IsObject)
         {
             var dic = jd as IDictionary;
+            if (dic.Contains("data"))
+                dic = jd = jd["data"];
             if (dic.Contains("wall"))
                 AnsWall(jd);
             if (dic.Contains("floor"))

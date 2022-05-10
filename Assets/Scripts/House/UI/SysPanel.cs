@@ -17,5 +17,14 @@ public class SysPanel : MonoBehaviour
     {
         var hs = House.Instance.House2Json();
         Shijie.Config3D(hs);
+#if UNITY_EDITOR
+        var path= Application.streamingAssetsPath + "/Customdata/houseconnfig.json";
+        var dir = System.IO.Path.GetDirectoryName(path);
+        if (!System.IO.Directory.Exists(dir))
+        {
+            System.IO.Directory.CreateDirectory(dir);
+        }
+        System.IO.File.WriteAllText(path, hs);
+#endif
     }
 }

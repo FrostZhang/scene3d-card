@@ -106,7 +106,7 @@ public class Help : MonoBehaviour
         return null;
     }
 
-    public async Task<string> TextRequest(bool isstreamingAssets, string path)
+    public async Task<string> TextRequest(bool isstreamingAssets, string path, bool cache = true)
     {
         System.Uri uri;
         if (isstreamingAssets)
@@ -119,6 +119,8 @@ public class Help : MonoBehaviour
         }
         using (var request = new UnityWebRequest(uri))
         {
+            if (!cache)
+                request.SetRequestHeader("cache-control", "no-store");
             DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
             request.downloadHandler = dH;
             await request.SendWebRequest();
@@ -128,6 +130,7 @@ public class Help : MonoBehaviour
             }
             else
             {
+                await new WaitUntil(() => request.isDone);
                 if (request.downloadHandler != null)
                 {
                     return request.downloadHandler.text;
