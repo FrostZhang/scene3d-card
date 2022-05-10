@@ -62,10 +62,9 @@ public class DrawStand : MonoBehaviour
         var p = Input.mousePosition;
         p = Camera.main.ScreenToWorldPoint(p);
         Transform wall = null;
-            wall = await House.Instance.CreatStand(choose.key
-                                , $"{p.x},{p.z},{0},0,0,0,1,1,1"
-                                , null
-                                );
+        wall = await House.Instance.CreatStand(choose.key, null);
+        p.y = 0;
+        wall.transform.position = p;
         await new WaitForEndOfFrame();
         wall.GetComponent<Collider>().enabled = true;
         Reconstitution.Instance.EditorTransform(wall);

@@ -11,8 +11,10 @@ public class PropPanle : MonoBehaviour
     public Transform v1p;
     public Transform v2p;
     public Transform v3p;
+    public Transform cp;
     public ScrollRect scroll;
     public Button delete;
+    public PSColorPanel pSColor;
     List<Transform> trs;
     List<InputField> fs;
     public Action Ondel;
@@ -24,6 +26,7 @@ public class PropPanle : MonoBehaviour
         v1p.gameObject.SetActive(false);
         v2p.gameObject.SetActive(false);
         v3p.gameObject.SetActive(false);
+        cp.gameObject.SetActive(false);
         gameObject.SetActive(false);
         delete.onClick.AddListener(() =>
         {
@@ -178,6 +181,31 @@ public class PropPanle : MonoBehaviour
         trs.Add(v);
     }
 
+    public void GetColor(string title, Color32 c, Action<Color> actc)
+    {
+        var v = Instantiate(cp, cp.transform.parent);
+        v.gameObject.SetActive(true);
+        var b = v.GetComponentInChildren<Button>();
+        v.GetComponentInChildren<Text>().text = title;
+        b.onClick.AddListener(() =>
+        {
+            if (pSColor.gameObject.activeSelf)
+            {
+                pSColor.gameObject.SetActive(false);
+                return;
+            }
+            pSColor.gameObject.SetActive(true);
+            pSColor.OnColorChanged = (x) =>
+            {
+                actc?.Invoke(x);
+                b.targetGraphic.color = x;
+            };
+            pSColor.SetColor(b.targetGraphic.color);
+        });
+        b.targetGraphic.color = c;
+        trs.Add(v);
+    }
+
     public PropPanle Clear()
     {
         foreach (var item in trs)
@@ -186,12 +214,14 @@ public class PropPanle : MonoBehaviour
         }
         trs.Clear();
         fs.Clear();
+        pSColor.gameObject.SetActive(false);
         return this;
     }
 
     public void Show(bool b)
     {
         gameObject.SetActive(b);
+        pSColor.gameObject.SetActive(false);
     }
 
     public void Flush(int[] index, params float[] values)

@@ -118,6 +118,71 @@ public class Reconstitution : MonoBehaviour
 
     }
 
+    public void EditLine(LineEntity e, Action<Color> onchangeC, Action Ondel)
+    {
+        CameraControllerForUnity.Instance.canUseMouseCenter = false;
+        ClearHandle();
+        PropPanle.Instance.Clear();
+        var l = e.line;
+        for (int i = 0; i < l.positionCount; i++)
+        {
+            var n = i;
+            var p = l.GetPosition(n);
+            var m = chhadle.PositionHandle(p, Quaternion.identity, (x) =>
+             {
+                 var pn = l.GetPosition(n);
+                 pn += x;
+                 l.SetPosition(n, pn);
+                 PropPanle.Instance.Flush(new int[] { n * 3, n * 3 + 1, n * 3 + 2 }, pn.x, pn.z, pn.y);
+             });
+            m.MultiAxisSquareSize = 0;
+            m.AxisLength = 1;
+            m.SetAxisVisibility(false, 1);
+            ligizmo.Add(m);
+            PropPanle.Instance.GetV3(n.ToString(), p.x, p.z, p.y, (x) =>
+            {
+                var pn = l.GetPosition(n);
+                pn.x = x;
+                l.SetPosition(n, pn);
+                m.transform.position = pn;
+            }, (y) =>
+            {
+                var pn = l.GetPosition(n);
+                pn.z = y;
+                l.SetPosition(n, pn);
+                m.transform.position = pn;
+            }, (z) =>
+            {
+                var pn = l.GetPosition(n);
+                pn.y = z;
+                l.SetPosition(n, pn);
+                m.transform.position = pn;
+            });
+        }
+        PropPanle.Instance.GetColor("on", e.Oncolor, (x) =>
+        {
+            e.SetOnc(x);
+            onchangeC?.Invoke(x);
+        });
+        PropPanle.Instance.GetColor("off", e.Offcolor, (x) =>
+        {
+            e.SetOffc(x);
+        });
+        lasthit = l.transform;
+        PropPanle.Instance.GetEntity("Entity", e.Entity_id, (x) =>
+        {
+            e.SetEntity(x);
+        });
+        Action action = null;
+        action = () =>
+       {
+           PropPanle.Instance.Ondel -= action;
+           Ondel?.Invoke();
+       };
+        PropPanle.Instance.Ondel += action;
+        PropPanle.Instance.Show(true);
+    }
+
     RaycastHit[] jiances;
     float interval;
     void Update()
@@ -446,29 +511,29 @@ public class Reconstitution : MonoBehaviour
         PropPanle.Instance.GetV3("Scale", target.localScale.x, target.localScale.y, target.localScale.z,
             (x) =>
             {
-            var pc = target.localScale;
-            if (x == 0) x = 0.1f;
-            pc.x = x;
-            target.localScale = pc;
+                var pc = target.localScale;
+                if (x == 0) x = 0.1f;
+                pc.x = x;
+                target.localScale = pc;
             }, (x) =>
             {
-            var pc = target.localScale;
-            if (x == 0) x = 0.1f;
-            pc.y = x;
-            target.localScale = pc;
+                var pc = target.localScale;
+                if (x == 0) x = 0.1f;
+                pc.y = x;
+                target.localScale = pc;
             }, (x) =>
             {
-            var pc = target.localScale;
-            if (x == 0) x = 0.1f;
-            pc.z = x;
-            target.localScale = pc;
+                var pc = target.localScale;
+                if (x == 0) x = 0.1f;
+                pc.z = x;
+                target.localScale = pc;
             });
-        PropPanle.Instance.GetV1("Close", target.eulerAngles.y,(x) =>
-        {
-            var pc = target.eulerAngles;
-            pc.y = x;
-            target.eulerAngles = pc;
-        });
+        PropPanle.Instance.GetV1("Close", target.eulerAngles.y, (x) =>
+         {
+             var pc = target.eulerAngles;
+             pc.y = x;
+             target.eulerAngles = pc;
+         });
         if (door is DoorEntitySliding)
         {
 

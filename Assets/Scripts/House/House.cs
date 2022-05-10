@@ -78,6 +78,8 @@ public class House : MonoBehaviour
     {
         if (CureetHouse.ContainsKey(lasthit))
         {
+            var e = lasthit.GetComponentInChildren<HassEntity>(true);
+            if (e) lis.Remove(e);
             CureetHouse.Remove(lasthit);
             Destroy(lasthit.gameObject);
         }
@@ -194,7 +196,7 @@ public class House : MonoBehaviour
         CreatStand("chair1", "-4.237,2.067,0,0,135,0,1,1,1", null);
         CreatStand("chair1", "-3.34,2.07,0,0,-135,0,1,1,1", null);
         CreatStand("tree", "-1.66,-0.27,0,0,0,0,1,1,1", null);
-        CreatStand("tvstand", "-1.64,-1.525,0,0,0,0,1,1,1", null);
+        CreatStand("tvstand", "-1.64,-1.525,0,0,-90,0,2,0.65,0.5", null);
         CreatStand("bed1", "-0.202,-2.24,0,0,90,0,1,1,1", null);
         CreatStand("bed1", "3.811,-2.24,0,0,-90,0,1,1,1", null);
         CreatStand("bed1", "3.2,2.12,0,0,90,0,0.855,1,0.95", null);
@@ -204,7 +206,7 @@ public class House : MonoBehaviour
         CreatStand("shelving", "-1.24,2.5,0,0,-90,0,1.218,1,3.32", null);
         CreatStand("shelving", "-0.115,1.97,0,0,0,0,1.218,1,3.35", null);
 
-        CreatStand("yushigui", "2.11,1.44,0,0,270,0,0.65,0.65,0.65", null); 
+        CreatStand("yushigui", "2.11,1.44,0,0,270,0,0.65,0.65,0.65", null);
         CreatStand("sofa3", "-4.35,-1.25,0,0,0,0,0.75,0.75,0.65", null);
         CreatStand("wc2", "2.11,2.35,0,0,270,0,1,1,1", null);
         CreatStand("mirror", "2.11,1.318,0.613,0,-90,0,0.6,0.57,1", null);
@@ -297,31 +299,36 @@ public class House : MonoBehaviour
             if (float.TryParse(ss[6], out va)) sx = va; else return null;
             if (float.TryParse(ss[7], out va)) sy = va; else return null;
             if (float.TryParse(ss[8], out va)) sz = va; else return null;
-
-            await Help.Instance.ABLoad("appliances", cusname);
-            var ab = Help.Instance.GetBundle("appliances", cusname);
-            if (ab == null) return null;
-            var tr = ab.LoadAsset<GameObject>(cusname);
-            tr = Instantiate(tr, parent);
-            tr.name = cusname;
-            tr.transform.position = new Vector3(x, z, y);
-            tr.transform.eulerAngles = new Vector3(rx, ry, rz);
-            tr.transform.localScale = new Vector3(sx, sy, sz);
-            var e = tr.GetComponent<HassEntity>();
-            if (e)
+            var tr = await CreatAppliances(cusname, id);
+            if (tr)
             {
-                if (!string.IsNullOrWhiteSpace(id))
-                {
-                    e.SetEntity(id);
-                    lis.Add(e);
-                }
+                tr.transform.position = new Vector3(x, z, y);
+                tr.transform.eulerAngles = new Vector3(rx, ry, rz);
+                tr.transform.localScale = new Vector3(sx, sy, sz);
             }
-            cureetHouse.Add(tr.transform, HouseEntityType.appliances);
-            return e;
         }
         return null;
     }
-
+    public async Task<HassEntity> CreatAppliances(string cusname, string id)
+    {
+        await Help.Instance.ABLoad("appliances", cusname);
+        var ab = Help.Instance.GetBundle("appliances", cusname);
+        if (ab == null) return null;
+        var tr = ab.LoadAsset<GameObject>(cusname);
+        tr = Instantiate(tr, parent);
+        tr.name = cusname;
+        var e = tr.GetComponent<HassEntity>();
+        if (e)
+        {
+            if (!string.IsNullOrWhiteSpace(id))
+            {
+                e.SetEntity(id);
+                lis.Add(e);
+            }
+        }
+        cureetHouse.Add(tr.transform, HouseEntityType.appliances);
+        return e;
+    }
     /// <summary>posxzy anglexyz scalexyz </summary>
     public async Task<Transform> CreatStand(string cusname, string str, string color)
     {
@@ -340,21 +347,30 @@ public class House : MonoBehaviour
             if (float.TryParse(ss[7], out va)) sy = va; else return null;
             if (float.TryParse(ss[8], out va)) sz = va; else return null;
 
-            await Help.Instance.ABLoad("stand", cusname);
-            var ab = Help.Instance.GetBundle("stand", cusname);
-            if (ab == null) return null;
-            var tr = ab.LoadAsset<GameObject>(cusname);
-            tr = Instantiate(tr, parent);
-            tr.name = cusname;
-            tr.transform.position = new Vector3(x, z, y);
-            tr.transform.eulerAngles = new Vector3(rx, ry, rz);
-            tr.transform.localScale = new Vector3(sx, sy, sz);
-            cureetHouse.Add(tr.transform, HouseEntityType.stand);
-            var collider = tr.GetComponent<Collider>();
-            if (collider) collider.enabled = false;
-            return tr.transform;
+            var tr = await CreatStand(cusname, color);
+            if (tr)
+            {
+                tr.transform.position = new Vector3(x, z, y);
+                tr.transform.eulerAngles = new Vector3(rx, ry, rz);
+                tr.transform.localScale = new Vector3(sx, sy, sz);
+            }
         }
         return null;
+    }
+
+    /// <summary>posxzy anglexyz scalexyz </summary>
+    public async Task<Transform> CreatStand(string cusname, string color)
+    {
+        await Help.Instance.ABLoad("stand", cusname);
+        var ab = Help.Instance.GetBundle("stand", cusname);
+        if (ab == null) return null;
+        var tr = ab.LoadAsset<GameObject>(cusname);
+        tr = Instantiate(tr, parent);
+        tr.name = cusname;
+        cureetHouse.Add(tr.transform, HouseEntityType.stand);
+        var collider = tr.GetComponent<Collider>();
+        if (collider) collider.enabled = false;
+        return tr.transform;
     }
 
     public async Task<LineEntity> CreatFlowLine(string pos, int speed, string con, string coff, string id)

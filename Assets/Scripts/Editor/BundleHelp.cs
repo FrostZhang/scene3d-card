@@ -89,6 +89,10 @@ public class BundleHelp : EditorWindow
                     }
                     System.IO.File.WriteAllBytes(Application.streamingAssetsPath + "/" + pre, te.EncodeToPNG());
                 }
+                else
+                {
+                    Debug.LogError(o + " GetAssetPreview is null");
+                }
             }
         }
         System.IO.File.WriteAllText(Application.streamingAssetsPath + "/3dscene.json", LitJson.JsonMapper.ToJson(zichans));
