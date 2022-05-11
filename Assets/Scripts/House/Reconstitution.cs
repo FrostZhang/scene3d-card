@@ -443,6 +443,7 @@ public class Reconstitution : MonoBehaviour
         {
             door.Max = x;
         });
+        PropPanle.Instance.GetColor("Light", door.clight.color, (x) => door.clight.color = x);
         PropPanle.Instance.GetEntity("ID", door.Entity_id, (x) =>
         {
             door.SetEntity(x);
@@ -661,6 +662,8 @@ public class Reconstitution : MonoBehaviour
             pc.y = x;
             target.localEulerAngles = pc;
         });
+        var r = target.GetComponent<MeshRenderer>().material;
+        PropPanle.Instance.GetColor("Color", r.color, (x) => r.color = x);
         PropPanle.Instance.Show(true);
     }
 
