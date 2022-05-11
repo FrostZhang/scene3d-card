@@ -28,6 +28,7 @@ public class Reconstitution : MonoBehaviour
 
     CHHandle chhadle;
     List<RTEditor.Gizmo> ligizmo;
+    Vector3 offset = new Vector3(1, 0, 1) * 0.125f;
     void Start()
     {
         Instance = this;
@@ -68,6 +69,7 @@ public class Reconstitution : MonoBehaviour
     public void CloseRTEditor()
     {
         PropPanle.Instance.Show(false);
+        lasthit = null;
         ClearHandle();
     }
 
@@ -239,7 +241,6 @@ public class Reconstitution : MonoBehaviour
 
     private void SelectTr(Transform lasthit)
     {
-        Vector3 offset = new Vector3(1, 0, 1) * 0.125f;
         var h = chhadle.PositionHandle(lasthit.position + offset, Quaternion.identity, (x) =>
              {
                  lasthit.position += x;
@@ -466,9 +467,9 @@ public class Reconstitution : MonoBehaviour
 
     private void FlushGizmo(Vector3 pc)
     {
-        if (ligizmo.Count>0)
+        if (ligizmo.Count > 0)
         {
-            ligizmo[0].transform.position = pc;
+            ligizmo[0].transform.position = pc + offset;
         }
     }
 
