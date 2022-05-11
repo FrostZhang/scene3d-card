@@ -189,9 +189,10 @@ public class PropPanle : MonoBehaviour
         v.GetComponentInChildren<Text>().text = title;
         b.onClick.AddListener(() =>
         {
-            if (pSColor.gameObject.activeSelf)
+            if (pSColor.OnColorChanged != null)
             {
                 pSColor.gameObject.SetActive(false);
+                pSColor.OnColorChanged = null;
                 return;
             }
             pSColor.gameObject.SetActive(true);
@@ -215,6 +216,7 @@ public class PropPanle : MonoBehaviour
         trs.Clear();
         fs.Clear();
         pSColor.gameObject.SetActive(false);
+        pSColor.OnColorChanged = null;
         return this;
     }
 
@@ -222,6 +224,7 @@ public class PropPanle : MonoBehaviour
     {
         gameObject.SetActive(b);
         pSColor.gameObject.SetActive(false);
+        pSColor.OnColorChanged = null;
     }
 
     public void Flush(int[] index, params float[] values)

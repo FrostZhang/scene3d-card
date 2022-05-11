@@ -76,16 +76,17 @@ public class HassEntity : MonoBehaviour
 
     }
 
+    /// <summary>hass 信息  开</summary>
     protected virtual void TrunOn()
     {
 
     }
-
+    /// <summary>hass 信息  关</summary>
     protected virtual void TrunOff()
     {
 
     }
-
+    /// <summary>hass 信息  非on/off</summary>
     protected virtual void Destine(string state)
     {
 

@@ -357,16 +357,19 @@ public class Reconstitution : MonoBehaviour
                 var pc = target.position;
                 pc.x = x;
                 target.position = pc;
+                FlushGizmo(pc);
             }, (x) =>
             {
                 var pc = target.position;
                 pc.z = x;
                 target.position = pc;
+                FlushGizmo(pc);
             }, (x) =>
             {
                 var pc = target.position;
                 pc.y = x;
                 target.position = pc;
+                FlushGizmo(pc);
             });
         PropPanle.Instance.GetV3("Rot", target.localEulerAngles.x, target.localEulerAngles.y, target.localEulerAngles.z,
             (x) =>
@@ -406,6 +409,14 @@ public class Reconstitution : MonoBehaviour
                 target.localScale = pc;
             });
         var door = target.GetComponent<HassEntity>();
+        if (door is AlarmEntity)
+        {
+            var e = door as AlarmEntity;
+            var ma = e.YuanMa;
+            PropPanle.Instance.GetColor("Main", ma.GetColor("_Color"), (x) => ma.SetColor("_Color", x));
+            PropPanle.Instance.GetColor("Edge", ma.GetColor("_HeightLight"), (x) => ma.SetColor("_HeightLight", x));
+            PropPanle.Instance.GetColor("Depth", ma.GetColor("_DepthColor"), (x) => ma.SetColor("_DepthColor", x));
+        }
         PropPanle.Instance.GetEntity("ID", door.Entity_id, (x) =>
         {
             door.SetEntity(x);
@@ -422,11 +433,13 @@ public class Reconstitution : MonoBehaviour
             var pc = target.position;
             pc.x = x;
             target.position = pc;
+            FlushGizmo(pc);
         }, (x) =>
         {
             var pc = target.position;
             pc.z = x;
             target.position = pc;
+            FlushGizmo(pc);
         });
         PropPanle.Instance.GetV2("W/H", target.localScale.x, target.localScale.z, (x) =>
         {
@@ -451,6 +464,14 @@ public class Reconstitution : MonoBehaviour
         PropPanle.Instance.Show(true);
     }
 
+    private void FlushGizmo(Vector3 pc)
+    {
+        if (ligizmo.Count>0)
+        {
+            ligizmo[0].transform.position = pc;
+        }
+    }
+
     private void ShowWallFloor(Transform target)
     {
         PropPanle.Instance.Clear();
@@ -459,11 +480,13 @@ public class Reconstitution : MonoBehaviour
             var pc = target.position;
             pc.x = x;
             target.position = pc;
+            FlushGizmo(pc);
         }, (x) =>
         {
             var pc = target.position;
             pc.z = x;
             target.position = pc;
+            FlushGizmo(pc);
         });
         PropPanle.Instance.GetV2("W/H", target.localScale.x, target.localScale.z, (x) =>
         {
@@ -498,16 +521,19 @@ public class Reconstitution : MonoBehaviour
             var pc = target.position;
             pc.x = x;
             target.position = pc;
+            FlushGizmo(pc);
         }, (x) =>
         {
             var pc = target.position;
             pc.z = x;
             target.position = pc;
+            FlushGizmo(pc);
         }, (x) =>
         {
             var pc = target.position;
             pc.y = x;
             target.position = pc;
+            FlushGizmo(pc);
         });
         PropPanle.Instance.GetV3("Scale", target.localScale.x, target.localScale.y, target.localScale.z,
             (x) =>
@@ -563,16 +589,19 @@ public class Reconstitution : MonoBehaviour
             var pc = target.position;
             pc.x = x;
             target.position = pc;
+            FlushGizmo(pc);
         }, (x) =>
         {
             var pc = target.position;
             pc.z = x;
             target.position = pc;
+            FlushGizmo(pc);
         }, (x) =>
         {
             var pc = target.position;
             pc.y = x;
             target.position = pc;
+            FlushGizmo(pc);
         });
         PropPanle.Instance.GetV3("Rot", target.localEulerAngles.x, target.localEulerAngles.y, target.localEulerAngles.z,
             (x) =>
@@ -616,7 +645,7 @@ public class Reconstitution : MonoBehaviour
         PropPanle.Instance.Show(true);
     }
 
-    private static void ShowWallProp(Transform target)
+    private void ShowWallProp(Transform target)
     {
         PropPanle.Instance.Clear();
         PropPanle.Instance.GetV3("Pos", target.position.x, target.position.z, target.position.y,
@@ -625,16 +654,19 @@ public class Reconstitution : MonoBehaviour
                  var pc = target.position;
                  pc.x = x;
                  target.position = pc;
+                 FlushGizmo(pc);
              }, (x) =>
              {
                  var pc = target.position;
                  pc.z = x;
                  target.position = pc;
+                 FlushGizmo(pc);
              }, (x) =>
              {
                  var pc = target.position;
                  pc.y = x;
                  target.position = pc;
+                 FlushGizmo(pc);
              });
         PropPanle.Instance.GetV3("W/H/T", target.localScale.x, target.localScale.y, target.localScale.z,
             (x) =>

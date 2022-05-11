@@ -12,8 +12,6 @@ public class PSColorPanel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     }
 
     [SerializeField]
-    Camera uiCamera;
-    [SerializeField]
     GameObject hueThumb;
     [SerializeField]
     GameObject svThumb;
@@ -24,20 +22,37 @@ public class PSColorPanel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     [SerializeField]
     Material matSV;
 
-    [SerializeField]
-    Image pickColor;
-
     EditType curType = EditType.None;
     float currentHue;
     float currentSat;
     float currentBright;
     const float RingLen = 0.27f;
     public Action<Color> OnColorChanged;
-
+    public InputField rf, gf, bf, af;
     void Start()
     {
-        uiCamera = Camera.main;
         SetColor(currentHue, currentSat, currentBright);
+        rf.onEndEdit.AddListener((x) =>
+        {
+            if (string.IsNullOrWhiteSpace(x))
+                rf.text = "0";
+            AnsInputColor32();
+        }); gf.onEndEdit.AddListener((x) =>
+        {
+            if (string.IsNullOrWhiteSpace(x))
+                gf.text = "0";
+            AnsInputColor32();
+        }); bf.onEndEdit.AddListener((x) =>
+        {
+            if (string.IsNullOrWhiteSpace(x))
+                bf.text = "0";
+            AnsInputColor32();
+        }); af.onEndEdit.AddListener((x) =>
+        {
+            if (string.IsNullOrWhiteSpace(x))
+                af.text = "0";
+            AnsInputColor32();
+        });
     }
 
     public void OnBeginDrag(PointerEventData eventData)
@@ -54,36 +69,32 @@ public class PSColorPanel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     {
         if (curType == EditType.Hue)
         {
-            Vector3 clickPos = uiCamera.ScreenToWorldPoint(eventData.position);
-            SetHueThumbPos(GetHueFromClickPos(clickPos));
+            SetHueThumbPos(GetHueFromClickPos());
         }
         else if (curType == EditType.Sature)
         {
-            Vector3 clickPos = uiCamera.ScreenToWorldPoint(eventData.position);
             float s, v;
-            GetSVFromClickPos(clickPos, out s, out v);
+            GetSVFromClickPos(out s, out v);
             SetSatureThumbPos(s, v);
         }
     }
 
     public void OnPointerDown(PointerEventData eventData)
     {
-        Vector3 clickPos = uiCamera.ScreenToWorldPoint(eventData.position);
-
-        if (IsInHueRing(clickPos))
+        if (IsInHueRing())
         {
             // 点中了环形区域
             curType = EditType.Hue;
-            SetHueThumbPos(GetHueFromClickPos(clickPos));
+            SetHueThumbPos(GetHueFromClickPos());
         }
         else
         {
             // 如果不是色相，再判定饱和度
-            if (IsInSVTriangle(clickPos))
+            if (IsInSVTriangle())
             {
                 curType = EditType.Sature;
                 float s, v;
-                GetSVFromClickPos(clickPos, out s, out v);
+                GetSVFromClickPos(out s, out v);
                 SetSatureThumbPos(s, v);
             }
         }
@@ -95,11 +106,12 @@ public class PSColorPanel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     }
 
     #region SVSet
-    bool IsInSVTriangle(Vector3 clickPos)
+    bool IsInSVTriangle()
     {
-        Vector3 localPos = svRect.worldToLocalMatrix.MultiplyPoint(clickPos);
+        Vector2 local;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(svRect, Input.mousePosition, null, out local);
         // a,b,c triangle
-        Vector2 t = new Vector2(localPos.x, localPos.y) * 2 / svRect.rect.size;
+        Vector2 t = new Vector2(local.x, local.y) * 2 / svRect.rect.size;
 
         Vector3 p = new Vector3(t.x, t.y, 0);
         Vector3 a = new Vector3(-1, 1, 0);
@@ -120,13 +132,14 @@ public class PSColorPanel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         return Vector3.Dot(d1, d2) > 0 && Vector3.Dot(d2, d3) > 0;
     }
 
-    void GetSVFromClickPos(Vector3 clickPos, out float s, out float v)
+    void GetSVFromClickPos(out float s, out float v)
     {
         s = 0;
         v = 0;
 
-        Vector3 localPos = svRect.worldToLocalMatrix.MultiplyPoint(clickPos);
-        Vector2 t = new Vector2(localPos.x, localPos.y) / svRect.rect.size + new Vector2(0.5f, 0.5f);
+        Vector2 local;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(svRect, Input.mousePosition, null, out local);
+        Vector2 t = new Vector2(local.x, local.y) / svRect.rect.size + new Vector2(0.5f, 0.5f);
 
         float sqrt3dv2 = 0.8660254037844386f;
         float oneminus = 1 - sqrt3dv2;
@@ -159,7 +172,7 @@ public class PSColorPanel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     #endregion
 
     #region HueSet
-    bool IsInHueRing(Vector3 clickPos)
+    bool IsInHueRing()
     {
         Vector2 local;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(hueRect, Input.mousePosition, null, out local);
@@ -170,7 +183,7 @@ public class PSColorPanel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         return r >= (1 - RingLen) && r <= 1;
     }
 
-    float GetHueFromClickPos(Vector3 clickPos)
+    float GetHueFromClickPos()
     {
         Vector2 local;
         RectTransformUtility.ScreenPointToLocalPointInRectangle(hueRect, Input.mousePosition, null, out local);
@@ -187,16 +200,13 @@ public class PSColorPanel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
 
     void UpdatePickColor()
     {
-        Color color = Color.HSVToRGB(currentHue, currentSat, currentBright);
-        if (pickColor != null)
-        {
-            pickColor.color = color;
-        }
-
+        Color32 color = Color.HSVToRGB(currentHue, currentSat, currentBright);
+        rf.text = color.r.ToString();
+        gf.text = color.g.ToString();
+        bf.text = color.b.ToString();
+        af.text = color.a.ToString();
         if (OnColorChanged != null)
-        {
             OnColorChanged(color);
-        }
     }
 
     void SetHueThumbPos(float h)
@@ -206,7 +216,7 @@ public class PSColorPanel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         float y = Mathf.Sin(theta);
         Vector2 dir = new Vector2(x, y);
         dir = (1 - RingLen * 0.5f) * dir.normalized;
-        var offset = new Vector2((hueRect.rect.width) * (0.5f-hueRect.pivot.x), (hueRect.rect.height) * (0.5f-hueRect.pivot.y));
+        var offset = new Vector2((hueRect.rect.width) * (0.5f - hueRect.pivot.x), (hueRect.rect.height) * (0.5f - hueRect.pivot.y));
         Vector2 pos = new Vector2(dir.x * hueRect.rect.width * 0.5f + offset.x, dir.y * hueRect.rect.height * 0.5f + offset.y);
 
         hueThumb.transform.localPosition = new Vector3(pos.x, pos.y, 0);
@@ -215,6 +225,16 @@ public class PSColorPanel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         UpdatePickColor();
     }
     #endregion
+
+    public void AnsInputColor32()
+    {
+        byte r, g, b, a;
+        if (!byte.TryParse(rf.text, out r)) return;
+        if (!byte.TryParse(gf.text, out g)) return;
+        if (!byte.TryParse(bf.text, out b)) return;
+        if (!byte.TryParse(af.text, out a)) return;
+        SetColor(new Color32(r, g, b, a));
+    }
 
     public void SetColor(Color c)
     {
