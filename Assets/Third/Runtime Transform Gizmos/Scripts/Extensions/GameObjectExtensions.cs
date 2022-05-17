@@ -99,15 +99,15 @@ namespace RTEditor
             objectRayHit = null;
             if (!gameObject.HasTerrain()) return false;
 
-            TerrainCollider terrainCollider = gameObject.GetComponent<TerrainCollider>();
-            if (terrainCollider == null) return false;
+            //TerrainCollider terrainCollider = gameObject.GetComponent<TerrainCollider>();
+            //if (terrainCollider == null) return false;
 
-            RaycastHit raycastHit;
-            if (terrainCollider.Raycast(ray, out raycastHit, float.MaxValue))
-            {
-                TerrainRayHit terrainRayHit = new TerrainRayHit(ray, raycastHit);
-                objectRayHit = new GameObjectRayHit(ray, gameObject, null, null, terrainRayHit, null);
-            }
+            //RaycastHit raycastHit;
+            //if (terrainCollider.Raycast(ray, out raycastHit, float.MaxValue))
+            //{
+            //    TerrainRayHit terrainRayHit = new TerrainRayHit(ray, raycastHit);
+            //    objectRayHit = new GameObjectRayHit(ray, gameObject, null, null, terrainRayHit, null);
+            //}
 
             return objectRayHit != null;
         }
@@ -840,16 +840,16 @@ namespace RTEditor
 #endif
             }
 
-            Collider2D[] all2DColliders = gameObject.GetComponents<Collider2D>();
-            foreach (Collider2D collider2D in all2DColliders)
-            {
-                // Destory collider
-#if UNITY_EDITOR
-                RuntimeEditorApplication.DestroyImmediate(collider2D);
-#else
-                RuntimeEditorApplication.Destroy(collider2D);
-#endif
-            }
+//            Collider2D[] all2DColliders = gameObject.GetComponents<Collider2D>();
+//            foreach (Collider2D collider2D in all2DColliders)
+//            {
+//                // Destory collider
+//#if UNITY_EDITOR
+//                RuntimeEditorApplication.DestroyImmediate(collider2D);
+//#else
+//                RuntimeEditorApplication.Destroy(collider2D);
+//#endif
+//            }
         }
 
         /// <summary>

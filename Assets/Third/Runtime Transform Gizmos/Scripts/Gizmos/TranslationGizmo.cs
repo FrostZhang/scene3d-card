@@ -332,29 +332,29 @@ namespace RTEditor
                 if (cursorRayHit.WasAnObjectHit && cursorRayHit.ClosestObjectRayHit.WasTerrainHit)
                 {
                     Vector3 newGizmoPos = cursorRayHit.ClosestObjectRayHit.HitPoint;
-                    TerrainCollider terrainCollider = cursorRayHit.ClosestObjectRayHit.HitObject.GetComponent<TerrainCollider>();
-                    if (terrainCollider != null)
-                    {
-                        List<GameObject> topParents = GameObjectExtensions.GetParentsFromObjectCollection(ControlledObjects);
-                        if (topParents.Count != 0)
-                        {
-                            RaycastHit terrainHit;
-                            foreach (var parent in topParents)
-                            {
-                                Transform parentTransform = parent.transform.root;
-                                parentTransform.position = newGizmoPos + _objectOffsetsFromGizmo[parent];
-                                Ray terrainPickRay = new Ray(parentTransform.position, -Vector3.up);
-                                if (terrainCollider.RaycastReverseIfFail(terrainPickRay, out terrainHit))
-                                {
-                                    parent.PlaceHierarchyOnPlane(terrainHit.point, terrainHit.normal, /*alignAxis ? (int)alignmentAxis :*/ -1);
-                                    IRTEditorEventListener editorEventListener = parent.GetComponent<IRTEditorEventListener>();
-                                    if (editorEventListener != null) editorEventListener.OnAlteredByTransformGizmo(this);
-                                    _objectsWereTransformedSinceLeftMouseButtonWasPressed = true;
-                                }
-                            }
-                            _gizmoTransform.position = newGizmoPos;
-                        }
-                    }
+                    //TerrainCollider terrainCollider = cursorRayHit.ClosestObjectRayHit.HitObject.GetComponent<TerrainCollider>();
+                    //if (terrainCollider != null)
+                    //{
+                    //    List<GameObject> topParents = GameObjectExtensions.GetParentsFromObjectCollection(ControlledObjects);
+                    //    if (topParents.Count != 0)
+                    //    {
+                    //        RaycastHit terrainHit;
+                    //        foreach (var parent in topParents)
+                    //        {
+                    //            Transform parentTransform = parent.transform.root;
+                    //            parentTransform.position = newGizmoPos + _objectOffsetsFromGizmo[parent];
+                    //            Ray terrainPickRay = new Ray(parentTransform.position, -Vector3.up);
+                    //            if (terrainCollider.RaycastReverseIfFail(terrainPickRay, out terrainHit))
+                    //            {
+                    //                parent.PlaceHierarchyOnPlane(terrainHit.point, terrainHit.normal, /*alignAxis ? (int)alignmentAxis :*/ -1);
+                    //                IRTEditorEventListener editorEventListener = parent.GetComponent<IRTEditorEventListener>();
+                    //                if (editorEventListener != null) editorEventListener.OnAlteredByTransformGizmo(this);
+                    //                _objectsWereTransformedSinceLeftMouseButtonWasPressed = true;
+                    //            }
+                    //        }
+                    //        _gizmoTransform.position = newGizmoPos;
+                    //    }
+                    //}
                 }
                 else
                 if (cursorRayHit.WasAnObjectHit && cursorRayHit.ClosestObjectRayHit.WasMeshHit)

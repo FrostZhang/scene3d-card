@@ -117,9 +117,9 @@ namespace RTEditor
 
         private void AttachColliderToSpriteObject(GameObject gameObject, ObjectColliderAttachmentSettings colliderAttachmentSettings)
         {
-            if (colliderAttachmentSettings.ColliderTypeForSpriteObjects == ObjectCollider2DType.Box) gameObject.AddComponent<BoxCollider2D>();
-            else if (colliderAttachmentSettings.ColliderTypeForSpriteObjects == ObjectCollider2DType.Circle) gameObject.AddComponent<CircleCollider2D>();
-            else if (colliderAttachmentSettings.ColliderTypeForSpriteObjects == ObjectCollider2DType.Polygon) gameObject.AddComponent<PolygonCollider2D>();
+            //if (colliderAttachmentSettings.ColliderTypeForSpriteObjects == ObjectCollider2DType.Box) gameObject.AddComponent<BoxCollider2D>();
+            //else if (colliderAttachmentSettings.ColliderTypeForSpriteObjects == ObjectCollider2DType.Circle) gameObject.AddComponent<CircleCollider2D>();
+            //else if (colliderAttachmentSettings.ColliderTypeForSpriteObjects == ObjectCollider2DType.Polygon) gameObject.AddComponent<PolygonCollider2D>();
         }
 
         /// <summary>

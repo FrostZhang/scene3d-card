@@ -120,27 +120,27 @@ namespace RTEditor
         private void RaycastAllTerrainObjects(Ray ray, List<GameObjectRayHit> terrainHits)
         {
             // Can we pick terrains?
-            if (!IsObjectPickMaskFlagSet(MouseCursorObjectPickFlags.ObjectTerrain))
-            {
-                // We will use Unity's 'Physics' API for terrain picking because it is reasonable enough
-                // to expect users to attach terrain colliders to their terrain objects.
-                RaycastHit[] rayHits = Physics.RaycastAll(ray);
-                if (rayHits.Length != 0)
-                {
-                    // Identify all terrain colliders which were picked
-                    foreach (RaycastHit rayHit in rayHits)
-                    {
-                        // Picked a terrain collider?
-                        if (rayHit.collider.GetType() == typeof(TerrainCollider))
-                        {
-                            // Create a game object hit instance and add it to the list
-                            var terrainRayHit = new TerrainRayHit(ray, rayHit);
-                            var gameObjectRayHit = new GameObjectRayHit(ray, rayHit.collider.gameObject, null, null, terrainRayHit, null);
-                            terrainHits.Add(gameObjectRayHit);
-                        }
-                    }
-                }
-            }
+            //if (!IsObjectPickMaskFlagSet(MouseCursorObjectPickFlags.ObjectTerrain))
+            //{
+            //    // We will use Unity's 'Physics' API for terrain picking because it is reasonable enough
+            //    // to expect users to attach terrain colliders to their terrain objects.
+            //    RaycastHit[] rayHits = Physics.RaycastAll(ray);
+            //    if (rayHits.Length != 0)
+            //    {
+            //        // Identify all terrain colliders which were picked
+            //        foreach (RaycastHit rayHit in rayHits)
+            //        {
+            //            // Picked a terrain collider?
+            //            if (rayHit.collider.GetType() == typeof(TerrainCollider))
+            //            {
+            //                // Create a game object hit instance and add it to the list
+            //                var terrainRayHit = new TerrainRayHit(ray, rayHit);
+            //                var gameObjectRayHit = new GameObjectRayHit(ray, rayHit.collider.gameObject, null, null, terrainRayHit, null);
+            //                terrainHits.Add(gameObjectRayHit);
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         private void RaycastAllObjectsNoTerrains(Ray ray, List<GameObjectRayHit> objectHits)
