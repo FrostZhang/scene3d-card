@@ -5,7 +5,7 @@ using UnityEngine;
 public class AlarmEntity : HassEntity
 {
     public LineRenderer line;
-    //public Transform yuan;
+    public Transform yuan;
     Material yuanMa;
     public MeshRenderer editR;
     public Material YuanMa { get => yuanMa; }
@@ -17,13 +17,13 @@ public class AlarmEntity : HassEntity
 
     protected override void TrunOn()
     {
-        //yuan.gameObject.SetActive(true);
+        editR.enabled = true;
         line.gameObject.SetActive(true);
     }
 
     protected override void TrunOff()
     {
-        //yuan.gameObject.SetActive(false);
+        editR.enabled = false;
         line.gameObject.SetActive(false);
     }
 
@@ -32,7 +32,6 @@ public class AlarmEntity : HassEntity
         if (enter)
         {
             editR.enabled = true;
-            //yuan.gameObject.SetActive(true);
             line.gameObject.SetActive(true);
         }
         else
@@ -40,7 +39,6 @@ public class AlarmEntity : HassEntity
             if (!open)
             {
                 editR.enabled = false;
-                //yuan.gameObject.SetActive(false);
                 line.gameObject.SetActive(false);
             }
         }

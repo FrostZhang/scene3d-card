@@ -73,7 +73,7 @@ public class BundleHelp : EditorWindow
             if (o)
             {
                 var te = AssetPreview.GetAssetPreview(o);
-                if (AssetPreview.IsLoadingAssetPreviews())
+                if (AssetPreview.IsLoadingAssetPreview(o.GetInstanceID()))
                 {
                     await System.Threading.Tasks.Task.Delay(100);
                 }

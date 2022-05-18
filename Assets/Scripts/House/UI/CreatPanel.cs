@@ -58,7 +58,7 @@ public class CreatPanel : MonoBehaviour
 
     private async Task AnsJson()
     {
-        var te = await Help.Instance.TextRequest(true, "3dscene.json");
+        var te = await Help.Instance.TextRequest(true, "3dscene.json", false);
         if (te != null)
         {
             zdic = new Dictionary<string, List<Ziyuan>>(200);

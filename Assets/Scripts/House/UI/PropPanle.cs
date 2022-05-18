@@ -9,6 +9,7 @@ public class PropPanle : MonoBehaviour
 {
     public static PropPanle Instance;
     public Transform v1p;
+    public Transform entityp;
     public Transform v2p;
     public Transform v3p;
     public Transform cp;
@@ -27,6 +28,7 @@ public class PropPanle : MonoBehaviour
         v2p.gameObject.SetActive(false);
         v3p.gameObject.SetActive(false);
         cp.gameObject.SetActive(false);
+        entityp.gameObject.SetActive(false);
         gameObject.SetActive(false);
         delete.onClick.AddListener(() =>
         {
@@ -93,19 +95,18 @@ public class PropPanle : MonoBehaviour
 
     public void GetEntity(string title, string df, Action<string> act)
     {
-        var v = Instantiate(v1p, v1p.transform.parent);
+        var v = Instantiate(entityp, entityp.parent);
         v.GetComponent<Text>().text = title;
-        var ff = v.GetComponentInChildren<InputField>();
-        ff.contentType = InputField.ContentType.Standard;
-        ff.onValueChanged.AddListener((x) =>
+        var ff = v.GetComponentInChildren<Button>();
+        var idt = ff.GetComponentInChildren<Text>();
+        ff.onClick.AddListener(() =>
         {
-            if (!string.IsNullOrWhiteSpace(x))
+            ButtonList.Instance.Show(true, (n) =>
             {
-                act.Invoke(x);
-            }
+                idt.text = n;
+            });
         });
-        fs.Add(ff);
-        ff.text = df;
+        idt.text = df;
         v.gameObject.SetActive(true);
         trs.Add(v);
     }
@@ -217,6 +218,7 @@ public class PropPanle : MonoBehaviour
         fs.Clear();
         pSColor.gameObject.SetActive(false);
         pSColor.OnColorChanged = null;
+        ButtonList.Instance.Show(false, null);
         return this;
     }
 
@@ -225,6 +227,7 @@ public class PropPanle : MonoBehaviour
         gameObject.SetActive(b);
         pSColor.gameObject.SetActive(false);
         pSColor.OnColorChanged = null;
+        ButtonList.Instance.Show(false, null);
     }
 
     public void Flush(int[] index, params float[] values)

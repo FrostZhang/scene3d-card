@@ -16,7 +16,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &4292620723984877376
 Transform:
   m_ObjectHideFlags: 0
@@ -241,6 +241,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   editC: {fileID: 175728600}
   line: {fileID: 4292620723984877377}
+  yuan: {fileID: 0}
   editR: {fileID: 8370453816916055464}
 --- !u!1001 &4292620724868957726
 PrefabInstance:

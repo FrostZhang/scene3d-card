@@ -15,9 +15,11 @@ public class House : MonoBehaviour
     public static House Instance;
     public Transform parent { get; set; }
     public Dictionary<Transform, HouseEntityType> CureetHouse { get => cureetHouse; }
+    public List<string> HomeassistantEntities { get => homeassistantEntities;}
 
     List<HassEntity> lis;
     Dictionary<Transform, HouseEntityType> cureetHouse;
+    List<string> homeassistantEntities;
     void Awake()
     {
         Instance = this;
@@ -25,6 +27,7 @@ public class House : MonoBehaviour
         mainCa = Camera.main;
         QualitySettings.SetQualityLevel(2);
         lis = new List<HassEntity>(100);
+        homeassistantEntities = new List<string>(100);
         cureetHouse = new Dictionary<Transform, HouseEntityType>(200);
     }
 
@@ -83,6 +86,15 @@ public class House : MonoBehaviour
 
     private void OnHassFlush(string message)
     {
+        if (Reconstitution.Instance.IsEdit)
+        {
+            var hid = message.Split(' ')[0];
+            if (!homeassistantEntities.Contains(hid))
+            {
+                homeassistantEntities.Add(hid);
+            }
+            return;
+        }
         var ss = message.Split(' ');
         var id = ss[0];
         var va = ss[1];

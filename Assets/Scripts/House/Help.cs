@@ -120,7 +120,11 @@ public class Help : MonoBehaviour
         using (var request = new UnityWebRequest(uri))
         {
             if (!cache)
-                request.SetRequestHeader("cache-control", "no-store");
+            {
+                request.SetRequestHeader("Cache-control", "no-cache");
+                request.SetRequestHeader("Prama", "no-cache");
+                request.SetRequestHeader("Expiree", "0");
+            }
             DownloadHandlerBuffer dH = new DownloadHandlerBuffer();
             request.downloadHandler = dH;
             await request.SendWebRequest();
