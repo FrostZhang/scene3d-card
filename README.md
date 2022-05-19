@@ -3,7 +3,7 @@
 ### 安装
 + 本项目的custom_components - 3dscene放入容器（可下载release包或整个项目）
 + 资源包放在custom_components\3dscene\local\StreamingAssets中。可选用百度网盘，链接:https://pan.baidu.com/s/1wiKLNRavM-tacb0cMxCAcw?pwd=k51f
-+ 确保custom_components\3dscene\local 可读写！！！
++ 确保custom_components\3dscene\local\Customdata 可读写！！！
 + 重启容器
 + 首页仪表盘新建一个分类，选择 面板（单张卡片）
 + 新建卡片 type: custom:scene3d-card
@@ -38,7 +38,7 @@
 - 建议接入和风天气 hf_weather 插件。
 
 + 为什么编辑器保存，homeassistant报错
-- custom_components\3dscene\local 没有读写权限，没法在 save config 时保存你的配置。
+- custom_components\3dscene\local\Customdata 没有读写权限，没法在 save config 时保存你的配置。
 
 ### 编辑器怎么用
 + 自己摸索
