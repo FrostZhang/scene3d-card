@@ -8,7 +8,7 @@
 + 新建卡片 type: custom:scene3d-card
 
 ### 打赏
-![wx]([http://cdn.asherlink.top/wxskm.jpg])
+![wx](http://cdn.asherlink.top/wxskm.jpg) ![wx](/Other/wxskm.jpg)
 
 ### 开发三维
 + 下载项目
