@@ -29,6 +29,10 @@ public class ButtonList : MonoBehaviour
     void OnEnable()
     {
         prefab.gameObject.SetActive(true);
+        var p1 = Instantiate(prefab, prefab.transform.parent);
+        p1.GetComponentInChildren<Text>().text = string.Empty;
+        p1.onClick.AddListener(() => callback?.Invoke(string.Empty));
+        buttons.Add(p1);
         foreach (var item in House.Instance.HomeassistantEntities)
         {
             var p = Instantiate(prefab, prefab.transform.parent);

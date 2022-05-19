@@ -28,7 +28,11 @@ public class HassEntity : MonoBehaviour
     public void SetEntity(string id)
     {
         if (string.IsNullOrEmpty(id))
+        {
+            head = null;
+            entity_id = null;
             return;
+        }
         var ids = id.Split('.');
         if (ids.Length == 2)
         {

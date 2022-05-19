@@ -418,6 +418,25 @@ public class Reconstitution : MonoBehaviour
             PropPanle.Instance.GetColor("Edge", ma.GetColor("_HeightLight"), (x) => ma.SetColor("_HeightLight", x));
             PropPanle.Instance.GetColor("Depth", ma.GetColor("_DepthColor"), (x) => ma.SetColor("_DepthColor", x));
         }
+        if (door is TextEntity)
+        {
+            var e = door as TextEntity;
+            PropPanle.Instance.GetText("Front", e.front, (x) =>
+            {
+                e.front = x;
+                e.FlushText();
+            });
+            PropPanle.Instance.GetText("Back", e.back, (x) =>
+            {
+                e.back = x;
+                e.FlushText();
+            });
+            PropPanle.Instance.GetColor("Color", e.textMesh.color, (x) => e.textMesh.color = x);
+            PropPanle.Instance.GetV1("Size", e.textMesh.fontSize, (x) =>
+            {
+                e.textMesh.fontSize = (int)x;
+            });
+        }
         PropPanle.Instance.GetEntity("ID", door.Entity_id, (x) =>
         {
             door.SetEntity(x);

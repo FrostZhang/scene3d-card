@@ -29,6 +29,7 @@ public class AlarmEntity : HassEntity
 
     public override void ReconstitutionMode(bool enter)
     {
+        base.ReconstitutionMode(enter);
         if (enter)
         {
             editR.enabled = true;

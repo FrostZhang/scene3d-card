@@ -88,11 +88,16 @@ public class HouseWeather : HassEntity
             case "…Ÿ‘∆":
             case "«Áº‰∂‡‘∆":
             case "“ı":
-
+            case "cloudy":
+            case "partlycloudy":
+            case "sunny":
+            case "windy":
+                
                 break;
             case "–°”Í":
             case "”Í":
             case "√´√´”Í":
+            case "rainy":
                 SetRain(200);
                 break;
             case "÷–”Í":
@@ -106,6 +111,7 @@ public class HouseWeather : HassEntity
                 break;
             case "±©”Í":
             case "¥Û±©”Í":
+            case "storm":
                 SetRain(700);
                 break;
             case "Ãÿ¥Û±©”Í":
@@ -117,11 +123,13 @@ public class HouseWeather : HassEntity
                 break;
             case "¿◊’Û”Í":
             case "«ø¿◊’Û”Í":
+            case "thunderstorm":
                 SetRain(700);
                 SetLighting(3);
                 break;
             case "—©":
             case "–°—©":
+            case "snow":
                 SetSnow(200);
                 break;
             case "÷–—©":

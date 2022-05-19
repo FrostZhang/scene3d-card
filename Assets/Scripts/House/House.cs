@@ -15,7 +15,7 @@ public class House : MonoBehaviour
     public static House Instance;
     public Transform parent { get; set; }
     public Dictionary<Transform, HouseEntityType> CureetHouse { get => cureetHouse; }
-    public List<string> HomeassistantEntities { get => homeassistantEntities;}
+    public List<string> HomeassistantEntities { get => homeassistantEntities; }
 
     List<HassEntity> lis;
     Dictionary<Transform, HouseEntityType> cureetHouse;
@@ -35,7 +35,6 @@ public class House : MonoBehaviour
     {
         Shijie.OnGetConfig += OnGetConfig;
         Shijie.OnHassFlush += OnHassFlush;
-        //lis.Add(HouseWeather.Instance);//×¢²áÌìÆø
 #if UNITY_WEBGL && !UNITY_EDITOR
         Shijie.Link3DStart();
         WebGLInput.captureAllKeyboardInput = false;
@@ -131,8 +130,6 @@ public class House : MonoBehaviour
         var jd = JsonMapper.ToObject(config);
         if (jd == null)
             return;
-        //if (Time.time - lastFlushTime < 4 && lastFlushTime == 0) return;
-        //lastFlushTime = Time.time;
         Destroy(parent.gameObject);
         lis.Clear();
         cureetHouse.Clear();
@@ -291,8 +288,8 @@ public class House : MonoBehaviour
             -1, "255,0,252,255", "red", "");
         CreatStand("electricball", "-3.986,3.766,1.085,0,0,0,0.4,0.4,0.4", null);
         HouseWeather.Instance.CreatSky("space");
-        CreatAppliances("tv", "-1.56,-1.565,0.41,0,-90,0,0.7,0.7,0.7", "switch.xxx");
-        CreatAppliances("washer", "-1.68,-4.166,0,0,-90,0,1,1,1", "switch.xxx");
+        CreatAppliances("tv", "-1.56,-1.565,0.41,0,-90,0,0.7,0.7,0.7", "switch.xxx", null, null);
+        CreatAppliances("washer", "-1.68,-4.166,0,0,-90,0,1,1,1", "switch.xxx", null, null);
     }
     /// <summary>xywh </summary>
     public async Task<HassEntity> CreatAnim(string cusname, string str)
@@ -323,7 +320,7 @@ public class House : MonoBehaviour
     }
 
     /// <summary>posxzy anglexyz scalexyz </summary>
-    public async Task<HassEntity> CreatAppliances(string cusname, string str, string id)
+    public async Task<HassEntity> CreatAppliances(string cusname, string str, string id, string more, string color)
     {
         if (string.IsNullOrEmpty(str)) return null;
         var ss = str.Split(',');
@@ -345,6 +342,22 @@ public class House : MonoBehaviour
                 tr.transform.position = new Vector3(x, z, y);
                 tr.transform.eulerAngles = new Vector3(rx, ry, rz);
                 tr.transform.localScale = new Vector3(sx, sy, sz);
+            }
+            if (tr is TextEntity)
+            {
+                var e = tr as TextEntity;
+                if (!string.IsNullOrEmpty(more))
+                {
+                    ss = more.Split(',');
+                    if (ss.Length == 2)
+                    {
+                        e.front = ss[0];
+                        e.back = ss[1];
+                    }
+                }
+                Color c;
+                if (Help.Instance.TryColor(color, out c))
+                    e.textMesh.color = c;
             }
         }
         return null;
@@ -785,12 +798,16 @@ public class House : MonoBehaviour
             var canshu = door[cusname];
             var dic = canshu as IDictionary;
             if (dic == null) return;
-            string pos = null, entity = null;
+            string pos = null, entity = null, color = null, more = null;
             if (dic.Contains("pos"))
                 pos = dic["pos"]?.ToString();
             if (dic.Contains("entity"))
                 entity = dic["entity"]?.ToString();
-            CreatAppliances(cusname, pos, entity);
+            if (dic.Contains("more"))
+                more = dic["more"]?.ToString();
+            if (dic.Contains("color"))
+                color = dic["color"]?.ToString();
+            CreatAppliances(cusname, pos, entity, more, color);
         });
     }
     private void AnsSky(JsonData jd)
@@ -918,6 +935,7 @@ public class House : MonoBehaviour
                     Animal2Json(writer, group);
                     break;
                 case HouseEntityType.weather:
+                    Weather2Json(writer, group);
                     break;
                 default:
                     break;
@@ -936,6 +954,12 @@ public class House : MonoBehaviour
         }
         writer.WriteObjectEnd();
         return writer.ToString();
+    }
+
+    private void Weather2Json(JsonWriter writer, IGrouping<HouseEntityType, Transform> group)
+    {
+        writer.WritePropertyName("weather");
+        writer.Write(HouseWeather.Instance.Entity_id);
     }
 
     private void Animal2Json(JsonWriter writer, IGrouping<HouseEntityType, Transform> group)
@@ -1004,7 +1028,17 @@ public class House : MonoBehaviour
             writer.WritePropertyName("pos");
             writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.position.y:f2},{item.eulerAngles.x:f2},{item.eulerAngles.y:f2},{item.eulerAngles.z:f2},{item.localScale.x:f2},{item.localScale.y:f2},{item.localScale.z:f2}");
             writer.WritePropertyName("entity");
-            writer.Write(item.GetComponent<HassEntity>().Entity_id);
+            var tr = item.GetComponent<HassEntity>();
+            writer.Write(tr.Entity_id);
+            if (tr is TextEntity)
+            {
+                var e = tr as TextEntity;
+                writer.WritePropertyName("color");
+                Color32 ma = e.textMesh.color;
+                writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");
+                writer.WritePropertyName("more");
+                writer.Write($"{e.front},{e.back}");
+            }
             writer.WriteObjectEnd();
             writer.WriteObjectEnd();
         }

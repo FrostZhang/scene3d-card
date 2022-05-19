@@ -9,6 +9,7 @@ public class PropPanle : MonoBehaviour
 {
     public static PropPanle Instance;
     public Transform v1p;
+    public Transform textp;
     public Transform entityp;
     public Transform v2p;
     public Transform v3p;
@@ -29,6 +30,7 @@ public class PropPanle : MonoBehaviour
         v3p.gameObject.SetActive(false);
         cp.gameObject.SetActive(false);
         entityp.gameObject.SetActive(false);
+        textp.gameObject.SetActive(false);
         gameObject.SetActive(false);
         delete.onClick.AddListener(() =>
         {
@@ -104,9 +106,28 @@ public class PropPanle : MonoBehaviour
             ButtonList.Instance.Show(true, (n) =>
             {
                 idt.text = n;
+                act?.Invoke(n);
             });
         });
         idt.text = df;
+        v.gameObject.SetActive(true);
+        trs.Add(v);
+    }
+
+    public void GetText(string title, string df, Action<string> act)
+    {
+        var v = Instantiate(textp, textp.transform.parent);
+        v.GetComponent<Text>().text = title;
+        var ff = v.GetComponentInChildren<InputField>();
+        ff.inputType = InputField.InputType.Standard;
+        ff.contentType = InputField.ContentType.Standard;
+        ff.onValueChanged.AddListener((x) =>
+        {
+            if (x != null)
+                act.Invoke(x);
+        });
+        fs.Add(ff);
+        ff.text = df;
         v.gameObject.SetActive(true);
         trs.Add(v);
     }
