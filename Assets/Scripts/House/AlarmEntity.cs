@@ -13,6 +13,7 @@ public class AlarmEntity : HassEntity
     void Awake()
     {
         yuanMa = editR.material;
+        TrunOff();
     }
 
     protected override void TrunOn()

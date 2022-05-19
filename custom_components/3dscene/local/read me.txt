@@ -1,0 +1,8 @@
+3d 说明
+
+Build ---- 三维程序本体
+Customdata ---- 用户编辑的世界信息
+StreamingAssets ---- 扩展资源（家具、家电、灯光等）
+TemplateData ---- 加载必要资源
+3dscene-card.js ---- 定制卡片
+web.config ---- 定义资源下载
