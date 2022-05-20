@@ -17,7 +17,7 @@ public class TVEntity : HassEntity
             tes[i] = str.Clone() as string;
         }
         onOnj.SetActive(false);
-        GetComponent<BoxCollider>().enabled = true;
+        GetComponent<Collider>().enabled = true;
     }
     public override void MouseOn()
     {
@@ -29,37 +29,33 @@ public class TVEntity : HassEntity
     }
     protected override void TrunOn()
     {
-        onOnj.SetActive(true);
+        if (!onOnj.activeSelf)
+        {
+            onOnj.SetActive(true);
+            StartCoroutine(AnimText());
+        }
     }
 
     protected override void TrunOff()
     {
         onOnj.SetActive(false);
     }
+
     public override void ReconstitutionMode(bool enter)
     {
         //onOnj.SetActive(enter);
     }
 
-    float interval = 3;
-    float _interval;
-    void Update()
-    {
-        if (onOnj.activeSelf)
-        {
-            if ((_interval -= Time.deltaTime) < 0)
-            {
-                _interval = interval;
-                StartCoroutine(AnimText());
-            }
-        }
-    }
     IEnumerator AnimText()
     {
-        for (int i = 0; i < tes.Length; i++)
+        while (onOnj.activeSelf)
         {
-            te.text = tes[i];
-            yield return new WaitForSeconds(0.1f);
+            for (int i = 0; i < tes.Length; i++)
+            {
+                te.text = tes[i];
+                yield return new WaitForSeconds(0.1f);
+            }
+            yield return new WaitForSeconds(1);
         }
     }
 }
