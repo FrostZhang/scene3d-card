@@ -2,35 +2,26 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class HouseWeather : HassEntity
 {
     public static HouseWeather Instance;
     public string Skyname { get => skyname; }
 
+    public Light mainlight;
+    public Color32 cH = new Color32(255, 255, 218, 255);
+    public Color32 cL = new Color32(0, 0, 0, 255);
+
+    public Volume volume;
+    private string lastWeather;
+    string skyname;
+    bool ready;
     ParticleSystem rmain;
     ParticleSystem smain;
     ParticleSystem fmain;
     ParticleSystem lmain;
-    public Light mainlight;
-    public Color32 cH = new Color32(255, 255, 218, 255);
-    public Color32 cL = new Color32(0, 0, 0, 255);
-    private string lastWeather;
-    string skyname;
-    bool ready;
-    readonly string[] weather = new string[] {
-    "晴", "多云", "少云" , "晴间多云", "阴" ,//4
-    "有风", "微风", "和风", "清风","强风", "疾风", "大风", "烈风",//12
-    "飓风", "龙卷风", "热带风暴", "狂暴风", "风暴",//17
-    "雨", "毛毛雨", "小雨", "中雨", "大雨", "阵雨",//23
-    "暴雨", "大暴雨", "特大暴雨", "强阵雨", "极端降雨",//28
-    "雷阵雨", "强雷阵雨",//30
-    "雾", "薄雾","霾",//33
-    "雷阵雨伴有冰雹",//34
-    "雪", "小雪", "中雪", "大雪", "暴雪", "阵雪",//40
-    "雨夹雪", "雨雪天气", "阵雨夹雪"//43
-    };
-
 
     void Awake()
     {
@@ -104,8 +95,23 @@ public class HouseWeather : HassEntity
             case "cloudy":
             case "partlycloudy":
             case "sunny":
+                break;
+            case "有风":
+            case "微风":
+            case "和风":
+            case "清风":
             case "windy":
-
+                break;
+            case "强风":
+            case "疾风":
+            case "大风":
+            case "烈风":
+                break;
+            case "飓风":
+            case "龙卷风":
+            case "热带风暴":
+            case "狂暴风":
+            case "风暴":
                 break;
             case "小雨":
             case "雨":
@@ -277,4 +283,57 @@ public class HouseWeather : HassEntity
         Debug.LogError("载入错误");
     }
 
+    public void SetBloom(float value)
+    {
+        Bloom bl;
+        if (volume.sharedProfile.TryGet<Bloom>(out bl))
+        {
+            bl.intensity.value = value;
+        }
+    }
+
+    public void SetVignette(float value)
+    {
+        Vignette bl;
+        if (volume.sharedProfile.TryGet<Vignette>(out bl))
+        {
+            bl.intensity.value = value;
+        }
+    }
+
+    public void SetVignette(Color value)
+    {
+        Vignette bl;
+        if (volume.sharedProfile.TryGet<Vignette>(out bl))
+        {
+            bl.color.value = value;
+        }
+    }
+
+    Coroutine dangerCor;
+    public void SetInDanger(bool value)
+    {
+        if (!value)
+        {
+            if (dangerCor != null)
+            {
+                StopCoroutine(dangerCor);
+                dangerCor = null;
+            }
+            return;
+        }
+        if (dangerCor != null)
+            return;
+        dangerCor = StartCoroutine(danger());
+    }
+
+    IEnumerator danger()
+    {
+        SetVignette(Color.red);
+        while (true)
+        {
+            SetVignette(Mathf.PingPong(Time.time, 0.5f));
+            yield return null;
+        }
+    }
 }

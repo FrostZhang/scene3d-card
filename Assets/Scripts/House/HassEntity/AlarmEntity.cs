@@ -22,17 +22,20 @@ public class AlarmEntity : HassEntity
     {
         editR.enabled = true;
         line.gameObject.SetActive(true);
+        HouseWeather.Instance.SetInDanger(true);
     }
 
     protected override void TrunOff()
     {
         editR.enabled = false;
         line.gameObject.SetActive(false);
+        HouseWeather.Instance.SetInDanger(false);
     }
 
     public override void ReconstitutionMode(bool enter)
     {
         base.ReconstitutionMode(enter);
+        HouseWeather.Instance.SetInDanger(false);
         if (enter)
         {
             editR.enabled = true;
@@ -44,6 +47,10 @@ public class AlarmEntity : HassEntity
             {
                 editR.enabled = false;
                 line.gameObject.SetActive(false);
+            }
+            else
+            {
+                HouseWeather.Instance.SetInDanger(true);
             }
         }
     }

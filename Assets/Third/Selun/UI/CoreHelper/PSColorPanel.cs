@@ -26,6 +26,7 @@ public class PSColorPanel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     float currentHue;
     float currentSat;
     float currentBright;
+    byte alpha;
     const float RingLen = 0.27f;
     public Action<Color> OnColorChanged;
     public InputField rf, gf, bf, af;
@@ -204,7 +205,8 @@ public class PSColorPanel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
         rf.text = color.r.ToString();
         gf.text = color.g.ToString();
         bf.text = color.b.ToString();
-        af.text = color.a.ToString();
+        color.a = alpha;
+        af.text = alpha.ToString();
         if (OnColorChanged != null)
             OnColorChanged(color);
     }
@@ -239,6 +241,7 @@ public class PSColorPanel : MonoBehaviour, IBeginDragHandler, IEndDragHandler, I
     public void SetColor(Color c)
     {
         float h, s, v;
+        alpha = ((Color32)c).a;
         Color.RGBToHSV(c, out h, out s, out v);
         SetColor(h, s, v);
     }
