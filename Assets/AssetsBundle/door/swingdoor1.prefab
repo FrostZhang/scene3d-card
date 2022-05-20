@@ -175,10 +175,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 85956866791890819}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b0097b76b681e44ab3b56da49ba306f, type: 3}
+  m_Script: {fileID: 11500000, guid: 838a8cfcab26ee24292b14918637b0d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  editC: {fileID: 0}
+  editC: {fileID: 8840822530232562230}
   angleclose: 0
   angleopen: 0
 --- !u!65 &8840822530232562230

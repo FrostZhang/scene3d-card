@@ -201,7 +201,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 2196721955494422394}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b14fa5205e1dd154b80cb382b432458d, type: 3}
+  m_Script: {fileID: 11500000, guid: 812b19153581c4b419640727f660c925, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   editC: {fileID: 8416792999766796560}
@@ -209,4 +209,4 @@ MonoBehaviour:
   textMesh: {fileID: 2196721955432130914}
   front: 
   back: 
-  value: "\uFF1F"
+  value: '?'

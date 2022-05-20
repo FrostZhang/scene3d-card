@@ -236,12 +236,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 8370453816916055462}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8bea9ee97f4b0574db9f2f6245733897, type: 3}
+  m_Script: {fileID: 11500000, guid: 8fe7f6215cecfc54d994cfa902ed7dda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   editC: {fileID: 175728600}
   line: {fileID: 4292620723984877377}
-  yuan: {fileID: 0}
+  yuan: {fileID: 4330433912602239477}
   editR: {fileID: 8370453816916055464}
 --- !u!1001 &4292620724868957726
 PrefabInstance:

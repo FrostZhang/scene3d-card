@@ -432,9 +432,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 7203994766590773529}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5ab0e494e4678a40b6da2f9f0e66b07, type: 3}
+  m_Script: {fileID: 11500000, guid: ad3d313d6518a4c48abf84d71cc61d87, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editC: {fileID: 0}
   anim: {fileID: 7203994766600305283}
 --- !u!1 &7203994766590773531
 GameObject:
@@ -516,7 +517,7 @@ SkinnedMeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: e199c24d10e78694ca6f9772193ec3dc, type: 3}
+  - {fileID: 2100000, guid: 0e6f61b8dd415774592993f4fffb49a7, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0

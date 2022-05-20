@@ -3,7 +3,7 @@ Shader "Unlit/line"
     Properties
     {
         _MainTex ("Texture", 2D) = "white" {}
-        _Color ("Color",COLOR) = (1,1,1,1)
+        [HDR] _EmissionColor("Color", Color) = (0,0,0)
         _Speed("Speed",float) = 1
     }
     SubShader
@@ -50,12 +50,12 @@ Shader "Unlit/line"
 
             float _Speed;
             fixed4 _Color;
+            fixed4 _EmissionColor;
             fixed4 frag (v2f i) : SV_Target
             {
                 // sample the texture
                 i.uv.x +=_Time.y*_Speed;
-                fixed4 col = tex2D(_MainTex, i.uv) * i.color *_Color;
-                // apply fog
+                fixed4 col = tex2D(_MainTex, i.uv) * i.color *  (1+_EmissionColor);
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
             }

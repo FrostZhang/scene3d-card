@@ -365,9 +365,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 5112645820329928118}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c86c5c2004cbf4e9d28e797e9f7b85, type: 3}
+  m_Script: {fileID: 11500000, guid: f4cc9a2cf2933744ab0c2c8a839cdb71, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  editC: {fileID: 4015583681861745164}
   onOnj: {fileID: 5047042351382729400}
   high: {fileID: 1287794850912323462}
   te: {fileID: 1542526982}
