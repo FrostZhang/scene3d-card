@@ -45,9 +45,12 @@
 - 可能 custom_components\3dscene\local\Customdata 没有读写权限，没法在 save config 时保存你的配置。
 -
 + 我编辑后，刷新页面没变化？
-+ 可能 custom_components\3dscene\local\Customdata 没有读写权限，没法在 save config 时保存你的配置。
-+ 可能你没有点击 save config 按钮
-
+- 可能 custom_components\3dscene\local\Customdata 没有读写权限，没法在 save config 时保存你的配置。
+- 可能你没有点击 save config 按钮
+-
++ 编辑测左边画风诡异？
+- 预览图片无灯光渲染就是这样啦，放在场景里就好看了。
+-
 ## 编辑器怎么用
 + 自己摸索
 + 或者b站 关注 锯木工_Asher 
