@@ -31,10 +31,11 @@
 - 三维资源很大，本体10M，资源大约16M（持续更新），网页打开受网速限制，但是浏览器加载后缓存所有资源。
 -
 + 手机上效果怎么样？
-- 移动端: SMAA（Hight）Anti（2x）HDR（-）Bloom辉光（-）LUT（16）阴影（Hight）
-- PC: SMAA（Hight）Anti（2x）HDR（+）Bloom辉光（+）LUT（32）阴影（-）
+- 移动端: SMAA（-）Anti（2x）HDR（-）Bloom辉光（-）LUT（16）阴影（Hight）Light（8）
+- PC: SMAA（Hight）Anti（2x）HDR（+）Bloom辉光（+）LUT（32）阴影（-）Light（8）
+- 简单的说PC端画质全开，移动端画质开一半。
 -
-+ 有点卡。
++ 有点卡，浏览器报 xxx out memory ，长时间黑屏。
 - 更换演示设备。
 -
 + 为什么整个世界很黑？
