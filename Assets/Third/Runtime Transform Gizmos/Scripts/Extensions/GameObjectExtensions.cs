@@ -574,14 +574,14 @@ namespace RTEditor
             SpriteRenderer spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
             if (spriteRenderer != null && spriteRenderer.sprite != null) return Box.FromBounds(spriteRenderer.GetModelSpaceBounds());
 
-            if (gameObject.HasTerrain())
-            {
-                Terrain terrain = gameObject.GetComponent<Terrain>();
-                TerrainData terrainData = terrain.terrainData;
-                Vector3 terrainSize = new Vector3(terrainData.size.x, 1.0f, terrainData.size.z);
+            //if (gameObject.HasTerrain())
+            //{
+            //    Terrain terrain = gameObject.GetComponent<Terrain>();
+            //    TerrainData terrainData = terrain.terrainData;
+            //    Vector3 terrainSize = new Vector3(terrainData.size.x, 1.0f, terrainData.size.z);
 
-                if (terrainData != null) return new Box(terrainSize * 0.5f, terrainSize);
-            }
+            //    if (terrainData != null) return new Box(terrainSize * 0.5f, terrainSize);
+            //}
 
             if (RuntimeEditorApplication.Instance.UseUnityColliders)
             {
@@ -792,7 +792,7 @@ namespace RTEditor
 
         public static bool HasTerrain(this GameObject gameObject)
         {
-            return gameObject.GetComponent<Terrain>() != null;
+            return false;//gameObject.GetComponent<Terrain>() != null;
         }
 
         public static bool HasLight(this GameObject gameObject)

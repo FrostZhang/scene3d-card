@@ -14,7 +14,8 @@ public class AlarmEntity : HassEntity
     {
         yuanMa = editR.material;
         TrunOff();
-        GetComponent<BoxCollider>().enabled = false;
+        editC = GetComponent<Collider>();
+        editC.enabled = false;
     }
 
     protected override void TrunOn()

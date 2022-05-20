@@ -8,15 +8,16 @@ public class HouseWeather : HassEntity
     public static HouseWeather Instance;
     public string Skyname { get => skyname; }
 
-    ParticleSystem.MainModule rmain;
-    ParticleSystem.MainModule smain;
-    ParticleSystem.MainModule fmain;
-    ParticleSystem.MainModule lmain;
+    ParticleSystem rmain;
+    ParticleSystem smain;
+    ParticleSystem fmain;
+    ParticleSystem lmain;
     public Light mainlight;
     public Color32 cH = new Color32(255, 255, 218, 255);
     public Color32 cL = new Color32(0, 0, 0, 255);
     private string lastWeather;
     string skyname;
+    bool ready;
     readonly string[] weather = new string[] {
     "晴", "多云", "少云" , "晴间多云", "阴" ,//4
     "有风", "微风", "和风", "清风","强风", "疾风", "大风", "烈风",//12
@@ -36,12 +37,13 @@ public class HouseWeather : HassEntity
         Instance = this;
     }
 
-    void Start()
+    async void Start()
     {
-        StartCoroutine(LoadRain("rain"));
-        StartCoroutine(LoadSnow("snow"));
-        StartCoroutine(LoadFog("fog"));
-        StartCoroutine(LoadLighting("lighting"));
+        await LoadRain("rain");
+        await LoadSnow("snow");
+        await LoadFog("fog");
+        await LoadLighting("lighting");
+        ready = true;
     }
 
     public void SetTianGuang(float v)
@@ -52,30 +54,41 @@ public class HouseWeather : HassEntity
     }
     public void SetRain(float value)
     {
-        rmain.maxParticles = (int)value;
+        if (rmain == null)
+            return;
+        var m = rmain.main;
+        m.maxParticles = (int)value;
     }
     public void SetSnow(float value)
     {
-        smain.maxParticles = (int)value;
+        if (smain == null)
+            return;
+        var m = smain.main;
+        m.maxParticles = (int)value;
     }
     public void SetFog(float value)
     {
-        fmain.maxParticles = (int)value;
+        if (fmain == null)
+            return;
+        var m = fmain.main;
+        m.maxParticles = (int)value;
     }
     public void SetLighting(float value)
     {
-        lmain.maxParticles = (int)value;
+        if (lmain == null)
+            return;
+        var m = lmain.main;
+        m.maxParticles = (int)value;
     }
     protected override void Destine(string state)
     {
-        SetWeather(state);
+        if (ready)
+            SetWeather(state);
     }
     internal void SetWeather(string str)
     {
         if (lastWeather == str)
-        {
             return;
-        }
         lastWeather = str;
         SetRain(0);
         SetSnow(0);
@@ -92,7 +105,7 @@ public class HouseWeather : HassEntity
             case "partlycloudy":
             case "sunny":
             case "windy":
-                
+
                 break;
             case "小雨":
             case "雨":
@@ -173,11 +186,12 @@ public class HouseWeather : HassEntity
 
     private void ChangeFogColor(Color color)
     {
-        var c = fmain.startColor;
+        var m = fmain.main;
+        var c = m.startColor;
         var y = color;
         y.a = 0.19f;
         c.color = y;
-        fmain.startColor = c;
+        m.startColor = c;
     }
 
     public async Task CreatSky(string str)
@@ -205,7 +219,7 @@ public class HouseWeather : HassEntity
         if (!parti) goto err;
         var ps = Instantiate(parti, transform).GetComponent<ParticleSystem>();
         if (!ps) goto err;
-        rmain = ps.main;
+        rmain = ps;
         SetRain(0);
         yield break;
     err:
@@ -222,7 +236,7 @@ public class HouseWeather : HassEntity
         if (!parti) goto err;
         var ps = Instantiate(parti, transform).GetComponent<ParticleSystem>();
         if (!ps) goto err;
-        smain = ps.main;
+        smain = ps;
         SetSnow(0);
         yield break;
     err:
@@ -239,7 +253,7 @@ public class HouseWeather : HassEntity
         if (!parti) goto err;
         var ps = Instantiate(parti, transform).GetComponent<ParticleSystem>();
         if (!ps) goto err;
-        fmain = ps.main;
+        fmain = ps;
         SetFog(0);
         yield break;
     err:
@@ -256,7 +270,7 @@ public class HouseWeather : HassEntity
         if (!parti) goto err;
         var ps = Instantiate(parti, transform).GetComponent<ParticleSystem>();
         if (!ps) goto err;
-        lmain = ps.main;
+        lmain = ps;
         SetLighting(0);
         yield break;
     err:

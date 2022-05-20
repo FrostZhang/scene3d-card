@@ -2,8 +2,8 @@
   "domain": "3dscene",
   "name": "三维展示平台",
   "version": "1.0",
-  "documentation": "",
+  "documentation": "https://github.com/FrostZhang/hass_unity_home",
   "requirements": [],
   "dependencies": [],
-  "codeowners": []
+  "codeowners": ["@AsherLink"]
 }
