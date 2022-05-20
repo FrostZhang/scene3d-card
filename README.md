@@ -11,14 +11,14 @@
 ### 打赏
 ![wx](http://cdn.asherlink.top/wxskm.jpg) ![wx](/Other/wxskm.jpg)
 
-### 开发三维
+### 我想开发三维
 + 下载项目
 + 使用unity3d打开
 + 自定义程序
 + 编辑webgl导出包
 + 替换Build文件夹和StreamingAssets文件夹
 
-### 开发卡片
+### 我想开发卡片
 + 编辑custom_components - 3dscene - local - 3dscene-card.js
 + 编辑3dscene下的文件
 
