@@ -5,8 +5,8 @@
 + 树莓、群晖、手机、linux随意。因为渲染计算不在容器中。
 
 ### 安装
-+ 本项目的custom_components - 3dscene放入容器（可下载release包或整个项目）
-+ 资源包放在custom_components\3dscene\local\StreamingAssets中。可选用百度网盘，链接:https://pan.baidu.com/s/1wiKLNRavM-tacb0cMxCAcw?pwd=k51f
++ 下载release包，放在容器中。
++ 资源包放在custom_components\3dscene\local\StreamingAssets中。
 + 确保custom_components\3dscene\local\Customdata 可读写！！！
 + 重启容器
 + 首页仪表盘新建一个分类，选择 面板（单张卡片）
@@ -19,7 +19,7 @@
 + 下载项目
 + 使用unity3d打开
 + 自定义程序
-+ 编辑webgl导出包
++ 编辑webgl导出包，注意导出包的文件夹名称必须为 prize
 + 替换Build文件夹和StreamingAssets文件夹
 
 ### 我想开发卡片
