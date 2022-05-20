@@ -1,5 +1,10 @@
 # hass_unity_home
 
+### 硬件要求
++ 无任何要求
++ 树莓、群晖、手机、linux随意
++ 因为渲染计算不在容器中，在前端显示的浏览器中。
+
 ### 安装
 + 本项目的custom_components - 3dscene放入容器（可下载release包或整个项目）
 + 资源包放在custom_components\3dscene\local\StreamingAssets中。可选用百度网盘，链接:https://pan.baidu.com/s/1wiKLNRavM-tacb0cMxCAcw?pwd=k51f
