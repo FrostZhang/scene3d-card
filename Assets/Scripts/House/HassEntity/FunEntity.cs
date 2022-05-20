@@ -7,9 +7,9 @@ public class FunEntity : HassEntity
     public Transform fan;
     Coroutine coroutine;
     public GameObject  high;
-    void Start()
+    void Awake()
     {
-        StartCoroutine(Run());
+        high.SetActive(false);
     }
     public override void MouseOn()
     {
@@ -60,11 +60,12 @@ public class FunEntity : HassEntity
         while (true)
         {
             var e = fan.eulerAngles;
-            e.y += Time.deltaTime * 10;
+            e.y += 1;
             if (e.y > 360)
             {
                 e.y -= 360;
             }
+            fan.eulerAngles = e;
             yield return null;
         }
     }
