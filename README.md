@@ -38,7 +38,7 @@
 - 简单的说，世界有白天和夜晚跟现实一致。
 -
 + 怎么下雨雪？
-- 在三维配置weather entity，世界跟随现实天气变幻。
+- 配置weather entity，世界跟随现实天气变幻。
 - 建议接入和风天气 hf_weather 插件。
 -
 + 编辑页面 save config，homeassistant报错？
