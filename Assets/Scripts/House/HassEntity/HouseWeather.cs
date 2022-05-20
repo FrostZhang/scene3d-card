@@ -320,6 +320,7 @@ public class HouseWeather : HassEntity
                 StopCoroutine(dangerCor);
                 dangerCor = null;
             }
+            SetVignette(0);
             return;
         }
         if (dangerCor != null)
