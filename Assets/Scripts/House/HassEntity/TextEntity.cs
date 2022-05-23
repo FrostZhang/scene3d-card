@@ -15,6 +15,7 @@ public class TextEntity : HassEntity
     {
         mr.enabled = false;
         FlushText();
+        editC.enabled = false;
     }
     protected override void Destine(string state)
     {

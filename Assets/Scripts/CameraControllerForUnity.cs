@@ -60,6 +60,7 @@ public class CameraControllerForUnity : MonoBehaviour
     public float autoRotateSmooth = 1;
 
     public Transform focus;
+    public bool roOrMove;
     Quaternion rot;
     Quaternion pivotRot;
 
@@ -123,11 +124,12 @@ public class CameraControllerForUnity : MonoBehaviour
                 mousez = 0;
         }
 
-        #region 旋转
-        CameraRotate();
-        #endregion
         #region 视角缩进，拉远，跟随
         CameraZoom();
+        #endregion
+
+        #region 旋转
+        CameraRotate();
         #endregion
 
         #region 视角平移
@@ -135,10 +137,12 @@ public class CameraControllerForUnity : MonoBehaviour
         #endregion
     }
 
+    Vector3 oP1, oP2;
     private void CameraZoom()
     {
         if (mode == Mode.third || mode == Mode.moba)
         {
+            Touch2();
             if (mousez != 0)
             {
                 if (!came.orthographic)
@@ -205,15 +209,103 @@ public class CameraControllerForUnity : MonoBehaviour
         came.fieldOfView = Mathf.Lerp(came.fieldOfView, targetfov, 0.2f);
     }
 
+    int touch1ID = -1, touch2ID = -1, touch1Index;
+
+    Vector2 oldPos1;
+    Vector2 oldPos2;
+    bool istouch1, istouch2;
+    public void Touch2()
+    {
+        if (Input.touchCount != 2)
+        {
+            touch1ID = -1;
+            touch2ID = -1;
+            istouch1 = false;
+            istouch2 = false;
+            return;
+        }
+        istouch2 = true;
+
+        Touch touch1 = Input.GetTouch(0);
+        Touch touch2 = Input.GetTouch(1);
+
+        //判断id是否相同
+        if (touch1ID == -1 || touch2ID == -1)
+        {
+            touch1ID = touch1.fingerId;
+            touch2ID = touch2.fingerId;
+        }
+        else
+        {
+            if (touch1ID != touch1.fingerId || touch2ID != touch1.fingerId)
+            {
+                //id不同 不执行 
+                touch1ID = -1;
+                touch2ID = -1;
+                istouch1 = false;
+                istouch2 = false;
+                return;
+            }
+        }
+
+        //双指操作
+        if (touch2.phase == TouchPhase.Began)
+        {
+            oldPos1 = touch1.position;
+            oldPos2 = touch2.position;
+            return;
+        }
+
+        if (touch1.phase == TouchPhase.Moved || touch2.phase == TouchPhase.Moved)
+        {
+            float oldDistance = Vector2.Distance(oldPos1, oldPos2);  //计算原先两指的距离
+            float newDistance = Vector2.Distance(touch1.position, touch2.position);  //当前移动后两指的距离
+
+            //（新距离）减去（旧距离）得出的差如果是负数的话缩小，正数就放大
+            float offset = newDistance - oldDistance;
+            mousez = -offset / 100;
+            //记住最新的触摸点位置，下次使用  
+            oldPos1 = touch1.position;
+            oldPos2 = touch2.position;
+        }
+
+        if (touch1.phase == TouchPhase.Ended || touch2.phase == TouchPhase.Ended)
+        {
+            touch1ID = -1;
+            touch2ID = -1;
+            istouch1 = false;
+            istouch2 = false;
+            mousex = mousey = 0;
+            Input.ResetInputAxes();
+            Debug.Log("手指抬起2");
+        }
+
+        if (touch1.phase == TouchPhase.Canceled || touch2.phase == TouchPhase.Canceled)
+        {
+            touch1ID = -1;
+            touch2ID = -1;
+            istouch1 = false;
+            istouch2 = false;
+            mousex = mousey = 0;
+            Input.ResetInputAxes();
+            Debug.Log("系统取消对触摸的跟踪2");
+        }
+
+    }
+
     private void CameraMove()
     {
+        if (roOrMove)
+            return;
         if (mode == 0)
         {
-            if (Input.GetMouseButton(0) && Input.GetMouseButton(1) && canUseMouseCenter)
+            if ((
+                (Input.GetMouseButton(0) || Input.GetMouseButton(2))
+#if !UNITY_EDITOR
+                && Input.touchCount == 1
+#endif
+                ) && canUseMouseCenter)
             {
-                if (mode == Mode.first)
-                {
-                }
                 mousex = -mousex;
                 mousey = -mousey;
                 Vector3 move = new Vector3(mousex, mousey, 0) * curdistance * 0.03f;
@@ -226,11 +318,13 @@ public class CameraControllerForUnity : MonoBehaviour
         }
         else if (mode == Mode.moba)
         {
-            if (Input.GetMouseButton(2) || (Input.GetMouseButton(0) && canUseMouseCenter))
+            if ((
+                (Input.GetMouseButton(0) || Input.GetMouseButton(2))
+#if !UNITY_EDITOR
+                && Input.touchCount == 1
+#endif
+                ) && canUseMouseCenter)
             {
-                //}
-                //if (canUseMouseCenter && (Input.GetMouseButton(0) || Input.GetMouseButton(2)))
-                //{
                 mousey = -mousey;
                 mousex = -mousex;
                 if (came.orthographic)
@@ -246,17 +340,21 @@ public class CameraControllerForUnity : MonoBehaviour
     private void CameraRotate()
     {
         //当不为moba视角可旋转
-        if (Input.GetMouseButton(0) && !Input.GetMouseButton(1) && (mode == Mode.third || mode == Mode.first))
+        if (Input.GetMouseButton(0)
+#if !UNITY_EDITOR
+            && Input.touchCount ==1
+#endif
+            && (mode == Mode.third || mode == Mode.first))
         {
-            if (canUseMouseRight)
+            if (roOrMove)
             {
-                if (mousex != 0 || mousey != 0)
-                {
-                    checkAutoRo = checkInterval;
-                }
                 xAngle += mousex * xspeed;
                 yAngle -= mousey * yspeed;
                 yAngle = Mathf.Clamp(yAngle, thirdLimitAngleY.x, thirdLimitAngleY.y);
+            }
+            else
+            {
+                mousex = mousey = 0;
             }
         }
         rot = Quaternion.Euler(0f, xAngle, 0f);

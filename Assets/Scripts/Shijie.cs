@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering.Universal;
 using UnityEngine.UI;
 
 public class Shijie : MonoBehaviour
@@ -16,10 +17,23 @@ public class Shijie : MonoBehaviour
 #endif
         var path = Application.streamingAssetsPath;
         var index = path.IndexOf('/', 8);
-        if (index !=-1)
+        if (index != -1)
         {
             domain = path.Remove(index);
             Debug.Log(domain);
+        }
+    }
+
+    private void Start()
+    {
+        var res = WhichStand();
+        if (res == 1)
+        {
+            QualitySettings.SetQualityLevel(0);
+            var data = Camera.main.GetUniversalAdditionalCameraData();
+            data.renderPostProcessing = true;
+            data.antialiasing = AntialiasingMode.None;
+            HouseWeather.Instance.volume.enabled = true;
         }
     }
 
@@ -43,6 +57,8 @@ public class Shijie : MonoBehaviour
     static extern void AsherLink3DWebLog(string mes);
     [System.Runtime.InteropServices.DllImport("__Internal")]
     static extern void AsherLink3DConfig(string mes);
+    [System.Runtime.InteropServices.DllImport("__Internal")]
+    private static extern float HelloFloat();
 
     public static void Link3DStart()
     {
@@ -51,6 +67,8 @@ public class Shijie : MonoBehaviour
 #else
         AsherLink3DStart();
 #endif
+
+
     }
 
     public static void ClickMessage(string mes)
@@ -86,6 +104,15 @@ public class Shijie : MonoBehaviour
         Debug.Log(mes);
 #else
         AsherLink3DConfig(mes);
+#endif
+    }
+
+    public static float WhichStand()
+    {
+#if UNITY_EDITOR
+        return 0;
+#else
+        return HelloFloat();
 #endif
     }
 }

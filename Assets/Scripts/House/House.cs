@@ -678,7 +678,7 @@ public class House : MonoBehaviour
                 if (entity)
                     entity.MouseOn();
             }
-            else if (entity)
+            if (entity)
             {
                 if (Input.GetMouseButtonDown(0))
                 {
