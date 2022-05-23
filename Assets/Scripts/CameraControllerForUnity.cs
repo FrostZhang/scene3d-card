@@ -113,15 +113,12 @@ public class CameraControllerForUnity : MonoBehaviour
                 mousex = offset.x / Screen.safeArea.width;
                 mousey = offset.y / Screen.safeArea.height;
             }
-            else
+            else if (!istouch2)
             {
                 mousex = Input.GetAxis("Mouse X");
                 mousey = Input.GetAxis("Mouse Y");
             }
-            if (canUseMouseScroll)
-                mousez = Input.GetAxis("Mouse ScrollWheel");
-            else
-                mousez = 0;
+
         }
 
         #region 视角缩进，拉远，跟随
@@ -142,7 +139,16 @@ public class CameraControllerForUnity : MonoBehaviour
     {
         if (mode == Mode.third || mode == Mode.moba)
         {
-            Touch2();
+            if (Input.touchCount != 0)
+            {
+                if (canUseMouseScroll)
+                    Touch2();
+            }
+            else
+            {
+                if (canUseMouseScroll)
+                    mousez = Input.GetAxis("Mouse ScrollWheel");
+            }
             if (mousez != 0)
             {
                 if (!came.orthographic)
@@ -244,6 +250,8 @@ public class CameraControllerForUnity : MonoBehaviour
                 touch2ID = -1;
                 istouch1 = false;
                 istouch2 = false;
+                mousex = mousey = 0;
+                Input.ResetInputAxes();
                 return;
             }
         }
@@ -290,7 +298,6 @@ public class CameraControllerForUnity : MonoBehaviour
             Input.ResetInputAxes();
             Debug.Log("系统取消对触摸的跟踪2");
         }
-
     }
 
     private void CameraMove()
@@ -299,12 +306,21 @@ public class CameraControllerForUnity : MonoBehaviour
             return;
         if (mode == 0)
         {
-            if ((
-                (Input.GetMouseButton(0) || Input.GetMouseButton(2))
-#if !UNITY_EDITOR
-                && Input.touchCount == 1
-#endif
-                ) && canUseMouseCenter)
+            if (Input.touchCount != 0)
+            {
+                if (!roOrMove && Input.touchCount == 1 && canUseMouseCenter)
+                {
+                    mousex = -mousex;
+                    mousey = -mousey;
+                    Vector3 move = new Vector3(mousex, mousey, 0) * curdistance * 0.03f;
+                    transform.Translate(move, Space.Self);
+                    if (followtarget)
+                    {
+                        offset = transform.position - followtarget.position;
+                    }
+                }
+            }
+            else if (!roOrMove && (Input.GetMouseButton(0) || Input.GetMouseButton(2)) && canUseMouseCenter)
             {
                 mousex = -mousex;
                 mousey = -mousey;
@@ -318,12 +334,21 @@ public class CameraControllerForUnity : MonoBehaviour
         }
         else if (mode == Mode.moba)
         {
-            if ((
-                (Input.GetMouseButton(0) || Input.GetMouseButton(2))
-#if !UNITY_EDITOR
-                && Input.touchCount == 1
-#endif
-                ) && canUseMouseCenter)
+            if (Input.touchCount != 0)
+            {
+                if (!roOrMove && Input.touchCount == 1 && canUseMouseCenter)
+                {
+                    mousey = -mousey;
+                    mousex = -mousex;
+                    if (came.orthographic)
+                        transform.Translate(new Vector3(curorthographicSize * 0.06f * mousex, 0, curorthographicSize * 0.06f * mousey), Space.World);
+                    else
+                        transform.Translate(new Vector3(curdistance * 0.06f * mousex, 0, curdistance * 0.06f * mousey), Space.World);
+                    if (followtarget)
+                        offset = transform.position - followtarget.position;
+                }
+            }
+            if (!roOrMove && (Input.GetMouseButton(0) || Input.GetMouseButton(2)) && canUseMouseCenter)
             {
                 mousey = -mousey;
                 mousex = -mousex;
@@ -339,11 +364,17 @@ public class CameraControllerForUnity : MonoBehaviour
 
     private void CameraRotate()
     {
+        if (Input.touchCount != 0)
+        {
+            if (Input.touchCount == 1 && roOrMove && (mode == Mode.third || mode == Mode.first))
+            {
+                xAngle += mousex * xspeed;
+                yAngle -= mousey * yspeed;
+                yAngle = Mathf.Clamp(yAngle, thirdLimitAngleY.x, thirdLimitAngleY.y);
+            }
+        }
         //当不为moba视角可旋转
-        if (Input.GetMouseButton(0)
-#if !UNITY_EDITOR
-            && Input.touchCount ==1
-#endif
+        else if (Input.GetMouseButton(0)
             && (mode == Mode.third || mode == Mode.first))
         {
             if (roOrMove)
@@ -351,10 +382,6 @@ public class CameraControllerForUnity : MonoBehaviour
                 xAngle += mousex * xspeed;
                 yAngle -= mousey * yspeed;
                 yAngle = Mathf.Clamp(yAngle, thirdLimitAngleY.x, thirdLimitAngleY.y);
-            }
-            else
-            {
-                mousex = mousey = 0;
             }
         }
         rot = Quaternion.Euler(0f, xAngle, 0f);
