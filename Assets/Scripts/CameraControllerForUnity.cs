@@ -33,6 +33,8 @@ public class CameraControllerForUnity : MonoBehaviour
     float yspeed = 2;
     [Header("第三 限制上下角度")]
     public Vector2 thirdLimitAngleY = new Vector2(-45, 90);
+    [Header("第一 限制上下角度")]
+    public Vector2 firstLimitAngleY = new Vector2(-45, 45);
 
     [Header("限制 moba广角高度")]
     public Vector2 mobaLimitDistance = new Vector2(2, 500);
@@ -389,13 +391,19 @@ public class CameraControllerForUnity : MonoBehaviour
     {
         if (!roOrMove || !canUseMouseCenter)
             return;
-        if (Input.GetMouseButton(0) && (mode == Mode.third || mode == Mode.first))
+        if (Input.GetMouseButton(0))
         {
-            if (roOrMove)
+            if (mode == Mode.third)
             {
                 xAngle += mousex * xspeed;
                 yAngle -= mousey * yspeed;
                 yAngle = Mathf.Clamp(yAngle, thirdLimitAngleY.x, thirdLimitAngleY.y);
+            }
+            else if (mode == Mode.first)
+            {
+                xAngle += mousex * xspeed;
+                yAngle -= mousey * yspeed;
+                yAngle = Mathf.Clamp(yAngle, firstLimitAngleY.x, firstLimitAngleY.y);
             }
         }
     }
@@ -411,11 +419,20 @@ public class CameraControllerForUnity : MonoBehaviour
     {
         if (!roOrMove || !canUseMouseCenter)
             return;
-        if (Input.touchCount == 1 && (mode == Mode.third || mode == Mode.first))
+        if (Input.touchCount == 1)
         {
-            xAngle += mousex * xspeed;
-            yAngle -= mousey * yspeed;
-            yAngle = Mathf.Clamp(yAngle, thirdLimitAngleY.x, thirdLimitAngleY.y);
+            if (mode == Mode.third)
+            {
+                xAngle += mousex * xspeed;
+                yAngle -= mousey * yspeed;
+                yAngle = Mathf.Clamp(yAngle, thirdLimitAngleY.x, thirdLimitAngleY.y);
+            }
+            else if (mode == Mode.first)
+            {
+                xAngle += mousex * xspeed;
+                yAngle -= mousey * yspeed;
+                yAngle = Mathf.Clamp(yAngle, firstLimitAngleY.x, firstLimitAngleY.y);
+            }
         }
     }
 

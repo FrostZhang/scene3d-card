@@ -8,7 +8,7 @@ using UnityEngine;
 
 public enum HouseEntityType
 {
-    wall, floor, door, stand, sky, arealight, appliances, flowLine, animal, weather
+    wall, floor, door, stand, sky, arealight, appliances, flowLine, animal, weather, eye
 }
 public class House : MonoBehaviour
 {
@@ -160,8 +160,11 @@ public class House : MonoBehaviour
                 AnsAnimal(jd);
             if (dic.Contains("weather"))
                 HouseWeather.Instance.SetEntity(dic["weather"]?.ToString());
+            if (dic.Contains("look"))
+                AnsEye(jd);
         }
     }
+
 
     private void AnsSun(string va)
     {
@@ -437,6 +440,49 @@ public class House : MonoBehaviour
         cureetHouse.Add(tr.transform, HouseEntityType.stand);
         var collider = tr.GetComponent<Collider>();
         if (collider) collider.enabled = false;
+        return tr.transform;
+    }
+
+    public async Task<Eye> CreatEye(string cusname, string pos, string priority, string text)
+    {
+        if (string.IsNullOrEmpty(pos)) return null;
+        var ss = pos.Split(',');
+        if (ss.Length == 9)
+        {
+            float va, x, y, z, rx, ry, rz, sx, sy, sz;
+            if (float.TryParse(ss[0], out va)) x = va; else return null;
+            if (float.TryParse(ss[1], out va)) y = va; else return null;
+            if (float.TryParse(ss[2], out va)) z = va; else return null;
+            if (float.TryParse(ss[3], out va)) rx = va; else return null;
+            if (float.TryParse(ss[4], out va)) ry = va; else return null;
+            if (float.TryParse(ss[5], out va)) rz = va; else return null;
+            if (float.TryParse(ss[6], out va)) sx = va; else return null;
+            if (float.TryParse(ss[7], out va)) sy = va; else return null;
+            if (float.TryParse(ss[8], out va)) sz = va; else return null;
+
+            var tr = await CreatEye(cusname);
+            if (tr)
+            {
+                tr.transform.position = new Vector3(x, z, y);
+                tr.transform.eulerAngles = new Vector3(rx, ry, rz);
+                tr.transform.localScale = new Vector3(sx, sy, sz);
+            }
+            var e = tr.GetComponent<Eye>();
+            int.TryParse(priority, out e.priority);
+            e.textMesh.text = text;
+        }
+        return null;
+    }
+
+    public async Task<Transform> CreatEye(string cusname)
+    {
+        await Help.Instance.ABLoad("look", cusname);
+        var ab = Help.Instance.GetBundle("look", cusname);
+        if (ab == null) return null;
+        var tr = ab.LoadAsset<GameObject>(cusname);
+        tr = Instantiate(tr, parent);
+        tr.name = cusname;
+        cureetHouse.Add(tr.transform, HouseEntityType.eye);
         return tr.transform;
     }
 
@@ -850,6 +896,29 @@ public class House : MonoBehaviour
             CreatStand(cusname, pos, color);
         });
     }
+    private void AnsEye(JsonData jd)
+    {
+        var doors = jd["look"];
+        if (doors == null || !doors.IsArray) return;
+        doors.Foreach((cusname, door) =>
+        {
+            if (door == null) return;
+            cusname = door.Prop_Name;
+            if (cusname == null) return;
+            var canshu = door[cusname];
+            var dic = canshu as IDictionary;
+            if (dic == null) return;
+            string pos = null, priority = null, text = null;
+            if (dic.Contains("pos"))
+                pos = dic["pos"]?.ToString();
+            if (dic.Contains("priority"))
+                priority = dic["priority"]?.ToString();
+            if (dic.Contains("text"))
+                text = dic["text"]?.ToString();
+            CreatEye(cusname, pos, priority, text);
+        });
+    }
+
 
     private void AnsDoor(JsonData jd)
     {
@@ -950,6 +1019,9 @@ public class House : MonoBehaviour
                     break;
                 case HouseEntityType.weather:
                     Weather2Json(writer, group);
+                    break;
+                case HouseEntityType.eye:
+                    Eye2Json(writer, group);
                     break;
                 default:
                     break;
@@ -1162,7 +1234,30 @@ public class House : MonoBehaviour
         }
         writer.WriteArrayEnd();
     }
-
+    private void Eye2Json(JsonWriter writer, IGrouping<HouseEntityType, Transform> group)
+    {
+        writer.WritePropertyName("look");
+        writer.WriteArrayStart();
+        foreach (var item in group)
+        {
+            writer.WriteObjectStart();
+            writer.WritePropertyName(item.name);
+            writer.WriteObjectStart();
+            writer.WritePropertyName("pos");
+            var sa = item.GetComponent<Eye>();
+            writer.Write($"{item.position.x:f2},{item.position.z:f2},{item.position.y:f2},{item.eulerAngles.x:f2},{item.eulerAngles.y:f2},{item.eulerAngles.z:f2},{item.localScale.x:f2},{item.localScale.y:f2},{item.localScale.z:f2}");
+            writer.WritePropertyName("priority");
+            writer.Write(sa.priority);
+            writer.WritePropertyName("text");
+            writer.Write(sa.textMesh.text);
+            //writer.WritePropertyName("color");
+            //Color32 ma = item.GetComponent<MeshRenderer>().material.color;
+            //writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");
+            writer.WriteObjectEnd();
+            writer.WriteObjectEnd();
+        }
+        writer.WriteArrayEnd();
+    }
     private void Wall2Json(JsonWriter writer, IGrouping<HouseEntityType, Transform> group)
     {
         writer.WritePropertyName("wall");

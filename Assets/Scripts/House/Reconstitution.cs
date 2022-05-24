@@ -89,8 +89,16 @@ public class Reconstitution : MonoBehaviour
                 }
                 else
                 {
-                    var c = item.GetComponent<Collider>();
-                    if (c) c.enabled = false;
+                    var eye = item.GetComponent<Eye>();
+                    if (eye)
+                    {
+                        eye.ReconstitutionMode(false);
+                    }
+                    else
+                    {
+                        var c = item.GetComponent<Collider>();
+                        if (c) c.enabled = false;
+                    }
                 }
             }
             //BoundsPanel.Instance.Bingding(null, null);
@@ -111,8 +119,16 @@ public class Reconstitution : MonoBehaviour
             if (e) e.ReconstitutionMode(true);
             else
             {
-                var c = item.GetComponent<Collider>();
-                if (c) c.enabled = true;
+                var eye = item.GetComponent<Eye>();
+                if (eye)
+                {
+                    eye.ReconstitutionMode(true);
+                }
+                else
+                {
+                    var c = item.GetComponent<Collider>();
+                    if (c) c.enabled = true;
+                }
             }
         }
 
@@ -295,12 +311,16 @@ public class Reconstitution : MonoBehaviour
                 //    break;
                 //case HouseEntityType.weather:
                 //    break;
+                case HouseEntityType.eye:
+                    ShowEye(target);
+                    break;
                 default:
                     PropPanle.Instance.Show(false);
                     break;
             }
         }
     }
+
 
     private void FlushPropPanle()
     {
@@ -668,6 +688,14 @@ public class Reconstitution : MonoBehaviour
 
 
         PropPanle.Instance.Show(true);
+    }
+
+    private void ShowEye(Transform target)
+    {
+        ShowStand(target);
+        var e = target.GetComponent<Eye>();
+        PropPanle.Instance.GetV1("num", e.priority, (x) => e.priority = (int)x);
+        PropPanle.Instance.GetText("text", e.textMesh.text, (x) => e.textMesh.text = x);
     }
 
     private void ShowWallProp(Transform target)

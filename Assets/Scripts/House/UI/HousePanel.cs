@@ -37,6 +37,28 @@ public class HousePanel : MonoBehaviour
                 CameraControllerForUnity.Instance.transform.position = new Vector3(0, -1, 0);
                 CameraControllerForUnity.Instance.MobaFollow_orthogonal(CameraControllerForUnity.Instance.transform, new Vector2(90, 0), 15, 5);
             }
+            else if (CameraControllerForUnity.Instance.mode == CameraControllerForUnity.Mode.moba)
+            {
+                List<Eye> eyes = new List<Eye>();
+                foreach (var item in House.Instance.CureetHouse)
+                {
+                    if (item.Value == HouseEntityType.eye)
+                    {
+                        var e = item.Key.GetComponent<Eye>();
+                        e.Show(true);
+                        eyes.Add(e);
+                    }
+                }
+                if (eyes.Count > 0)
+                {
+                    eyes.Sort((x, y) => x.priority - y.priority);
+                    eyes[0].OnMouseUpAsButton();
+                }
+                else
+                {
+                    CameraControllerForUnity.Instance.Thirdfocus(new Vector3(0, -1, 0), new Vector2(45, 0), 12);
+                }
+            }
             else
             {
                 CameraControllerForUnity.Instance.Thirdfocus(new Vector3(0, -1, 0), new Vector2(45, 0), 12);
