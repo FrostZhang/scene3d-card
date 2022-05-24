@@ -359,12 +359,19 @@ public class House : MonoBehaviour
                 if (Help.Instance.TryColor(color, out c))
                     e.textMesh.color = c;
             }
-            if (tr is AlarmEntity)
+            else if (tr is AlarmEntity)
             {
                 var e = tr as AlarmEntity;
                 Color c;
                 if (Help.Instance.TryColor(color, out c))
                     e.YuanMa.SetColor("_Color", c);
+            }
+            else if (tr is LampEntity)
+            {
+                var e = tr as LampEntity;
+                Color c;
+                if (Help.Instance.TryColor(color, out c))
+                    e.emColor = c;
             }
         }
         return null;
@@ -1044,7 +1051,7 @@ public class House : MonoBehaviour
                 Color32 ma = e.YuanMa.GetColor("_Color");
                 writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");
             }
-            if (tr is TextEntity)
+            else if (tr is TextEntity)
             {
                 var e = tr as TextEntity;
                 writer.WritePropertyName("color");
@@ -1052,6 +1059,13 @@ public class House : MonoBehaviour
                 writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");
                 writer.WritePropertyName("more");
                 writer.Write($"{e.front},{e.back}");
+            }
+            else if (tr is LampEntity)
+            {
+                var e = tr as LampEntity;
+                writer.WritePropertyName("color");
+                Color32 ma = e.emColor;
+                writer.Write($"{ma.r},{ma.g},{ma.b},{ma.a}");
             }
             writer.WriteObjectEnd();
             writer.WriteObjectEnd();

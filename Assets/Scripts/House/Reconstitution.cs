@@ -418,7 +418,12 @@ public class Reconstitution : MonoBehaviour
             //PropPanle.Instance.GetColor("Edge", ma.GetColor("_HeightLight"), (x) => ma.SetColor("_HeightLight", x));
             //PropPanle.Instance.GetColor("Depth", ma.GetColor("_DepthColor"), (x) => ma.SetColor("_DepthColor", x));
         }
-        if (door is TextEntity)
+        else if (door is LampEntity)
+        {
+            var e = door as LampEntity;
+            PropPanle.Instance.GetColor("Main", e.emColor, (x) => e.emColor = x);
+        }
+        else if (door is TextEntity)
         {
             var e = door as TextEntity;
             PropPanle.Instance.GetText("Front", e.front, (x) =>

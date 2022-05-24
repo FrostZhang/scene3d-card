@@ -39,5 +39,16 @@ public class LampEntity : HassEntity
     public override void ReconstitutionMode(bool enter)
     {
         //base.ReconstitutionMode(enter);
+        if (enter)
+        {
+            TrunOff();
+        }
+        else
+        {
+            if (open)
+            {
+                TrunOn();
+            }
+        }
     }
 }

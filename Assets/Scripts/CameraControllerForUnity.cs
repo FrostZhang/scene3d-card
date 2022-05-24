@@ -51,13 +51,13 @@ public class CameraControllerForUnity : MonoBehaviour
     [Header("旋转平滑"), Range(0, 1)]
     public float roSmooth = 0.1f;
 
-    /// <summary>
-    /// 自动跟随followtarget 转动相机
-    /// </summary>
-    [Header("第一三跟随 自动转动")]
-    public bool autoRotate;
-    [Header("第一三 自动转动平滑"), Range(0.5f, 3)]
-    public float autoRotateSmooth = 1;
+    ///// <summary>
+    ///// 自动跟随followtarget 转动相机
+    ///// </summary>
+    //[Header("第一三跟随 自动转动")]
+    //public bool autoRotate;
+    //[Header("第一三 自动转动平滑"), Range(0.5f, 3)]
+    //public float autoRotateSmooth = 1;
 
     public Transform focus;
     public bool roOrMove;
@@ -97,7 +97,23 @@ public class CameraControllerForUnity : MonoBehaviour
 
     void LateUpdate()
     {
-        if (!enableUIInput && EventSystem.current.IsPointerOverGameObject())
+        bool isOnUI = false;
+        if (Input.touchCount > 0)
+        {
+            foreach (var item in Input.touches)
+            {
+                if (EventSystem.current.IsPointerOverGameObject(item.fingerId))
+                {
+                    isOnUI = true;
+                    break;
+                }
+            }
+        }
+        else
+        {
+            isOnUI = EventSystem.current.IsPointerOverGameObject();
+        }
+        if (isOnUI && !enableUIInput)
         {
             mousex = 0;
             mousey = 0;
@@ -113,32 +129,22 @@ public class CameraControllerForUnity : MonoBehaviour
                 mousex = offset.x / Screen.safeArea.width;
                 mousey = offset.y / Screen.safeArea.height;
             }
-            else if (!istouch2)
+            else if (Input.touchCount == 1)
+            {
+                var t = Input.GetTouch(0);
+                if (t.phase == TouchPhase.Moved)
+                {
+                    var p = t.deltaPosition;
+                    mousex = -p.x * 0.1f;
+                    mousey = -p.y * 0.1f;
+                }
+            }
+            else
             {
                 mousex = Input.GetAxis("Mouse X");
                 mousey = Input.GetAxis("Mouse Y");
             }
 
-        }
-
-        #region 视角缩进，拉远，跟随
-        CameraZoom();
-        #endregion
-
-        #region 旋转
-        CameraRotate();
-        #endregion
-
-        #region 视角平移
-        CameraMove();
-        #endregion
-    }
-
-    Vector3 oP1, oP2;
-    private void CameraZoom()
-    {
-        if (mode == Mode.third || mode == Mode.moba)
-        {
             if (Input.touchCount != 0)
             {
                 if (canUseMouseScroll)
@@ -149,6 +155,29 @@ public class CameraControllerForUnity : MonoBehaviour
                 if (canUseMouseScroll)
                     mousez = Input.GetAxis("Mouse ScrollWheel");
             }
+        }
+
+        #region 视角缩进，拉远，跟随
+        CameraZoom();
+        #endregion
+
+        #region 旋转
+        CameraRotatePC();
+        CameraRotateTO();
+        CameraRotate();
+        #endregion
+
+        #region 视角平移
+        CameraMovePC();
+        CameraMoveTO();
+        #endregion
+    }
+
+    Vector3 oP1, oP2;
+    private void CameraZoom()
+    {
+        if (mode == Mode.third || mode == Mode.moba)
+        {
             if (mousez != 0)
             {
                 if (!came.orthographic)
@@ -250,8 +279,6 @@ public class CameraControllerForUnity : MonoBehaviour
                 touch2ID = -1;
                 istouch1 = false;
                 istouch2 = false;
-                mousex = mousey = 0;
-                Input.ResetInputAxes();
                 return;
             }
         }
@@ -283,8 +310,6 @@ public class CameraControllerForUnity : MonoBehaviour
             touch2ID = -1;
             istouch1 = false;
             istouch2 = false;
-            mousex = mousey = 0;
-            Input.ResetInputAxes();
             Debug.Log("手指抬起2");
         }
 
@@ -294,33 +319,48 @@ public class CameraControllerForUnity : MonoBehaviour
             touch2ID = -1;
             istouch1 = false;
             istouch2 = false;
-            mousex = mousey = 0;
-            Input.ResetInputAxes();
             Debug.Log("系统取消对触摸的跟踪2");
         }
     }
 
-    private void CameraMove()
+    private void CameraMovePC()
     {
-        if (roOrMove)
+        if (roOrMove || Input.touchCount > 0 || !canUseMouseCenter)
             return;
-        if (mode == 0)
+        if (Input.GetMouseButton(0) || Input.GetMouseButton(2))
         {
-            if (Input.touchCount != 0)
+            if (mode == Mode.first)
             {
-                if (!roOrMove && Input.touchCount == 1 && canUseMouseCenter)
+                mousex = -mousex;
+                mousey = -mousey;
+                Vector3 move = new Vector3(mousex, mousey, 0) * curdistance * 0.02f;
+                transform.Translate(move, Space.Self);
+                if (followtarget)
                 {
-                    mousex = -mousex;
-                    mousey = -mousey;
-                    Vector3 move = new Vector3(mousex, mousey, 0) * curdistance * 0.03f;
-                    transform.Translate(move, Space.Self);
-                    if (followtarget)
-                    {
-                        offset = transform.position - followtarget.position;
-                    }
+                    offset = transform.position - followtarget.position;
                 }
             }
-            else if (!roOrMove && (Input.GetMouseButton(0) || Input.GetMouseButton(2)) && canUseMouseCenter)
+            else
+            {
+                mousey = -mousey;
+                mousex = -mousex;
+                if (came.orthographic)
+                    transform.Translate(new Vector3(curorthographicSize * 0.02f * mousex, 0, curorthographicSize * 0.02f * mousey), Space.World);
+                else
+                    transform.Translate(new Vector3(curdistance * 0.02f * mousex, 0, curdistance * 0.02f * mousey), Space.World);
+                if (followtarget)
+                    offset = transform.position - followtarget.position;
+            }
+        }
+    }
+
+    private void CameraMoveTO()
+    {
+        if (roOrMove || !canUseMouseCenter)
+            return;
+        if (Input.touchCount == 1)
+        {
+            if (mode == 0)
             {
                 mousex = -mousex;
                 mousey = -mousey;
@@ -331,24 +371,7 @@ public class CameraControllerForUnity : MonoBehaviour
                     offset = transform.position - followtarget.position;
                 }
             }
-        }
-        else if (mode == Mode.moba)
-        {
-            if (Input.touchCount != 0)
-            {
-                if (!roOrMove && Input.touchCount == 1 && canUseMouseCenter)
-                {
-                    mousey = -mousey;
-                    mousex = -mousex;
-                    if (came.orthographic)
-                        transform.Translate(new Vector3(curorthographicSize * 0.06f * mousex, 0, curorthographicSize * 0.06f * mousey), Space.World);
-                    else
-                        transform.Translate(new Vector3(curdistance * 0.06f * mousex, 0, curdistance * 0.06f * mousey), Space.World);
-                    if (followtarget)
-                        offset = transform.position - followtarget.position;
-                }
-            }
-            if (!roOrMove && (Input.GetMouseButton(0) || Input.GetMouseButton(2)) && canUseMouseCenter)
+            else if (mode == Mode.moba)
             {
                 mousey = -mousey;
                 mousex = -mousex;
@@ -362,20 +385,11 @@ public class CameraControllerForUnity : MonoBehaviour
         }
     }
 
-    private void CameraRotate()
+    private void CameraRotatePC()
     {
-        if (Input.touchCount != 0)
-        {
-            if (Input.touchCount == 1 && roOrMove && (mode == Mode.third || mode == Mode.first))
-            {
-                xAngle += mousex * xspeed;
-                yAngle -= mousey * yspeed;
-                yAngle = Mathf.Clamp(yAngle, thirdLimitAngleY.x, thirdLimitAngleY.y);
-            }
-        }
-        //当不为moba视角可旋转
-        else if (Input.GetMouseButton(0)
-            && (mode == Mode.third || mode == Mode.first))
+        if (!roOrMove || !canUseMouseCenter)
+            return;
+        if (Input.GetMouseButton(0) && (mode == Mode.third || mode == Mode.first))
         {
             if (roOrMove)
             {
@@ -384,29 +398,24 @@ public class CameraControllerForUnity : MonoBehaviour
                 yAngle = Mathf.Clamp(yAngle, thirdLimitAngleY.x, thirdLimitAngleY.y);
             }
         }
+    }
+
+    private void CameraRotate()
+    {
         rot = Quaternion.Euler(0f, xAngle, 0f);
         pivotRot = Quaternion.Euler(yAngle, triniPivot.y, triniPivot.z);
-        //m_Pivot.localRotation = Quaternion.Slerp(m_Pivot.localRotation, m_PivotTargetRot, m_TurnSmoothing * 0.02f);
         transform.rotation = Quaternion.Slerp(transform.rotation, rot * pivotRot, roSmooth);
-        if (autoRotate && followtarget)
+    }
+
+    private void CameraRotateTO()
+    {
+        if (!roOrMove || !canUseMouseCenter)
+            return;
+        if (Input.touchCount == 1 && (mode == Mode.third || mode == Mode.first))
         {
-            if ((checkAutoRo -= Time.deltaTime) < 0)
-            {
-                checkAutoRo = 0;
-                if (mode == Mode.third)
-                {
-                    Quaternion rot = transform.rotation;
-                    Quaternion toTarget = Quaternion.LookRotation(followtarget.forward);
-                    var to = (Quaternion.Euler(0, -triniPivot.y, 0) * toTarget).eulerAngles.y;
-                    xAngle = to;
-                }
-                else if (mode == Mode.first)
-                {
-                    transform.rotation = followtarget.rotation;
-                    xAngle = transform.eulerAngles.y;
-                    yAngle = transform.eulerAngles.x;
-                }
-            }
+            xAngle += mousex * xspeed;
+            yAngle -= mousey * yspeed;
+            yAngle = Mathf.Clamp(yAngle, thirdLimitAngleY.x, thirdLimitAngleY.y);
         }
     }
 
