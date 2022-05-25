@@ -56,7 +56,7 @@ MonoBehaviour:
   _arrowConeRadius: 0.4
   _arrowConeLength: 1.19
   _multiAxisSquareSize: 1
-  _adjustMultiAxisForBetterVisibility: 1
+  _adjustMultiAxisForBetterVisibility: 0
   _multiAxisSquareAlpha: 0.2
   _areArrowConesLit: 1
   _specialOpSquareColor: {r: 1, g: 1, b: 1, a: 1}

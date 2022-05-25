@@ -63,8 +63,9 @@ public class DrawEye : MonoBehaviour
         p = Camera.main.ScreenToWorldPoint(p);
         Transform wall = null;
         wall = await House.Instance.CreatEye(choose.key);
-        p.y = 0;
+        p.y = 1.2f;
         wall.transform.position = p;
+        wall.transform.eulerAngles = new Vector3(15, 0, 0);
         await new WaitForEndOfFrame();
         Reconstitution.Instance.EditorTransform(wall);
         wall.GetComponent<Eye>().ReconstitutionMode(true);

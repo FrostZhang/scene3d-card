@@ -236,11 +236,11 @@ public class CameraControllerForUnity : MonoBehaviour
                 targetfov += mousez * 3;
                 targetfov = Mathf.Clamp(targetfov, 30, 70);
             }
-            else
-            {
-                transform.position -= (transform.forward).normalized * mousez * 3;
-            }
-            ca.position = transform.position + ca.forward.normalized * 0.05f;   //camera is too far with people . fixed the dis;
+            //else
+            //{
+            //    transform.position -= (transform.forward).normalized * mousez * 3;
+            //}
+            ca.position = transform.position;   //camera is too far with people . fixed the dis;
         }
         //相机广角fov 平滑
         came.fieldOfView = Mathf.Lerp(came.fieldOfView, targetfov, 0.2f);
@@ -333,14 +333,14 @@ public class CameraControllerForUnity : MonoBehaviour
         {
             if (mode == Mode.first)
             {
-                mousex = -mousex;
-                mousey = -mousey;
-                Vector3 move = new Vector3(mousex, mousey, 0) * curdistance * 0.02f;
-                transform.Translate(move, Space.Self);
-                if (followtarget)
-                {
-                    offset = transform.position - followtarget.position;
-                }
+                //mousex = -mousex;
+                //mousey = -mousey;
+                //Vector3 move = new Vector3(mousex, mousey, 0) * curdistance * 0.02f;
+                //transform.Translate(move, Space.Self);
+                //if (followtarget)
+                //{
+                //    offset = transform.position - followtarget.position;
+                //}
             }
             else
             {
@@ -364,14 +364,14 @@ public class CameraControllerForUnity : MonoBehaviour
         {
             if (mode == 0)
             {
-                mousex = -mousex;
-                mousey = -mousey;
-                Vector3 move = new Vector3(mousex, mousey, 0) * curdistance * 0.03f;
-                transform.Translate(move, Space.Self);
-                if (followtarget)
-                {
-                    offset = transform.position - followtarget.position;
-                }
+                //mousex = -mousex;
+                //mousey = -mousey;
+                //Vector3 move = new Vector3(mousex, mousey, 0) * curdistance * 0.03f;
+                //transform.Translate(move, Space.Self);
+                //if (followtarget)
+                //{
+                //    offset = transform.position - followtarget.position;
+                //}
             }
             else if (mode == Mode.moba)
             {

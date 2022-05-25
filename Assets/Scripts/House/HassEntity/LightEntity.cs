@@ -11,7 +11,7 @@ public class LightEntity : HassEntity
     float max;
     Renderer _renderer;
 
-    public float Max { get => max; set => max = clight.intensity = value; }
+    public float Max { get => max; set => max = value; }
 
     void Start()
     {

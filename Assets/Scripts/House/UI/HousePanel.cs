@@ -53,14 +53,23 @@ public class HousePanel : MonoBehaviour
                 {
                     eyes.Sort((x, y) => x.priority - y.priority);
                     eyes[0].OnMouseUpAsButton();
+                    roOrMove.isOn = true;   //第一人称 不允许平移
                 }
                 else
                 {
                     CameraControllerForUnity.Instance.Thirdfocus(new Vector3(0, -1, 0), new Vector2(45, 0), 12);
                 }
             }
-            else
+            else if (CameraControllerForUnity.Instance.mode == CameraControllerForUnity.Mode.first)
             {
+                foreach (var item in House.Instance.CureetHouse)
+                {
+                    if (item.Value == HouseEntityType.eye)
+                    {
+                        var e = item.Key.GetComponent<Eye>();
+                        e.Show(false);
+                    }
+                }
                 CameraControllerForUnity.Instance.Thirdfocus(new Vector3(0, -1, 0), new Vector2(45, 0), 12);
             }
         });
@@ -70,14 +79,24 @@ public class HousePanel : MonoBehaviour
             {
                 CameraControllerForUnity.Instance.Thirdfocus(new Vector3(0, -1, 0), new Vector2(45, 0), 12);
             }
-            else
+            else if (CameraControllerForUnity.Instance.mode == CameraControllerForUnity.Mode.moba)
             {
                 CameraControllerForUnity.Instance.transform.position = new Vector3(0, -1, 0);
                 CameraControllerForUnity.Instance.MobaFollow_orthogonal(CameraControllerForUnity.Instance.transform, new Vector2(90, 0), 15, 5);
+
+            }
+            else if (CameraControllerForUnity.Instance.mode == CameraControllerForUnity.Mode.first)
+            {
+
             }
         });
         roOrMove.onValueChanged.AddListener((x) =>
         {
+            if (CameraControllerForUnity.Instance.mode == CameraControllerForUnity.Mode.first)
+            {
+                roOrMove.SetIsOnWithoutNotify(true);
+                return;
+            }
             CameraControllerForUnity.Instance.roOrMove = x;
         });
         CameraControllerForUnity.Instance.roOrMove = roOrMove.isOn;

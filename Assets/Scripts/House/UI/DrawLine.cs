@@ -67,7 +67,7 @@ public class DrawLine : MonoBehaviour
                     Destroy(to.gameObject);
                 });
             });
-            to.isOn = true;
+            //to.isOn = true;
         }
     }
 
