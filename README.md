@@ -5,7 +5,7 @@
 + 树莓、群晖、手机、linux随意。因为渲染计算不在容器中。
 
 ### 安装
-+ 下载release包，放在容器中。
++ 下载[release](https://github.com/FrostZhang/hass_unity_home/releases)包，放在容器中。
 + 资源包放在custom_components\3dscene\local\StreamingAssets中。
 + 确保custom_components\3dscene\local\Customdata 可读写！！！
 + 重启容器
