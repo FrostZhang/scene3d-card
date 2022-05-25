@@ -9,7 +9,7 @@
 + 资源包放在custom_components\3dscene\local\StreamingAssets中。
 + 确保custom_components\3dscene\local\Customdata 可读写！！！
 + 重启容器
-+ 首页仪表盘新建一个分类，选择 面板（单张卡片）
++ 首页仪表盘新建一个分类，选择 面板-单张卡片（注意：请不要多张卡片混排，三维太吃性能，易发生浏览器崩溃）
 + 新建卡片 type: custom:scene3d-card
 
 ### 打赏
