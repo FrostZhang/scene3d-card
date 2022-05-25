@@ -1,8 +1,9 @@
 # hass_unity_home
 
 ### 硬件要求
-+ 无任何要求
-+ 树莓、群晖、手机、linux随意。因为渲染计算不在容器中。
++ 安装无任何要求，树莓、群晖、手机、linux随意。
++ PC浏览：GT750   RX550   HD6870
++ 移动端浏览：麒麟980 A10X 晓龙778G
 
 ### 安装
 + 下载[release](https://github.com/FrostZhang/hass_unity_home/releases)包，放在容器中。
