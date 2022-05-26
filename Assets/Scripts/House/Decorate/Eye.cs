@@ -33,12 +33,13 @@ public class Eye : MonoBehaviour
             float t = 0;
             var endpos = transform.position;
             var startpos = CameraControllerForUnity.Instance.transform.position;
+            var startro = CameraControllerForUnity.Instance.transform.rotation;
             var endro = transform.rotation;
             while ((t += Time.deltaTime * 0.75f) < 1.2f)
             {
                 var pos = Vector3.Lerp(startpos, endpos, t);
                 //var rot = Quaternion.LookRotation(pos - CameraControllerForUnity.Instance.transform.position);
-                CameraControllerForUnity.Instance.transform.rotation = Quaternion.RotateTowards(CameraControllerForUnity.Instance.transform.rotation, endro, t);
+                CameraControllerForUnity.Instance.transform.rotation = Quaternion.Slerp(startro, endro, t);
                 CameraControllerForUnity.Instance.transform.position = pos;
                 if (t > 0.7f)
                     meshRenderer.enabled = false;

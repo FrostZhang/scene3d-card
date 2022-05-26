@@ -51,9 +51,9 @@ public class HousePanel : MonoBehaviour
                 }
                 if (eyes.Count > 0)
                 {
+                    roOrMove.isOn = true;   //第一人称 不允许平移
                     eyes.Sort((x, y) => x.priority - y.priority);
                     eyes[0].OnMouseUpAsButton();
-                    roOrMove.isOn = true;   //第一人称 不允许平移
                 }
                 else
                 {

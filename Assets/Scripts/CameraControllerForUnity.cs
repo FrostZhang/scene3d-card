@@ -331,16 +331,16 @@ public class CameraControllerForUnity : MonoBehaviour
             return;
         if (Input.GetMouseButton(0) || Input.GetMouseButton(2))
         {
-            if (mode == Mode.first)
+            if (mode == Mode.third)
             {
-                //mousex = -mousex;
-                //mousey = -mousey;
-                //Vector3 move = new Vector3(mousex, mousey, 0) * curdistance * 0.02f;
-                //transform.Translate(move, Space.Self);
-                //if (followtarget)
-                //{
-                //    offset = transform.position - followtarget.position;
-                //}
+                mousex = -mousex;
+                mousey = -mousey;
+                Vector3 move = new Vector3(mousex, mousey, 0) * curdistance * 0.02f;
+                transform.Translate(move, Space.Self);
+                if (followtarget)
+                {
+                    offset = transform.position - followtarget.position;
+                }
             }
             else
             {
@@ -362,16 +362,16 @@ public class CameraControllerForUnity : MonoBehaviour
             return;
         if (Input.touchCount == 1)
         {
-            if (mode == 0)
+            if (mode == Mode.third)
             {
-                //mousex = -mousex;
-                //mousey = -mousey;
-                //Vector3 move = new Vector3(mousex, mousey, 0) * curdistance * 0.03f;
-                //transform.Translate(move, Space.Self);
-                //if (followtarget)
-                //{
-                //    offset = transform.position - followtarget.position;
-                //}
+                mousex = -mousex;
+                mousey = -mousey;
+                Vector3 move = new Vector3(mousex, mousey, 0) * curdistance * 0.03f;
+                transform.Translate(move, Space.Self);
+                if (followtarget)
+                {
+                    offset = transform.position - followtarget.position;
+                }
             }
             else if (mode == Mode.moba)
             {
