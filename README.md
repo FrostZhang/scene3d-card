@@ -6,8 +6,9 @@
 + 移动端浏览：麒麟980 A10X 晓龙778  及以上
 
 ### 安装
-+ 下载[release](https://github.com/FrostZhang/hass_unity_home/releases)包，放在容器中。
-+ 资源包放在custom_components\3dscene\local\StreamingAssets中。
++ [release](https://github.com/FrostZhang/hass_unity_home/releases)包，放在容器中。
++ 非开发用户无需下载整个工程。
++ StreamingAssets.zip 资源包解压放在custom_components\3dscene\local\StreamingAssets同名目录中。
 + 确保custom_components\3dscene\local\Customdata 可读写！！！
 + 重启容器
 + 首页仪表盘新建一个分类，选择 面板-单张卡片（注意：请不要多张卡片混排，三维太吃性能，易发生浏览器崩溃）
@@ -57,8 +58,8 @@
 + 编辑左侧画风诡异？
 - 预览图片无灯光渲染就是这样啦，放在场景里就好看了。以后有空会慢慢优化的。
 -
-## 编辑器怎么用
-+ 自己摸索
+## 使用
++ 看说明书
 + 或者b站 关注 锯木工_Asher 
 
 # 遇到bug不要慌，欢迎留言，B站私信。
