@@ -1,15 +1,16 @@
 # hass_unity_home
 
 ### 硬件要求
-+ 无任何要求
-+ 树莓、群晖、手机、linux随意。因为渲染计算不在容器中。
++ 安装无任何要求，树莓、群晖、手机、linux随意。
++ PC浏览：GT750   RX550   HD6870  +4G内存 及以上
++ 移动端浏览：麒麟980 A10X 晓龙778  及以上
 
 ### 安装
-+ 下载release包，放在容器中。
++ 下载[release](https://github.com/FrostZhang/hass_unity_home/releases)包，放在容器中。
 + 资源包放在custom_components\3dscene\local\StreamingAssets中。
 + 确保custom_components\3dscene\local\Customdata 可读写！！！
 + 重启容器
-+ 首页仪表盘新建一个分类，选择 面板（单张卡片）
++ 首页仪表盘新建一个分类，选择 面板-单张卡片（注意：请不要多张卡片混排，三维太吃性能，易发生浏览器崩溃）
 + 新建卡片 type: custom:scene3d-card
 
 ### 打赏
