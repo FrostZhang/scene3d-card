@@ -533,17 +533,17 @@ public class Reconstitution : MonoBehaviour
             target.position = pc;
             FlushGizmo(pc);
         });
-        PropPanle.Instance.GetV2("W/H", target.localScale.x, target.localScale.z, (x) =>
-        {
-            var pc = target.localScale;
-            pc.x = x;
-            target.localScale = pc;
-        }, (x) =>
-        {
-            var pc = target.localScale;
-            pc.z = x;
-            target.localScale = pc;
-        });
+        PropPanle.Instance.GetV2("W/H", target.localScale.x * 10f, target.localScale.z * 10f, (x) =>
+          {
+              var pc = target.localScale;
+              pc.x = x * 0.1f;
+              target.localScale = pc;
+          }, (x) =>
+          {
+              var pc = target.localScale;
+              pc.z = x * 0.1f;
+              target.localScale = pc;
+          });
         var ma = target.GetComponent<MeshRenderer>().material;
         PropPanle.Instance.GetV2("Txy", ma.GetTextureScale("_BaseMap").x, ma.GetTextureScale("_BaseMap").y, (x) =>
         {
@@ -553,6 +553,12 @@ public class Reconstitution : MonoBehaviour
         {
             var s = ma.GetTextureScale("_BaseMap");
             ma.SetTextureScale("_BaseMap", new Vector2(s.x, x));
+        });
+        PropPanle.Instance.GetV1("Pri", target.position.y * 100f, (x) =>
+        {
+            var p = target.position;
+            p.y = x * 0.01f;
+            target.position = p;
         });
         PropPanle.Instance.Show(true);
     }
