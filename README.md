@@ -8,7 +8,7 @@
 ### 安装
 + [release](https://github.com/FrostZhang/hass_unity_home/releases)包，放在容器中。
 + 非开发用户无需下载整个工程。
-+ 资源包放在custom_components\3dscene\local\StreamingAssets中。
++ StreamingAssets.zip 资源包解压放在custom_components\3dscene\local\StreamingAssets同名目录中。
 + 确保custom_components\3dscene\local\Customdata 可读写！！！
 + 重启容器
 + 首页仪表盘新建一个分类，选择 面板-单张卡片（注意：请不要多张卡片混排，三维太吃性能，易发生浏览器崩溃）
