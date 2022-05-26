@@ -12,6 +12,7 @@ public class HousePanel : MonoBehaviour
     public Button changeCamera, edit;
     public Toggle roOrMove;
     public Button resetCamera;
+    public Button info, zanzu;
     void Awake()
     {
         Instance = this;
@@ -100,6 +101,10 @@ public class HousePanel : MonoBehaviour
             CameraControllerForUnity.Instance.roOrMove = x;
         });
         CameraControllerForUnity.Instance.roOrMove = roOrMove.isOn;
+
+
+       info.onClick.AddListener(() => SouquanPanel.instance.gameObject.SetActive(true));
+        zanzu.onClick.AddListener(() => DashangPanel.instance.gameObject.SetActive(true));
         if (Shijie.WhichStand() == 1)
         {
             edit.interactable = false;

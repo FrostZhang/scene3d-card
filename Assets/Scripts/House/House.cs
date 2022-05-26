@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public enum HouseEntityType
 {
@@ -722,6 +723,8 @@ public class House : MonoBehaviour
             return;
         if (Physics.Raycast(mainCa.ScreenPointToRay(Input.mousePosition), out hit, maxDistance))
         {
+            if (EventSystem.current.IsPointerOverGameObject())
+                return;
             if (hit.transform != lasthit)
             {
                 lasthit = hit.transform;
