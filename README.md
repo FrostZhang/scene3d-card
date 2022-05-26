@@ -6,7 +6,8 @@
 + 移动端浏览：麒麟980 A10X 晓龙778  及以上
 
 ### 安装
-+ 下载[release](https://github.com/FrostZhang/hass_unity_home/releases)包，放在容器中。
++ [release](https://github.com/FrostZhang/hass_unity_home/releases)包，放在容器中。
++ 非开发用户无需下载整个工程。
 + 资源包放在custom_components\3dscene\local\StreamingAssets中。
 + 确保custom_components\3dscene\local\Customdata 可读写！！！
 + 重启容器
