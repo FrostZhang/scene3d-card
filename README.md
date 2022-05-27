@@ -9,7 +9,6 @@
 + Chrome、Edge，其他浏览器未通过测试。
 ### 安装
 + [release](https://github.com/FrostZhang/hass_unity_home/releases)包，放在容器中。
-+ 非开发用户无需下载整个工程。
 + StreamingAssets.zip 资源包解压放在custom_components\3dscene\local\StreamingAssets同名目录中。
 + 确保custom_components\3dscene\local\Customdata 可读写！！！
 + 重启容器
