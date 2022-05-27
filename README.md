@@ -4,7 +4,8 @@
 + 安装无任何要求，树莓、群晖、手机、linux随意。
 + PC浏览：GT750   RX550   HD6870  +4G内存 及以上
 + 移动端浏览：麒麟980 A10X 晓龙778  及以上
-
+###软件要求
++ Chrome、Edge，其他浏览器未通过测试。
 ### 安装
 + [release](https://github.com/FrostZhang/hass_unity_home/releases)包，放在容器中。
 + 非开发用户无需下载整个工程。
