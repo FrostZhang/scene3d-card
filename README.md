@@ -21,17 +21,10 @@
 ### 打赏
 ![wx](http://cdn.asherlink.top/wxskm.jpg) ![wx](/Other/wxskm.jpg)
 
-### 我想开发三维
-+ 下载项目
-+ 使用unity3d打开
-+ 自定义程序
-+ 编辑webgl导出包，注意导出包的文件夹名称必须为 prize
-+ 替换Build文件夹和StreamingAssets文件夹
-
-### 我想开发卡片
-+ 编辑custom_components - 3dscene - local - 3dscene-card.js
-+ 编辑3dscene下的文件
-
+## 使用
++ 看说明书
++ 或者b站 关注 锯木工_Asher 
++ 
 ## 问答
 + 第一次加载有点慢？
 - 三维资源很大，本体10M，资源大约16M（持续更新），网页打开受网速限制，浏览器会缓存所有资源。
@@ -62,9 +55,13 @@
 + 编辑左侧画风诡异？
 - 预览图片无灯光渲染就是这样啦，放在场景里就好看了。以后有空会慢慢优化的。
 -
-## 使用
-+ 看说明书
-+ 或者b站 关注 锯木工_Asher 
+### 我想开发三维
++ 为便于小白使用插件，开发文件迁移。
++ 开发条件：具备 unity c# js 3d运算 开发经验。
+
+### 我想开发卡片
++ 编辑custom_components - 3dscene - local - 3dscene-card.js
++ 编辑3dscene下的文件
 
 ## 广告（订制开发）
 + 定制homeassistant个性化三维场景和个性化功能。
