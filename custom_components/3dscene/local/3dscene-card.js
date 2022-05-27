@@ -143,7 +143,7 @@
               // Avoid draining fillrate performance on mobile devices,
               // and default/override low DPI mode on mobile browsers.
               config.devicePixelRatio = 2;
-              unityShowBanner('Minimum picture quality on mobile devices.手机上显示最低画质');
+              //unityShowBanner('');
             } else {
               container.className = "unity-mobile";
               config.devicePixelRatio = 1;
