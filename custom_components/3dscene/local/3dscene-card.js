@@ -150,7 +150,7 @@
               //canvas.style.width = "960px";
               //canvas.style.height = "600px";
             }
-            //loadingBar.style.display = "block";
+            loadingBar.style.display = "block";
             var customss = document.createElement("script");
             customss.text = `
             var unityhass,showR;
