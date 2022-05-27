@@ -1,6 +1,5 @@
 # hass_unity_home
-
-
+https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-a795-1876636c99ee.mp4
 ### 硬件要求
 + 安装无任何要求，树莓、群晖、手机、linux随意。
 + PC浏览：GT750   RX550   HD6870  +4G内存 及以上
