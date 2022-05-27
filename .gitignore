@@ -65,3 +65,8 @@ crashlytics-build.properties
 /referencemap.xml
 /referenceType2File.xml
 /BackupUnusedAssets
+Assets
+Packages
+ProjectSettings
+/.vsconfig
+/UserSettings
