@@ -1,7 +1,10 @@
 # hass_unity_home
+homeassistant 三维展示方案
+
 [![GitHub Release][releases-shield]][releases]
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
 [![License][license-shield]](LICENSE.md)
+[![Project Maintenance][maintenance-shield]
 
 https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-a795-1876636c99ee.mp4
 ### 硬件要求
