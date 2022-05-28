@@ -1,4 +1,8 @@
 # hass_unity_home
+[![GitHub Release][releases-shield]][releases]
+[![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
+[![License][license-shield]](LICENSE.md)
+
 https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-a795-1876636c99ee.mp4
 ### 硬件要求
 + 安装无任何要求，树莓、群晖、手机、linux随意。
