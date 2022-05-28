@@ -7,6 +7,7 @@ https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-
 
 ### 软件要求
 + Chrome、Edge，其他浏览器未通过测试。
++ 仅支持系统Lovelace仪表盘。
 ### 安装
 + [release](https://github.com/FrostZhang/hass_unity_home/releases)包，放在容器中。
 + StreamingAssets.zip 资源包解压放在custom_components\3dscene\local\StreamingAssets同名目录中。
