@@ -40,8 +40,8 @@ https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-
 - PC: SMAA（Hight）Anti（2x）HDR（+）Bloom辉光（+）LUT（32）阴影（-）Light（8）
 - 简单的说PC端画质全开，移动端画质开一半。
 -
-+ 有点卡，浏览器报 xxx out memory ，长时间黑屏。
-- 更换演示设备。
++ 卡顿，报错xxx out memory，长时间黑屏。
+- 更换设备。
 -
 + 为什么整个世界很黑？
 - 世界受homeassistant sun.sun影响，根据当前太阳的角度计算光照强度。
