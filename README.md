@@ -76,3 +76,14 @@ https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-
 + 有意私信。
 + 
 # 遇到bug不要慌，欢迎留言，B站私信。
+
+[commits-shield]: https://img.shields.io/github/commit-activity/y/custom-cards/restriction-card.svg?style=for-the-badge
+[commits]: https://github.com/custom-cards/restriction-card/commits/master
+[discord]: https://discord.gg/5e9yvq
+[discord-shield]: https://img.shields.io/discord/330944238910963714.svg?style=for-the-badge
+[forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
+[forum]: https://community.home-assistant.io/t/lovelace-restriction-card-client-side-security/142889
+[license-shield]: https://img.shields.io/github/license/custom-cards/restriction-card.svg?style=for-the-badge
+[maintenance-shield]: https://img.shields.io/badge/maintainer-Ian%20Richardson%20%40iantrich-blue.svg?style=for-the-badge
+[releases-shield]: https://img.shields.io/github/release/custom-cards/restriction-card.svg?style=for-the-badge
+[releases]: https://github.com/custom-cards/restriction-card/releases
