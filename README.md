@@ -29,7 +29,7 @@ https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-
 
 ## 使用
 + 看说明书
-+ 或者b站 关注 锯木工_Asher 
++ 中国用户可以登录bilibili关注：锯木工_Asher 
 + 
 ## 问答
 + 第一次加载有点慢？
@@ -49,7 +49,7 @@ https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-
 -
 + 怎么下雨雪？
 - 配置weather entity，世界跟随现实天气变幻。
-- 建议接入和风天气 hf_weather 插件。
+- 中国用户建议接入和风天气 hf_weather 插件。
 -
 + 编辑页面 save config，homeassistant报错？
 - 可能 custom_components\3dscene\local\Customdata 没有读写权限，没法在 save config 时保存你的配置。
