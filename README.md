@@ -63,7 +63,7 @@ https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-
 -
 ### 我想开发三维
 + 为便于小白使用插件，开发文件迁移。
-+ 开发条件：具备 unity c# js 3d运算 开发经验。
++ 开发条件：具备 unity + c# + js + 3d运算。
 
 ### 我想开发卡片
 + 编辑custom_components - 3dscene - local - 3dscene-card.js
