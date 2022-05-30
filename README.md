@@ -1,10 +1,9 @@
 # hass_unity_home
 homeassistant 三维展示方案
 
-[![GitHub Release][releases-shield]][releases]
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
 [![License][license-shield]](LICENSE.md)
-[![Project Maintenance][maintenance-shield]
+![Project Maintenance][maintenance-shield]
 
 https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-a795-1876636c99ee.mp4
 ### 硬件要求
@@ -26,7 +25,7 @@ https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-
 + 新建卡片 type: custom:scene3d-card
 
 ### 打赏
-![wx](http://cdn.asherlink.top/wxskm.jpg) ![wx](/Other/wxskm.jpg)
+<img src="http://cdn.asherlink.top/wxskm.jpg" width="128"  alt="微信"/> ![wx](/Other/wxskm.jpg)
 
 ## 使用
 + 看说明书
@@ -77,13 +76,5 @@ https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-
 + 
 # 遇到bug不要慌，欢迎留言，B站私信。
 
-[commits-shield]: https://img.shields.io/github/commit-activity/y/custom-cards/restriction-card.svg?style=for-the-badge
-[commits]: https://github.com/custom-cards/restriction-card/commits/master
-[discord]: https://discord.gg/5e9yvq
-[discord-shield]: https://img.shields.io/discord/330944238910963714.svg?style=for-the-badge
-[forum-shield]: https://img.shields.io/badge/community-forum-brightgreen.svg?style=for-the-badge
-[forum]: https://community.home-assistant.io/t/lovelace-restriction-card-client-side-security/142889
 [license-shield]: https://img.shields.io/github/license/custom-cards/restriction-card.svg?style=for-the-badge
 [maintenance-shield]: https://img.shields.io/badge/maintainer-Ian%20Richardson%20%40iantrich-blue.svg?style=for-the-badge
-[releases-shield]: https://img.shields.io/github/release/custom-cards/restriction-card.svg?style=for-the-badge
-[releases]: https://github.com/custom-cards/restriction-card/releases
