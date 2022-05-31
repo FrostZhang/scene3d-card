@@ -1,5 +1,5 @@
 # scene3d-card
-homeassistant 3D
+homeassistant 3D方案
 
 [![hacs_badge](https://img.shields.io/badge/HACS-Default-orange.svg?style=for-the-badge)](https://github.com/hacs/integration)
 [![License][license-shield]](LICENSE.md)
