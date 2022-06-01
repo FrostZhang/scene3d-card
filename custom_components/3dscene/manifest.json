@@ -2,7 +2,7 @@
   "domain": "3dscene",
   "name": "三维展示平台",
   "version": "1.0",
-  "documentation": "https://github.com/FrostZhang/hass_unity_home",
+  "documentation": "https://github.com/FrostZhang/scene3d-card",
   "requirements": [],
   "dependencies": [],
   "codeowners": ["@AsherLink"]
