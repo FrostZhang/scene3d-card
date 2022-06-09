@@ -33,7 +33,7 @@
         static get properties() {
           return {
             config: Object,
-            unity: Object,
+            asherlink3dscence: Object,
             sunObj: Object,
             tempObj: Object,
             mode: String,
@@ -58,8 +58,8 @@
         setConfig(config) {
           this.config = config;
           //放弃lovelace 配置表，原因：手动编辑lovelace反人类
-          //if (this.unity == undefined) return;
-          //this.unity.SendMessage("Shijie", "HassConfig", JSON.stringify(this.config));
+          //if (this.asherlink3dscence == undefined) return;
+          //this.asherlink3dscence.SendMessage("Shijie", "HassConfig", JSON.stringify(this.config));
         }
 
         configChanged(newConfig) {
@@ -75,8 +75,8 @@
           this._hass = hass;
           this.lang = this._hass.selectedLanguage || this._hass.language;
           //回传3d
-          window.unityhass = this._hass;
-          if (this.unity == undefined) return;
+          window.asherlink3dscencehass = this._hass;
+          if (this.asherlink3dscence == undefined) return;
           var st, item, send;
           //遍历全部state，考虑优化
           for (item in this._hass.states) {
@@ -97,7 +97,7 @@
               send = item + ' ' + st["state"];
             }
             if (send != undefined) {
-              this.unity.SendMessage("Shijie", "HassMessage", String(send));
+              this.asherlink3dscence.SendMessage("Shijie", "HassMessage", String(send));
             }
           }
         }
@@ -134,8 +134,8 @@
               codeUrl: buildUrl + "/prize.wasm.unityweb",
               streamingAssetsUrl: "3dscene_local/StreamingAssets",
               companyName: "AsherLink",
-              productName: "HassHome",
-              productVersion: "0.1",
+              productName: "scene3d-card",
+              productVersion: "1.0.3",
               showBanner: unityShowBanner,
             };
             if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
@@ -153,17 +153,17 @@
             loadingBar.style.display = "block";
             var customss = document.createElement("script");
             customss.text = `
-            var unityhass,showR;
+            var asherlink3dscencehass,asherlink3dscencecard;
             function AsherLink3DStart(){
-              if (window.showR != undefined)
-              window.showR.On3dstart();
+              if (window.asherlink3dscencecard != undefined)
+              window.asherlink3dscencecard.On3dstart();
             }
             function AsherLink3DClickMessage(str){
               var obj = JSON.parse(str);
-              unityhass.callService(obj["head"],obj["cmd"],{"entity_id": obj["entity_id"]});
+              asherlink3dscencehass.callService(obj["head"],obj["cmd"],{"entity_id": obj["entity_id"]});
             }
             function AsherLinkfire(type, detail, options) {
-              const node = showR;
+              const node = asherlink3dscencecard;
               options = options || {};
               detail = (detail === null || detail === undefined) ? {} : detail;
               const e = new Event(type, {
@@ -184,7 +184,7 @@
             }
             function AsherLink3DConfig(str){
               var obj = JSON.parse(str);
-              unityhass.callService('3dscene','config',{'data': obj});
+              asherlink3dscencehass.callService('3dscene','config',{'data': obj});
             }
             `
             document.body.appendChild(customss)
@@ -195,8 +195,8 @@
                 progressBarFull.style.width = 100 * progress + "%";
               }).then((unityInstance) => {
                 loadingBar.style.display = "none";
-                this.unity = unityInstance;
-                window.showR = this;
+                this.asherlink3dscence = unityInstance;
+                window.asherlink3dscencecard = this;
                 
             }).catch((message) => {
                 alert(message);
@@ -210,7 +210,7 @@
         On3dstart() {
           //放弃从lovelace推送配置，原因：手动编辑lovelace反人类
           //console.log(JSON.stringify(this.config))
-          //this.unity.SendMessage("Shijie", "HassConfig", JSON.stringify(this.config));
+          //this.asherlink3dscence.SendMessage("Shijie", "HassConfig", JSON.stringify(this.config));
         }
 
         getCardSize() {
@@ -237,10 +237,10 @@
       // 添加预览
       window.customCards = window.customCards || [];
       window.customCards.push({
-        type: "3dscene-card",
-        name: "三维平台",
-        preview: true,
-        description: "三维平台卡片"
+        type: "scene3d-card",
+        name: "homeassistant 3D",
+        preview: false,
+        description: "Build your home -- AsherLink"
       });
 
     }
