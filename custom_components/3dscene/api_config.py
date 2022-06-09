@@ -1,5 +1,6 @@
 
 import json, os, shutil, hashlib, base64
+import urllib,urllib.request
 
 class ApiConfig():
 
@@ -35,3 +36,24 @@ class ApiConfig():
     def writecustomconfig(self, call):
         self.write('houseconnfig.json', str(call.data))
     
+    #data = {'url': 'http://www.blog.pythonlibrary.org/wp-content/uploads/2012/06/', 'supplier': 'asher', 'astype': 'appliances', 'name': 'wxDbViewer', "version": '1.0'}
+    def supplier3ddownload(self, call):
+        if 'supplier' in data:
+            _supplier = data["supplier"]
+        if 'astype' in data:
+            _astype = data["astype"]
+        if 'url' in data:
+            _url = data["url"]
+        if 'name' in data:
+            _name = data["name"]
+        if _url == None or _name == None or _supplier==None or _astype==None:
+            print('缺数据')
+            return
+        dirpath = self.dir + '/' + _supplier + '/' + _astype 
+        self.mkdir(dirpath)
+        png = _name + '.png'
+        asdata = _name + '_' + _astype + '.asherlinkdata'
+        asmf = _name+'_'+_astype+'.asherlinkdata.manifest'
+        urllib.request.urlretrieve(_url + png, dirpath + '/' + png)
+        urllib.request.urlretrieve(_url+asdata,dirpath+ '/'+asdata)
+        urllib.request.urlretrieve(_url+asmf,dirpath+ '/'+asmf)
