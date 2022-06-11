@@ -135,7 +135,7 @@
               streamingAssetsUrl: "3dscene_local/StreamingAssets",
               companyName: "AsherLink",
               productName: "scene3d-card",
-              productVersion: "1.0.3",
+              productVersion: "1.0.4",
               showBanner: unityShowBanner,
             };
             if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
@@ -197,7 +197,6 @@
                 loadingBar.style.display = "none";
                 this.asherlink3dscence = unityInstance;
                 window.asherlink3dscencecard = this;
-                
             }).catch((message) => {
                 alert(message);
               });
@@ -211,6 +210,7 @@
           //放弃从lovelace推送配置，原因：手动编辑lovelace反人类
           //console.log(JSON.stringify(this.config))
           //this.asherlink3dscence.SendMessage("Shijie", "HassConfig", JSON.stringify(this.config));
+          console.log("scene3d load ok!")
         }
 
         getCardSize() {

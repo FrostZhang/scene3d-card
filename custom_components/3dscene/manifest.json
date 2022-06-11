@@ -1,9 +1,10 @@
 {
   "domain": "3dscene",
-  "name": "三维展示平台",
-  "version": "1.0",
+  "name": "Homeassistant 3D",
+  "version": "1.0.3",
   "documentation": "https://github.com/FrostZhang/scene3d-card",
   "requirements": [],
   "dependencies": [],
-  "codeowners": ["@AsherLink"]
+  "codeowners": ["@AsherLink"],
+  "config_flow": true
 }
