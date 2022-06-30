@@ -135,9 +135,10 @@
               streamingAssetsUrl: "3dscene_local/StreamingAssets",
               companyName: "AsherLink",
               productName: "scene3d-card",
-              productVersion: "1.0.4",
+              productVersion: "1.0.6",
               showBanner: unityShowBanner,
             };
+            console.log(navigator.userAgent)
             if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
               container.className = "unity-mobile";
               // Avoid draining fillrate performance on mobile devices,
