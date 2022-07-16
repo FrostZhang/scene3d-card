@@ -135,7 +135,7 @@
               streamingAssetsUrl: "3dscene_local/StreamingAssets",
               companyName: "AsherLink",
               productName: "scene3d-card",
-              productVersion: "1.0.6",
+              productVersion: "1.0.7",
               showBanner: unityShowBanner,
             };
             console.log(navigator.userAgent)

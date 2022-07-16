@@ -1,7 +1,7 @@
 {
   "domain": "3dscene",
   "name": "Homeassistant 3D",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "documentation": "https://github.com/FrostZhang/scene3d-card",
   "requirements": [],
   "dependencies": [],
