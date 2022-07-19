@@ -40,7 +40,7 @@ https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-
 | 洗衣机  | on/off| V1.0.1 |
 | 空调  |on/off| V1.0.3 |
 | 文本框  |on/off| V1.0.3 |
-| 窗帘  |on/off| V1.0.7 |
+| 窗帘  |on/off/slide| V1.0.7 |
 | 车  |on/off| V1.0.7 |
 
 ## 使用
