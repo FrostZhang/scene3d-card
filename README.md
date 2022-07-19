@@ -33,12 +33,12 @@ https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-
 + 区域灯光 V1.0.0
 + 门 V1.0.1
 + 家具（床/简易木架） V1.0.0
-+ 接入TV on/off V1.0.1
-+ 接入洗衣机 on/off V1.0.1
-+ 接入空调 on/off V1.0.3
-+ 接入文本框 on/off V1.0.3
-+ 接入窗帘 on/off/slide V1.0.7
-+ 接入车 on/off V1.0.7
++ TV on/off V1.0.1
++ 洗衣机 on/off V1.0.1
++ 空调 on/off V1.0.3
++ 文本框 on/off V1.0.3
++ 窗帘 on/off/slide V1.0.7
++ 车 on/off V1.0.7
 
 ## 使用
 + 看说明书
