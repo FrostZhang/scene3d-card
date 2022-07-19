@@ -28,17 +28,20 @@ https://user-images.githubusercontent.com/27171600/170735287-e8afea8d-e399-4a9a-
 <img src="http://cdn.asherlink.top/wxskm.jpg" width="128"  alt="微信"/> ![wx](/Other/wxskm.jpg) <a href="https://www.buymeacoffee.com/3762375193" target="_blank"><img src="https://www.buymeacoffee.com/assets/img/custom_images/white_img.png" alt="Buy Me A Coffee" style="height: auto !important;width: auto !important;" ></a>
 
 ### 互动性
-+ 墙体 V1.0.0
-+ 地板 V1.0.0
-+ 区域灯光 V1.0.0
-+ 门 V1.0.1
-+ 家具（床/简易木架） V1.0.0
-+ TV on/off V1.0.1
-+ 洗衣机 on/off V1.0.1
-+ 空调 on/off V1.0.3
-+ 文本框 on/off V1.0.3
-+ 窗帘 on/off/slide V1.0.7
-+ 车 on/off V1.0.7
+
+|  资源   |交互 |起始 |
+---- | ----- | ------ 
+|  墙体   | - |V1.0.0  |
+|  地板  |- |V1.0.0  |
+| 区域灯光  |on/off | V1.0.0 |
+| 门  |on/off |V1.0.1 |
+| 家具（床/简易木架）  |- |V1.0.0 |
+| TV  | on/off | V1.0.1 |
+| 洗衣机  | on/off| V1.0.1 |
+| 空调  |on/off| V1.0.3 |
+| 文本框  |on/off| V1.0.3 |
+| 窗帘  |on/off| V1.0.7 |
+| 车  |on/off| V1.0.7 |
 
 ## 使用
 + 看说明书
