@@ -1,7 +1,3 @@
-config:
+configscene:
   description: save 3d config
   edit: config data
-downloadSupplierResource:
-  description: download Supplier Resource 下载供应商提供的资源
-joinSupplier:
-  description: join up Supplier 接入供应商

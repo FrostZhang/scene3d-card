@@ -37,9 +37,12 @@ class ApiConfig():
         with open(self.get_path(name), 'w', encoding='utf-8') as f:
             json.dump(obj, f, ensure_ascii=False)
          
-    def writecustomconfig(self, call):
+    def writeconfigscene(self, call):
         self.write('houseconnfig.json', str(call.data))
-    
+
+    def writeconfigui(self, call):
+        self.write('uiconfig.json', str(call.data))
+
     def joinSupplier(self,call):
         if "supplier" in call.data:
             supplier = call.data["supplier"]

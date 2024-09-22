@@ -8,43 +8,9 @@
 
         set hass(hass) {
             this._hass = hass;
-            this.lang = this._hass.selectedLanguage || this._hass.language;		
 			this.update();
-		}
-		
-        static get properties() {
-          return {
-            config: Object,
-            asherlink3dscence: Object,
-            sunObj: Object,
-            tempObj: Object,
-            mode: String,
-            weatherObj: {
-              type: Object,
-              observer: 'dataChanged',
-            },
-          };
-        }
-
-        constructor() {
-          super();
-		  this.attachShadow({ mode: 'open' });
-		  console.info(`%c3dscene-card `, "color: green; font-weight: bold", "")
-        }
-
-        // 自定义默认配置
-        static getStubConfig() {
-          //return { entity: "weather.tian_qi" }
-        }
-		
-        setConfig(config) {
-		  var len = document.getElementsByTagName("scene3d-card").length;
-		  if(len>0) throw "Only one instance is allowed";
-          this.config = config;
-          //放弃lovelace 配置表，原因：手动编辑lovelace反人类
-          //if (this.asherlink3dscence == undefined) return;
-          //this.asherlink3dscence.SendMessage("Shijie", "HassConfig", JSON.stringify(this.config));
-		  if(!this.content){
+			
+			if(!this.content){
 			  this.lk = document.createElement("link");
 			  this.lk.rel = "stylesheet";
 			  this.lk.href = "/3dscene_local/TemplateData/style.css";
@@ -74,10 +40,33 @@
 			  this.shadowRoot.appendChild(card);
 			  this.test();
 		    }
+		}
+		
+        static get properties() {
+          return {
+            config: Object,
+            asherlink3dscence: Object,
+          };
+        }
+
+        constructor() {
+          super();
+		  this.attachShadow({ mode: 'open' });
+		  console.info(`%c3dscene-card `, "color: green; font-weight: bold", "")
+        }
+
+        // 自定义默认配置
+        static getStubConfig() {
+          //return { entity: "weather.tian_qi" }
+        }
+		
+        setConfig(config) {
+		  var len = document.getElementsByTagName("scene3d-card").length;
+		  if(len>0) throw "Only one instance is allowed";
+          this.config = config;
         }
 
 	    test() {
-          setTimeout(() => {
             var container = this.shadowRoot.querySelector("#unity-container");
             var canvas = this.shadowRoot.querySelector("#unity-canvas");
             var loadingBar = this.shadowRoot.querySelector("#unity-loading-bar");
@@ -126,62 +115,26 @@
               //canvas.style.height = "600px";
             }
             loadingBar.style.display = "block";
-            var customss = document.createElement("script");
-            customss.text = `
-            var asherlink3dscencehass,asherlink3dscencecard;
-            function AsherLink3DStart(){
-              if (window.asherlink3dscencecard != undefined)
-              window.asherlink3dscencecard.On3dstart();
-            }
-            function AsherLink3DClickMessage(str){
-              var obj = JSON.parse(str);
-              asherlink3dscencehass.callService(obj["head"],obj["cmd"],{"entity_id": obj["entity_id"]});
-            }
-            function AsherLinkfire(type, detail, options) {
-              const node = asherlink3dscencecard;
-              options = options || {};
-              detail = (detail === null || detail === undefined) ? {} : detail;
-              const e = new Event(type, {
-                bubbles: options.bubbles === undefined ? true : options.bubbles,
-                cancelable: Boolean(options.cancelable),
-                composed: options.composed === undefined ? true : options.composed
-              });
-              e.detail = detail;
-              node.dispatchEvent(e);
-              return e;
-            }
-            function AsherLink3DLongClickMessage(str){
-              var obj = JSON.parse(str);
-              AsherLinkfire('hass-more-info', { entityId: obj["entity_id"] });
-            }
-            function AsherLink3DWebLog(str){
-             console.log(str)
-            }
-            function AsherLink3DConfig(str){
-              var obj = JSON.parse(str);
-              asherlink3dscencehass.callService('3dscene','config',{'data': obj});
-            }
-			function AsherLink3DBigView(style){
-              if (window.asherlink3dscencecard != undefined)
-				window.asherlink3dscencecard.BigView(style);
-            }
-            `
-            document.body.appendChild(customss)
-            var script = document.createElement("script");
-            script.src = loaderUrl;
-            script.onload = () => {
+			
+			var lv = document.getElementById("loadView");
+			if	(lv!=null ) lv.remove();
+            var loadView = document.createElement("script");
+			loadView.id = "loadView"
+            loadView.src = loaderUrl;
+            loadView.onload = () => {
               createUnityInstance(canvas, config, (progress) => {
                 progressBarFull.style.width = 100 * progress + "%";
               }).then((unityInstance) => {
                 loadingBar.style.display = "none";
                 this.asherlink3dscence = unityInstance;
-                window.asherlink3dscencecard = this;
+				unityInstance.Module.SystemInfo.hassCard = this;
+				unityInstance.Module.SystemInfo.hass = this._hass;
+				console.log(this._hass.states)
             }).catch((message) => {
                 alert(message);
               });
             };
-            document.body.appendChild(script)
-          }, 5000)
+            document.body.appendChild(loadView)
         }
 
         configChanged(newConfig) {
@@ -195,44 +148,10 @@
 
         update() {
           //回传3d
-          window.asherlink3dscencehass = this._hass;
           if (this.asherlink3dscence == undefined) return;
-          var st, item, send;
-          //遍历全部state，考虑优化
-          for (item in this._hass.states) {
-            st = this._hass.states[item];
-            if (item == "sun.sun") {
-              send = item + ' ' + st["attributes"]["elevation"];
-            }
-            else if (item.startsWith("weather")) {
-              //和风天气
-              if (st.hasOwnProperty("attributes") && st["attributes"].hasOwnProperty("condition_cn")) {
-                send = item + ' ' + st["attributes"]["condition_cn"];
-              }
-              else {
-                send = item + ' ' + st["state"];
-              }
-            }
-            else {
-              send = item + ' ' + st["state"];
-            }
-            if (send != undefined) {
-              this.asherlink3dscence.SendMessage("Shijie", "HassMessage", String(send));
-            }
-          }
+		  this.asherlink3dscence.Module.SystemInfo.hass = this._hass;
+		  this.asherlink3dscence.SendMessage("Shijie", "HassUpdate",JSON.stringify(this._hass.states));
         }
-
-        On3dstart() {
-          //放弃从lovelace推送配置，原因：手动编辑lovelace反人类
-          //console.log(JSON.stringify(this.config))
-          //this.asherlink3dscence.SendMessage("Shijie", "HassConfig", JSON.stringify(this.config));
-          console.log("scene3d load ok!")
-        }
-		
-		BigView(style)
-		{
-			this.asherlink3dscence.SetFullscreen(style);
-		}
 		
         getCardSize() {
           return 4;
@@ -263,6 +182,7 @@
         preview: false,
         description: "Build your home -- AsherLink"
       });
-
+	  
   }, 1000)
 })();
+ 
