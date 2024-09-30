@@ -8,7 +8,7 @@ DOMAIN = "3dscene"
 
 async def async_setup(hass, config):
     # 注册静态目录
-    VERSION = '1.0.0'
+    VERSION = '1.0.9'
     ROOT_PATH = '/3dscene_local'
     #await hass.http.async_register_static_paths([StaticPathConfig("/3dscene_local", "/config/custom_components/3dscene/local", False)])
 
