@@ -4,16 +4,24 @@ import json, os, shutil, hashlib, base64
 from .api_config import ApiConfig
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.core import HomeAssistant
+from homeassistant.components.http import StaticPathConfig
+from homeassistant.components.frontend import (
+    add_extra_js_url,
+    async_register_built_in_panel,
+)
+
+
 DOMAIN = "3dscene"
 
 async def async_setup(hass, config):
     # 注册静态目录
-    VERSION = '1.0.9'
+    VERSION = '1.0.0'
     ROOT_PATH = '/3dscene_local'
-    #await hass.http.async_register_static_paths([StaticPathConfig("/3dscene_local", "/config/custom_components/3dscene/local", False)])
+    await hass.http.async_register_static_paths([StaticPathConfig("/3dscene_local", "/config/custom_components/3dscene/local", False)])
 
-    hass.http.register_static_path(ROOT_PATH, hass.config.path('custom_components/3dscene/local'), False)
-    hass.components.frontend.add_extra_js_url(hass, ROOT_PATH + '/3dscene-card.js?ver=' + VERSION)
+    # hass.http.async_register_static_paths(ROOT_PATH, hass.config.path('custom_components/3dscene/local'), False)
+    # hass.components.frontend.
+    add_extra_js_url(hass, ROOT_PATH + '/3dscene-card.js?ver=' + VERSION)
 
     api_config =  ApiConfig(hass.config.path("custom_components/3dscene/local/Customdata"))
     hass.services.async_register('3dscene', 'configscene', api_config.writeconfigscene)
